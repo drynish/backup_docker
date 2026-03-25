@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  unifi-poller:
+    image: golift/unifi-poller:latest
+    container_name: unifi-poller
+    restart: unless-stopped
+    volumes:
+      - /home/drynish/docker/unifi-poller/up.conf:/etc/unpoller/up.conf:ro
+    ports:
+      - "9130:9130"
+
+

@@ -1,0 +1,61 @@
+version: 4
+homeassistant:
+  enabled: true
+frontend:
+  enabled: true
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://10.88.88.2:1883
+serial:
+  port: /dev/ttyUSB0
+  adapter: zstack
+advanced:
+  network_key:
+    - 22
+    - 237
+    - 76
+    - 206
+    - 150
+    - 188
+    - 68
+    - 8
+    - 10
+    - 182
+    - 80
+    - 33
+    - 0
+    - 113
+    - 25
+    - 3
+  pan_id: 44401
+  ext_pan_id:
+    - 44
+    - 242
+    - 240
+    - 103
+    - 61
+    - 192
+    - 133
+    - 47
+devices:
+  '0x70ac08fffe1c1376':
+    friendly_name: Gugusse 4 boutons
+  '0xf8f005ffffd167db':
+    friendly_name: Thermostat chambre principale
+  '0x002446fffd07b31a':
+    friendly_name: Porte Arrière
+  '0xb4e3f9fffe3c4103':
+    friendly_name: Blind
+  '0x002446fffd066fdb':
+    friendly_name: Porte Avant
+  '0x003c84fffea6d674':
+    friendly_name: Tank à eau chaude
+  '0xa4c1388114f67c14':
+    friendly_name: Détecteur température et humidité Cuisine
+  '0xa4c138834fe6b43b':
+    friendly_name: Détecteur température et humidité Abigaelle
+  '0x3425b4fffe13c2a9':
+    friendly_name: Détecteur température et humidité SDB
+  '0xa4c138a0dc62440c':
+    friendly_name: Détecteur eau Esther
+blocklist: []

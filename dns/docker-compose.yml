@@ -1,0 +1,18 @@
+version: "2"
+services:
+   adguardhome:
+     image: adguard/adguardhome
+     container_name: adguardhome
+     volumes:
+       - /home/drynish/docker/adguard/work:/opt/adguardhome/work
+       - /home/drynish/docker/adguard/conf:/opt/adguardhome/conf
+     ports:
+       - 53:53/tcp # plain dns over tcp
+       - 53:53/udp # plain dns over udp
+     restart: unless-stopped
+     networks:
+       - caddy
+
+networks:
+  caddy:
+    external: true

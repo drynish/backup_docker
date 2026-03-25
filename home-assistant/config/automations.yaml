@@ -1,0 +1,628 @@
+- id: '1604710341513'
+  alias: 'Porte avant: Verrouiller au départ'
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.presence_isabelle
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - input_boolean.presence_michel
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  conditions:
+  - condition: state
+    entity_id: input_boolean.desactiver_verrou_auto
+    state: 'off'
+  actions:
+  - action: lock.lock
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - lock.porte_avant
+  mode: single
+- id: '1606073018371'
+  alias: 'Coucher du soleil: Allumer lumières extérieures'
+  description: ''
+  triggers:
+  - event: sunset
+    trigger: sun
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 6786642b287bc8e706b24e67acf4dd39
+    entity_id: 46e986a7faaab6133918aaccb9b02006
+    domain: switch
+  - type: turn_on
+    device_id: 53d96c2f0234dc129a9ecac7abfbc1b3
+    entity_id: e45729bf02f217dc6d93e408196ab76b
+    domain: switch
+  - type: turn_on
+    device_id: 2ccc88cc5665f525f7b42ee97c93345b
+    entity_id: b89f22620366cddf344463ca9f01c85f
+    domain: switch
+  mode: single
+- id: '1606217128544'
+  alias: 'Batterie: Niveau faible'
+  description: ''
+  triggers:
+  - entity_id:
+    - sensor.kwikset_smartcode_deadbolt_10t_battery
+    - sensor.kwikset_smartcode_deadbolt_10t_battery_2
+    below: 30
+    trigger: numeric_state
+  - entity_id:
+    - sensor.detecteur_temperature_sdb_battery
+    - sensor.detecteur_temperature_entree_battery
+    below: 10
+    trigger: numeric_state
+  conditions:
+  - condition: time
+    after: '10:00:00'
+    before: '21:00:00'
+  actions:
+  - data:
+      message: Batterie Faible
+    action: notify.mobile_app_iphone
+  mode: single
+- id: '1610582838396'
+  alias: 'Porte avant: Déverrouiller à l''arrivée'
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.presence_michel
+    from: 'off'
+    to: 'on'
+  - trigger: state
+    entity_id:
+    - input_boolean.presence_isabelle
+    to: 'on'
+    from: 'off'
+  conditions: []
+  actions:
+  - action: lock.unlock
+    metadata: {}
+    data: {}
+    target:
+      entity_id: lock.porte_avant
+  mode: single
+- id: '1618324142625'
+  alias: 'Salle de bain: Ventilation humidité'
+  description: ''
+  triggers:
+  - minutes: /4
+    trigger: time_pattern
+  - entity_id:
+    - sensor.diff_humidity
+    above: 20
+    trigger: numeric_state
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.diff_humidity
+    above: 20
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.defi_hilo
+      state:
+      - reduction
+  actions:
+  - metadata: {}
+    data: {}
+    target:
+      device_id: 1ffffab501e5511b64a9c10b2c3c797a
+    action: switch.turn_on
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - target:
+      device_id:
+      - 1ffffab501e5511b64a9c10b2c3c797a
+    data: {}
+    action: switch.turn_off
+  mode: restart
+- id: '1623868847754'
+  alias: 'Porte avant: Démarrer timer verrouillage'
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - lock.porte_avant
+    from: locked
+    to: unlocked
+  conditions: []
+  actions:
+  - metadata: {}
+    data: {}
+    target:
+      entity_id: automation.porte_avant_verrouillage_automatique
+    action: automation.trigger
+  mode: restart
+- id: '1623868900937'
+  alias: 'Porte avant: Éteindre lumière entrée'
+  description: ''
+  triggers:
+  - entity_id:
+    - lock.porte_avant
+    from: unlocked
+    to: locked
+    trigger: state
+  conditions: []
+  actions:
+  - target:
+      entity_id: switch.lumiere_entree
+    data: {}
+    action: switch.turn_off
+  mode: restart
+- id: '1633877276696'
+  alias: 'Salle de bain: Ventilateur manuel'
+  description: ''
+  triggers:
+  - entity_id:
+    - switch.ventilateur
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    trigger: state
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+  - metadata: {}
+    data: {}
+    target:
+      device_id: 1ffffab501e5511b64a9c10b2c3c797a
+    action: switch.turn_off
+  mode: restart
+- id: '1643898557864'
+  alias: 'Matin: Allumer prises cuisine et devant'
+  description: ''
+  triggers:
+  - at: '07:00:00'
+    trigger: time
+  conditions:
+  - condition: state
+    entity_id: input_select.event_type
+    state: normal
+  actions:
+  - data: {}
+    target:
+      entity_id:
+      - switch.prise_electrique_cuisine
+      - switch.prise_electrique_devant
+    action: switch.turn_on
+  mode: single
+- id: '1656804313640'
+  alias: 'Porte avant: Allumer lumière entrée'
+  description: ''
+  triggers:
+  - entity_id:
+    - lock.porte_avant
+    to: unlocked
+    from: locked
+    trigger: state
+  conditions:
+  - condition: or
+    conditions:
+    - condition: sun
+      before: sunrise
+    - condition: sun
+      after: sunset
+  actions:
+  - data: {}
+    target:
+      entity_id: switch.lumiere_entree
+    action: switch.turn_on
+  mode: restart
+- id: '1674429270485'
+  alias: 'Enfants: Présents'
+  description: ''
+  triggers:
+  - entity_id:
+    - input_boolean.les_enfants
+    to: 'on'
+    trigger: state
+  conditions: []
+  actions:
+  - metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.adguard_home_parental_control
+      - switch.adguard_home_safe_search
+    action: switch.turn_on
+  mode: single
+- id: '1674429332894'
+  alias: 'Enfants: Absents'
+  description: ''
+  triggers:
+  - entity_id:
+    - input_boolean.les_enfants
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    to: 'off'
+    trigger: state
+  conditions: []
+  actions:
+  - metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - switch.adguard_home_parental_control
+      - switch.adguard_home_safe_search
+    action: switch.turn_off
+  mode: single
+- id: '1722443263004'
+  alias: 'Porte avant: Verrouillage automatique'
+  description: ''
+  triggers: []
+  conditions:
+  - condition: state
+    entity_id: input_boolean.desactiver_verrou_auto
+    state: 'off'
+  actions:
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - action: lock.lock
+    metadata: {}
+    data: {}
+    target:
+      entity_id: lock.porte_avant
+  mode: restart
+- id: '1741570987611'
+  alias: 'Fenêtre Abigaelle: Allumer'
+  description: ''
+  triggers:
+  - domain: mqtt
+    device_id: d4949683b4a4098dd34d880fbe546e7d
+    type: action
+    subtype: 1_single
+    trigger: device
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 0039ffdba6caa09a93850f5ca60d2942
+    entity_id: 678dc64b73de51c7d09f8361f9a44d53
+    domain: light
+  mode: single
+- id: '1741571022460'
+  alias: 'Fenêtre Abigaelle: Éteindre'
+  description: ''
+  triggers:
+  - domain: mqtt
+    device_id: d4949683b4a4098dd34d880fbe546e7d
+    type: action
+    subtype: 2_single
+    trigger: device
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 0039ffdba6caa09a93850f5ca60d2942
+    entity_id: 678dc64b73de51c7d09f8361f9a44d53
+    domain: light
+  mode: single
+- id: '1741571077248'
+  alias: 'Fenêtre Abigaelle: Intensité +'
+  description: ''
+  triggers:
+  - domain: mqtt
+    device_id: d4949683b4a4098dd34d880fbe546e7d
+    type: action
+    subtype: 3_single
+    trigger: device
+  conditions: []
+  actions:
+  - device_id: 0039ffdba6caa09a93850f5ca60d2942
+    domain: light
+    entity_id: 678dc64b73de51c7d09f8361f9a44d53
+    type: brightness_increase
+  mode: single
+- id: '1741571107715'
+  alias: 'Fenêtre Abigaelle: Intensité -'
+  description: ''
+  triggers:
+  - domain: mqtt
+    device_id: d4949683b4a4098dd34d880fbe546e7d
+    type: action
+    subtype: 4_single
+    trigger: device
+  conditions: []
+  actions:
+  - device_id: 0039ffdba6caa09a93850f5ca60d2942
+    domain: light
+    entity_id: 678dc64b73de51c7d09f8361f9a44d53
+    type: brightness_decrease
+  mode: single
+- id: '1751647432054'
+  alias: 'Logan: Lumière toujours activée'
+  description: ''
+  triggers:
+  - type: turned_off
+    device_id: dca92dcd2f85c5af4c1f0db4184e3486
+    entity_id: 067c9cc05987464f1027bf51be1005cf
+    domain: light
+    trigger: device
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: dca92dcd2f85c5af4c1f0db4184e3486
+    entity_id: 067c9cc05987464f1027bf51be1005cf
+    domain: light
+  mode: single
+- id: '1753379995144'
+  alias: 'Soir: Éteindre lumières extérieures'
+  description: ''
+  triggers:
+  - trigger: time
+    at: '23:00:00'
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 6786642b287bc8e706b24e67acf4dd39
+    entity_id: 46e986a7faaab6133918aaccb9b02006
+    domain: switch
+  - type: turn_off
+    device_id: 53d96c2f0234dc129a9ecac7abfbc1b3
+    entity_id: e45729bf02f217dc6d93e408196ab76b
+    domain: switch
+  - type: turn_off
+    device_id: 2ccc88cc5665f525f7b42ee97c93345b
+    entity_id: b89f22620366cddf344463ca9f01c85f
+    domain: switch
+  mode: single
+- id: '1759619458962'
+  alias: 'Noël: Arrivée'
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.noel
+    from: 'off'
+    to: 'on'
+  conditions:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  actions:
+  - type: turn_on
+    device_id: 53d96c2f0234dc129a9ecac7abfbc1b3
+    entity_id: e45729bf02f217dc6d93e408196ab76b
+    domain: switch
+  mode: single
+- id: '1760743167349'
+  alias: 'Calendrier: Déchets'
+  description: ''
+  triggers:
+  - trigger: time_pattern
+    hours: /1
+  conditions:
+  - condition: state
+    entity_id: sensor.type_collecte_aujourd_hui
+    state:
+    - Déchets
+  - condition: time
+    after: '17:00:00'
+    before: '23:01:59'
+  - condition: numeric_state
+    entity_id: sensor.cp28_8eb2_estimated_distance
+    below: 60
+  actions:
+  - action: notify.notify
+    metadata: {}
+    data:
+      message: Mettre poubelle au chemin
+      title: Poubelle
+  mode: single
+- id: '1760743341892'
+  alias: 'Calendrier: Composte'
+  description: ''
+  triggers:
+  - trigger: time_pattern
+    hours: /1
+  conditions:
+  - condition: state
+    state:
+    - Composte
+    entity_id: sensor.type_collecte_aujourd_hui
+  - condition: time
+    after: '17:00:00'
+    before: '23:00:00'
+  - condition: numeric_state
+    entity_id: sensor.cp27_55dd_estimated_distance
+    below: 60
+  actions:
+  - action: notify.notify
+    metadata: {}
+    data:
+      message: Mettre Composte au chemin
+      title: Composte
+  mode: single
+- id: '1765081003809'
+  alias: 'Hilo: Événement terminé'
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.defi_hilo
+    to:
+    - recovery
+  conditions: []
+  actions:
+  - action: climate.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - climate.cuisine
+      - climate.salle_commune_2
+  mode: single
+- id: '1765081176415'
+  alias: 'Hilo: Événement en cours'
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.defi_hilo
+    to:
+    - reduction
+  conditions: []
+  actions:
+  - action: climate.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - climate.cuisine
+      - climate.salle_commune_2
+  mode: single
+- id: '1767727234245'
+  alias: 'Calendrier: Recyclage'
+  description: ''
+  triggers:
+  - trigger: time_pattern
+    hours: /1
+  conditions:
+  - condition: state
+    entity_id: sensor.type_collecte_aujourd_hui
+    state:
+    - Recyclage
+  - condition: time
+    after: '17:00:00'
+    before: '23:00:00'
+  - condition: numeric_state
+    entity_id: sensor.cp28_8e9e_estimated_distance
+    below: 60
+  actions:
+  - action: notify.notify
+    metadata: {}
+    data:
+      message: Mettre Recyclage au chemin
+      title: Recyclage
+  mode: single
+- id: '1772155569015'
+  alias: 'Salle de jeu: Éteindre lumière après 2h'
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 0175448852762f8b642f4ef439760dd5
+    entity_id: 3f15e7f3080a3c7029789fd3b7dd7efb
+    domain: switch
+    trigger: device
+  conditions: []
+  actions:
+  - delay:
+      hours: 2
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.lumiere_salle_de_jeu
+  mode: restart
+- id: '1772937225179'
+  alias: 'Détecteur eau: Démarrer pompe Esther'
+  description: ''
+  triggers:
+  - type: moist
+    device_id: ea94b820015b66af9db27d9f2f72d957
+    entity_id: 405d507deb7efad15ad78a25581cc328
+    domain: binary_sensor
+    metadata:
+      secondary: false
+    trigger: device
+  conditions: []
+  actions:
+  - action: notify.notify
+    metadata: {}
+    data:
+      message: Ça coule chez Esther!!!
+      title: Urgent
+      data:
+        push:
+          sound:
+            name: default
+            critical: 1
+            volume: 1
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.tp_link_smart_plug_4187_sunpomp
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.tp_link_smart_plug_4187_sunpomp
+  mode: single
+- id: '1773719588696'
+  alias: 'Rangement: Éteindre lumière après 2h'
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 5fe7473119b4da9887034bbdb0e8ec03
+    entity_id: d8ec5566636b4f15fc5a0a1bf88a87e6
+    domain: light
+    trigger: device
+  conditions: []
+  actions:
+  - delay:
+      hours: 2
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: 5fe7473119b4da9887034bbdb0e8ec03
+    entity_id: d8ec5566636b4f15fc5a0a1bf88a87e6
+    domain: light
+  mode: restart
+- id: '1774046575397'
+  alias: 'Salle de jeu - mur: Éteindre après 2h'
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 31af5b372393bf1d62aac6e4c41381b4
+    entity_id: 89a1ba7a7c683f2fdc91e61adb389388
+    domain: switch
+    trigger: device
+  conditions: []
+  actions:
+  - delay:
+      hours: 2
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.salle_de_jeu_mur
+  mode: restart

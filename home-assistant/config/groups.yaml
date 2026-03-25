@@ -1,0 +1,13 @@
+all:
+  name: Tout le monde
+  entities:
+    - person.michel_di_croci    
+    - person.isabelle
+    - person.heidi
+    - person.logan
+
+enfants:
+  name: Enfant
+  entities:
+    - person.heidi
+    - person.logan

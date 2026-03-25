@@ -1,0 +1,34 @@
+sensor:
+  - name: "Température extérieure"
+    unit_of_measurement: "°C"
+    unique_id: "temperature_extérieure"
+    state: >
+      {{ state_attr("weather.maison", "temperature") | float(0) }}
+
+  - name: "Température extérieure + 1 "
+    unit_of_measurement: "°C"
+    unique_id: "temperature_exterieure_plus_1"
+    state: >
+      {{ (state_attr("weather.maison", "temperature") | float(0)) + 1 }}
+
+  - name: "Humidité extérieure"
+    unit_of_measurement: "%"
+    unique_id: "humidity_extérieure"
+    state: >
+      {{ state_attr("weather.maison", "humidity") | float(0) }}
+
+  - name: "10 days consumption - Laveuse"
+    unit_of_measurement: "kWh"
+    state: >
+      {{ (state_attr('sensor.sonoff_100206027c_energy', 'history') or [])| sum }}
+  
+  - name: "10 days consumption - Studio"
+    unit_of_measurement: "kWh"
+    state: >
+      {{ (state_attr('sensor.sonoff_100205eba3_energy', 'history') or [])| sum }}
+
+  - name: "Diff humidity SDB et dehors"
+    unit_of_measurement: "%"
+    unique_id: "diff_humidity"
+    state: >
+      {{ (states('sensor.detecteur_temperature_et_humidite_sdb_humidity') | float(0) - states('sensor.detecteur_temperature_et_humidite_cuisine_humidity') | float(0)) | round(2) }}

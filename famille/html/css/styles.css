@@ -1,0 +1,146 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: white;
+    color: #1f2937;
+}
+
+.dark body {
+    background-color: #0f172a;
+    color: #e5e7eb;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    color: #1f2937;
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    color: #ffffff;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+}
+
+.section-padding {
+    padding: 4rem 0;
+    background-color: white;
+}
+
+.dark .section-padding {
+    background-color: #0f172a;
+}
+
+.dark .section-padding h2 {
+    color: #60a5fa !important;
+}
+
+.section-bg {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+}
+
+.dark .section-bg {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+}
+
+.video-card {
+    transition: all 0.3s ease;
+    background-color: white;
+    color: #1f2937;
+}
+
+.dark .video-card {
+    background-color: #1f2937;
+    color: #e5e7eb;
+    border: 1px solid #374151;
+}
+
+.video-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Navigation */
+nav {
+    background-color: white;
+}
+
+.dark nav {
+    background-color: #111827;
+    border-bottom: 1px solid #374151;
+}
+
+/* Texte gris clair pour mobile nav */
+#mobileNav {
+    background-color: white;
+}
+
+.dark #mobileNav {
+    background-color: #111827;
+}
+
+.dark #mobileNav a {
+    color: #d1d5db;
+}
+
+.dark #mobileNav a:hover {
+    background-color: #1f2937;
+}
+
+/* Paragraphes et texte normal */
+p {
+    color: #4b5563;
+}
+
+.dark p {
+    color: #e5e7eb;
+}
+
+.dark .section-padding p {
+    color: #93c5fd;
+}
+
+/* Liens de contact */
+a {
+    color: #667eea;
+}
+
+.dark a {
+    color: #93c5fd;
+}
+
+a:hover {
+    color: #5568d3;
+}
+
+.dark a:hover {
+    color: #bfdbfe;
+}
+
+/* Boutons des tabs */
+button {
+    color: #374151;
+}
+
+.dark button {
+    color: #e5e7eb;
+}
+
+.dark #myTab button {
+    color: #93c5fd;
+    font-weight: 600;
+}
+
+/* Icône enveloppe */
+.text-gray-700 svg {
+    color: #667eea;
+}
+
+.dark .text-gray-700 svg {
+    color: #93c5fd;
+}
+
+.dark .border-gray-200,
+.dark .border-b-2 {
+    border-color: #374151;
+}

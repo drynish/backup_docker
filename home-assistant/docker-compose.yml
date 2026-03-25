@@ -1,0 +1,77 @@
+version: '3'
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    devices:
+      - /dev/hci0:/dev/hci0
+      - /dev/hci1:/dev/hci1
+    cap_add:
+    - NET_ADMIN
+    - NET_RAW
+    ports:
+    - 5353:5353/udp
+    - 51827:51827
+    volumes:
+      - /home/drynish/docker/home-assistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+      - /home/drynish/git:/git:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+    - 1883:1883
+    volumes:
+      - /home/drynish/docker/mosquitto/data:/mosquitto/data
+      - /home/drynish/docker/mosquitto/log:/mosquitto/log
+      - /home/drynish/docker/mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - caddy
+
+  hydroqc2mqtt:
+    container_name: hydro2mqtt
+    image: registry.gitlab.com/hydroqc/hydroqc2mqtt
+    restart: unless-stopped
+    environment:
+      MQTT_USERNAME: ${MQTT_USERNAME}
+      MQTT_PASSWORD: ${MQTT_PASSWORD}
+      MQTT_HOST: 'mosquitto'
+      MQTT_PORT: '1883'
+      HQ2M_CONTRACTS_0_NAME: 'maison'
+      HQ2M_CONTRACTS_0_USERNAME: ${HQ2M_USERNAME}
+      HQ2M_CONTRACTS_0_PASSWORD: ${HQ2M_PASSWORD}
+      HQ2M_CONTRACTS_0_CUSTOMER: ${HQ2M_CUSTOMER}
+      HQ2M_CONTRACTS_0_ACCOUNT: ${HQ2M_ACCOUNT}
+      HQ2M_CONTRACTS_0_CONTRACT: ${HQ2M_CONTRACT}
+      HQ2M_CONTRACTS_0_RATE: 'D'
+      HQ2M_CONTRACTS_0_RATE_OPTION: 'CPC'
+      HQ2M_CONTRACTS_0_PREHEAT_DURATION_MINUTES: '120'
+      HQ2M_CONTRACTS_0_SYNC_HOURLY_CONSUMPTION_ENABLED: "true"
+      HQ2M_CONTRACTS_0_HOME_ASSISTANT_WEBSOCKET_URL: 'http://homeassistant:8123/api/websocket'
+      HQ2M_CONTRACTS_0_HOME_ASSISTANT_TOKEN: ${HQ2M_TOKEN}
+    networks:
+      - caddy
+
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt
+    restart: unless-stopped
+    volumes:
+      - /home/drynish/docker/zigbee2mqtt:/app/data
+      - /run/udev:/run/udev:ro
+    environment:
+      - TZ=America/Montreal
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    external: true

@@ -1,0 +1,227 @@
+{
+	email michel.dicroci@gmail.com
+}
+
+adguard.drynish.synology.me {
+    @internal remote_ip 192.168.90.0/24 192.168.13.0/24
+    handle @internal {
+        reverse_proxy adguardhome:88
+    }
+    handle {
+        forward_auth authelia:9091 {
+            uri /api/verify?rd=https://auth.drynish.synology.me
+            copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+        }
+        reverse_proxy adguardhome:88
+    }
+    respond 403
+}
+
+auth.drynish.synology.me {
+    reverse_proxy authelia:9091
+}
+
+bazarr.drynish.synology.me {
+	reverse_proxy bazarr:6767
+}
+
+cours.drynish.synology.me {
+	reverse_proxy 10.88.88.4:3000
+}
+
+logan.drynish.synology.me {
+    @rootPath {
+        path /
+    }
+
+    redir @rootPath /api/wakeup/computer/Windows
+    reverse_proxy 192.168.90.3:4000
+
+}
+
+conservervotrepermis.ca {
+	reverse_proxy isabelle:80
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	}
+}
+
+family.drynish.synology.me {
+	reverse_proxy family:80
+}
+
+nas.drynish.synology.me {
+  @local remote_ip 192.168.13.0/24 192.168.90.0/24
+  
+  handle @local {
+    reverse_proxy 192.168.90.3:5000 {
+      header_up Host {upstream_hostport}
+      header_up X-Real-IP {remote_host}
+      header_up X-Forwarded-For {remote_host}
+      header_up X-Forwarded-Proto {scheme}
+    }
+  }
+
+  handle {
+    forward_auth http://authelia:9091 {
+      uri /api/verify?rd=https://auth.drynish.synology.me
+      copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    }
+    reverse_proxy 192.168.90.3:5000 {
+      header_up Host {upstream_hostport}
+      header_up X-Real-IP {remote_host}
+      header_up X-Forwarded-For {remote_host}
+      header_up X-Forwarded-Proto {scheme}
+    }
+  }
+  respond 403
+}
+
+dicroci.website {
+	reverse_proxy family:80
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	}
+}
+
+download.drynish.synology.me {
+	reverse_proxy gluetun:8999
+}
+
+flaresolverr.drynish.synology.me {
+	reverse_proxy flaresolverr:8191
+}
+
+homeassistant.drynish.synology.me {
+  @local remote_ip 192.168.13.0/24 192.168.90.0/24
+  
+  handle @local {
+    reverse_proxy 10.88.88.2:8123
+  }
+
+  handle {
+    forward_auth http://authelia:9091 {
+      uri /api/verify?rd=https://auth.drynish.synology.me
+      copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    }
+    reverse_proxy 10.88.88.2:8123
+  }
+
+  respond 403
+}
+
+omada.drynish.synology.me {
+  @local remote_ip 192.168.90.0/24 192.168.13.0/24
+
+  handle @local {
+    reverse_proxy https://omada-controller:8043 {
+	  transport http {
+	      tls
+              tls_insecure_skip_verify
+          }
+      }
+  }  
+
+  handle {
+    forward_auth http://authelia:9091 {
+      uri /api/verify?rd=https://auth.drynish.synology.me
+      copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    }
+    reverse_proxy https://10.88.88.2:8043 {
+	    transport http {
+		    tls
+		    tls_insecure_skip_verify
+      }
+	  }
+  }
+
+  respond 403
+}
+plex.dicroci.website {
+    @rootPath {
+        path /
+    }
+
+    redir @rootPath /web/index.html
+
+    reverse_proxy http://192.168.90.4:32400 {
+        # Headers essentiels pour Plex
+        header_up Host {host}
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+
+        # Header CRITIQUE manquant (cause du spinner infini)
+        header_up X-Plex-Client-Identifier {remote_host}
+        
+        # Timeout plus long pour Plex
+        transport http {
+	    versions 1.1
+            read_timeout 0
+            write_timeout 0
+        }
+    }
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+    } 
+    
+}
+
+portainer.drynish.synology.me {
+  @local remote_ip 192.168.90.0/24 192.168.13.0/24
+
+  handle @local {
+    reverse_proxy 10.88.88.2:9000
+  }
+
+  handle {
+    forward_auth http://authelia:9091 {
+      uri /api/verify?rd=https://auth.drynish.synology.me
+      copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+    }
+
+    reverse_proxy 10.88.88.2:9000
+  }
+
+  respond 403
+}
+
+prowlarr.drynish.synology.me {
+	reverse_proxy prowlarr:9696
+}
+
+radarr.drynish.synology.me {
+	reverse_proxy radarr:7878
+}
+
+sonarr.drynish.synology.me {
+	reverse_proxy sonarr:8989
+}
+
+wiki.dicroci.website {
+	reverse_proxy ghost:2368
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	}
+}
+
+doc.drynish.synology.me {
+    @internal {
+        remote_ip 192.168.90.0/24 192.168.13.0/24 70.55.121.27/32
+    }
+    handle @internal {
+     reverse_proxy wikijs:3000
+    }
+    respond 403    
+}
+
+zigbee.drynish.synology.me {
+    @internal {
+        remote_ip 192.168.90.0/24 192.168.13.0/24
+    }
+    handle @internal {
+        reverse_proxy zigbee2mqtt:8080
+    }
+    respond 403
+}

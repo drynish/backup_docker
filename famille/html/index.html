@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Famille Di Croci</title>
+
+        <!-- FAVICON -->
+        <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+        <!-- CSS FILES -->        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+        
+        <script>
+          // Configure Tailwind to respect system dark mode preference
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+          }
+          // Listen for changes in system preference
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (e.matches) {
+              document.documentElement.classList.add('dark');
+            } else {
+              document.documentElement.classList.remove('dark');
+            }
+          });
+        </script>
+        
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="css/styles.css" rel="stylesheet">
+    </head>
+    
+    <body id="top">
+
+        <main>
+
+            <nav class="sticky top-0 z-50 bg-white shadow-lg">
+                <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+                    <a class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent flex items-center" href="index.html">
+                        <span>Famille Di Croci</span>
+                    </a>
+
+                    <button class="lg:hidden p-2 text-gray-700" type="button" onclick="toggleMenu()">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+
+                    <div class="hidden lg:flex lg:ml-8 lg:mr-auto space-x-6" id="navbarNav">
+                        <a class="click-scroll text-gray-700 hover:text-blue-600 font-semibold transition duration-300" href="#section_2">Souvenirs</a>
+                        <a class="click-scroll text-gray-700 hover:text-blue-600 font-semibold transition duration-300" href="#section_3">Contact</a>
+                    </div>
+
+                    <div class="hidden fixed top-16 left-0 right-0 bg-white shadow-lg flex-col lg:hidden" id="mobileNav">
+                        <a class="click-scroll px-6 py-3 text-gray-700 hover:bg-gray-100" href="#section_2">Vidéos</a>
+                        <a class="click-scroll px-6 py-3 text-gray-700 hover:bg-gray-100" href="#section_3">Contact</a>
+                    </div>
+                </div>
+            </nav>
+
+            
+
+            <section class="section-padding" id="section_2">
+                <div class="container mx-auto px-6">
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 mb-12">
+                        <img src="images/logoDiCroci.png" alt="Famille Di Croci et leurs amis" class="h-72 sm:h-80 md:h-96 lg:h-[480px] xl:h-[576px] w-auto object-contain select-none" />
+                        <div class="text-center md:text-left">
+                            <h2 class="text-4xl font-bold text-gray-800 mb-2">Nos Souvenirs</h2>
+                            <p class="text-gray-600 text-lg">Explorez les moments importants de notre famille au fil des années, avec les différents choix de type de film.</p>
+                        </div>
+                    </div>
+                </div>
+                    <div class="flex justify-center mb-12">
+                        <ul class="flex flex-wrap justify-center gap-2 md:gap-4 border-b-2 border-gray-200" id="myTab" role="tablist">
+                            <li role="presentation">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 font-semibold transition duration-300" id="noel-tab" onclick="showTab('noel-tab-pane')" type="button" role="tab">🎄 Noël</button>
+                            </li>
+
+                            <li role="presentation">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 font-semibold transition duration-300" id="marie-tab" onclick="showTab('marie-tab-pane')" type="button" role="tab">👰 Marie</button>
+                            </li>
+
+                            <li role="presentation">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 font-semibold transition duration-300" id="michel-tab" onclick="showTab('michel-tab-pane')" type="button" role="tab">🎂 Michel</button>
+                            </li>
+
+                            <li role="presentation">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 font-semibold transition duration-300" id="michelnicole-tab" onclick="showTab('michelnicole-tab-pane')" type="button" role="tab">👫 Nicole et Michel</button>
+                            </li>
+
+                            <li role="presentation">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 border-b-2 border-transparent hover:border-blue-600 font-semibold transition duration-300" id="petitsenfants-tab" onclick="showTab('petitsenfants-tab-pane')" type="button" role="tab">👨‍👩‍👧‍👦 Enfants</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="container mx-auto px-6">
+                    <div id="myTabContent">
+                        <div class="hidden" id="noel-tab-pane" role="tabpanel">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div>
+                                    <div class="video-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl">
+                                        <a href="https://youtu.be/YeNK5cPDMJo" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/YeNK5cPDMJo/hqdefault.jpg" alt="Noël 1989" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">Noël 1989</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="video-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl">
+                                        <a href="https://youtu.be/46YaCbVaGGM" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/46YaCbVaGGM/hqdefault.jpg" alt="Noël 1990" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">Noël 1990</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="video-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl">
+                                        <a href="https://youtu.be/2tLXJQY4JGQ" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/2tLXJQY4JGQ/hqdefault.jpg" alt="Noël 1991" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">Noël 1991</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="video-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl">
+                                        <a href="https://youtu.be/538i54_1Ic4" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/538i54_1Ic4/hqdefault.jpg" alt="Noël 1992" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">Noël 1992</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+   
+                        <div class="hidden" id="marie-tab-pane" role="tabpanel">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div>
+                                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                                        <a href="https://youtu.be/wdnFBvCmsUI" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/wdnFBvCmsUI/hqdefault.jpg" alt="Lendemain mariage de Jean" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">Lendemain mariage de Jean</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                                        <a href="https://youtu.be/oGcSv1a5YaE" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/oGcSv1a5YaE/hqdefault.jpg" alt="Première communion Marie-Ève" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">Première communion Marie-Ève</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hidden" id="michel-tab-pane" role="tabpanel">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div>
+                                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                                        <a href="https://youtu.be/ZXVizSWlqg8" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/ZXVizSWlqg8/hqdefault.jpg" alt="Fête Michel 14 ans" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">Fête Michel 14 ans</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hidden" id="michelnicole-tab-pane" role="tabpanel">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div>
+                                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                                        <a href="https://youtu.be/2Zimgu49I-Y" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/2Zimgu49I-Y/hqdefault.jpg" alt="Voyage à Ottawa" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">Voyage à Ottawa</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                                        <a href="https://youtu.be/JlE-6n2l_Eg" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/JlE-6n2l_Eg/hqdefault.jpg" alt="50ième de Mariage (Covid)" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">50ième de Mariage (Covid)</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hidden" id="petitsenfants-tab-pane" role="tabpanel">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div>
+                                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                                        <a href="https://youtu.be/T68H_3-Diiw" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/T68H_3-Diiw/hqdefault.jpg" alt="Marionnette 1" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">Marionnette 1</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                                        <a href="https://youtu.be/5wjBwKvmuF0" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/5wjBwKvmuF0/hqdefault.jpg" alt="Marionnette 2" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">Marionnette 2</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                                        <a href="https://youtu.be/kf3ffxs6pZQ" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/kf3ffxs6pZQ/hqdefault.jpg" alt="Marionnette 3" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">Marionnette 3</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                                        <a href="https://youtu.be/TyEAqJ502qs" class="block group">
+                                            <div class="relative overflow-hidden bg-black">
+                                                <img src="https://img.youtube.com/vi/TyEAqJ502qs/hqdefault.jpg" alt="Marionnette 4" class="w-full h-40 object-cover group-hover:scale-110 transition">
+                                                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-50 transition">
+                                                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M8 5v14l11-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <h5 class="px-4 py-3 font-semibold text-gray-800">Marionnette 4</h5>                                                            
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-padding section-bg" id="section_3">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl font-bold text-gray-800 mb-3">Restons en contact</h2>
+                        <p class="text-gray-600 text-lg">N'hésitez pas à nous écrire</p>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <div class="w-full md:w-1/3">
+                            <p class="flex items-center justify-center gap-2 text-gray-700">
+                                <svg class="w-6 h-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                                </svg>
+
+                                <a href="mailto:michel.dicroci@gmail.com" class="text-blue-600 hover:text-blue-800">
+                                    michel.dicroci@gmail.com
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- JAVASCRIPT FILES -->
+        <script src="js/click-scroll.js"></script>
+        <script>
+            function toggleMenu() {
+                const mobileNav = document.getElementById('mobileNav');
+                mobileNav.classList.toggle('hidden');
+                mobileNav.classList.toggle('flex');
+            }
+
+            function showTab(tabId) {
+                // Hide all tabs
+                const tabContent = document.querySelectorAll('#myTabContent > div');
+                tabContent.forEach(tab => {
+                    tab.classList.add('hidden');
+                });
+
+                // Show selected tab
+                document.getElementById(tabId).classList.remove('hidden');
+
+                // Update active button
+                const buttons = document.querySelectorAll('#myTab button');
+                buttons.forEach(btn => {
+                    btn.classList.remove('border-blue-600', 'text-blue-600');
+                });
+                event.target.classList.add('border-blue-600', 'text-blue-600');
+            }
+
+            // Initialize first tab as active
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('noel-tab-pane').classList.remove('hidden');
+                document.getElementById('noel-tab').classList.add('border-blue-600', 'text-blue-600');
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,26 @@
+services:
+  php-fpm:
+    image: 'bitnami/php-fpm:latest'
+    container_name: php-fpm
+    restart: unless-stopped
+    volumes:
+      - /home/drynish/docker/isabelle_website/site:/var/www/html
+      - /home/drynish/docker/isabelle_website/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - caddy
+
+  nginx:
+    image: nginx:latest
+    container_name: isabelle
+    restart: unless-stopped
+    volumes:
+      - /home/drynish/docker/isabelle_website/site:/var/www/html
+      - /home/drynish/docker/isabelle_website/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - caddy
+    depends_on:
+      - php-fpm
+      
+networks:
+  caddy:
+    external: true

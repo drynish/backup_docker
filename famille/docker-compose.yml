@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: family
+    image: nginx:latest
+    volumes:
+      - /home/drynish/docker/famille/html:/usr/share/nginx/html
+    restart: always
+    networks:
+      - caddy
+    labels:
+       caddy: dicroci.website
+       caddy.reverse_proxy: "{{upstreams 80}}"
+       caddy.tls.dns: "cloudflare nTM6cWSWE6m73wZC8Vw__3IZ4UuclFrbjRyb0c52"  
+
+networks:
+  caddy:
+    external: true

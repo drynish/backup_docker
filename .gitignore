@@ -1,0 +1,96 @@
+# Bases de données
+**/*.db
+**/*.db-shm
+**/*.db-wal
+**/*.sqlite
+**/*.sqlite3
+
+# Logs
+**/*.log
+**/*.log.*
+
+# Caches et fichiers temporaires
+**/__pycache__/
+**/*.pyc
+**/.cache/
+
+# Home Assistant
+home-assistant/config/.storage/
+home-assistant/.storage/
+home-assistant/config/backups/
+home-assistant/config/deps/
+home-assistant/config/tts/
+home-assistant/config/www/community/
+home-assistant/config/secrets.yaml
+
+# isabelle_website — code géré dans /home/drynish/git/isabelle_website
+isabelle_website/site/
+isabelle_website/composer.*
+
+# Credentials / secrets
+**/secrets.yaml
+**/secrets.yml
+**/.secrets
+**/authelia/secrets/
+**/gluetun/auth/
+**/SERVICE_ACCOUNT.JSON
+**/service_account.json
+**/.env
+
+# Clés de chiffrement
+prowlarr/asp/
+
+# Fichiers runtime / temporaires
+**/*.bak
+**/*.pid
+**/.ha_run.lock
+**/._.DS_Store
+**/.storage.zip
+**/hilo_*state.yaml
+**/known_devices.yaml
+**/state.json
+**/coordinator_backup.json
+
+# Logs texte (prowlarr, etc.)
+prowlarr/logs/
+prowlarr/Backups/
+prowlarr/Sentry/
+
+# Médias
+**/sound/
+
+# Données runtime des services
+omada/data/
+mosquitto/data/
+prowlarr/Definitions/
+radarr/
+sonarr/
+bazarr/
+qbittorrent/
+adguard/work/
+caddy/data/
+redis/
+wikijs/
+
+# Portainer
+portainer/
+
+# Dossiers inaccessibles (root)
+ghost/
+ghost-mysql/
+adguard/
+alloy/data/
+caddy/config/caddy/
+wikijs/
+authelia/config/notification.txt
+authelia/config/users_database.yml
+authelia/config/db.sqlite3*
+
+# Synology metadata
+@eaDir/
+**/@eaDir/
+**/*.@SynoEAStream
+**/*.@SynoResource
+
+# Divers
+**/.DS_Store

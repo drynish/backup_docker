@@ -1,0 +1,48 @@
+version: "3.7"
+services:
+  caddy:
+    container_name: caddy
+    image: ghcr.io/caddybuilds/caddy-cloudflare:latest
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+    environment:
+      - CADDY_INGRESS_NETWORKS=caddy
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+    networks:
+      - caddy
+    volumes:
+      - /home/drynish/docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/drynish/docker/caddy/data:/data
+    restart: unless-stopped
+
+  authelia:
+    image: authelia/authelia:latest
+    container_name: authelia
+    restart: unless-stopped
+    networks: 
+      - caddy
+    volumes:
+      - /home/drynish/docker/authelia/config:/config
+      - /home/drynish/docker/authelia/lib:/var/lib/authelia
+    environment:
+      - TZ=America/Montreal  # Modifiez selon votre fuseau horaire
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: unless-stopped
+    networks: 
+      - caddy
+    volumes:
+      - /home/drynish/docker/redis:/data
+    environment:
+      - TZ=America/Montreal
+volumes:
+  redis_data:
+networks:
+  caddy:
+    external: true
+    
+

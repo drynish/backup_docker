@@ -1,0 +1,60 @@
+services:
+  gluetun:
+    image: qmcgaw/gluetun:v3
+    container_name: gluetun
+    # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/connect-a-container-to-gluetun.md#external-container-to-gluetun
+    cpu_shares: 512
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 8888:8888/tcp # HTTP proxy
+      - 8999:8999/tcp # Qbittorrent proxy
+      - 6881:6881 # <-- port torrent (TCP/UDP)
+      - 6881:6881/udp
+    restart: unless-stopped
+    volumes:
+      - /home/drynish/docker/gluetun:/gluetun    
+    dns: 9.9.9.9
+    networks: 
+      - caddy
+    environment:
+      - VPN_SERVICE_PROVIDER=surfshark
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+      - SERVER_COUNTRIES=switzerland
+      - TZ=AMERICA/Montreal
+      - UPDATER_PERIOD=24h
+      - HTTPPROXY=off #change to on if you wish to enble
+      - SHADOWSOCKS=off #change to on if you wish to enable
+      - FIREWALL_OUTBOUND_SUBNETS=172.26.0.0/16,192.168.88.0/24
+    labels:
+      caddy: download.drynish.synology.me
+      caddy.reverse_proxy: "{{upstreams 8999}}"
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1026
+      - PGID=100
+      - TZ=Etc/Montreal
+      - WEBUI_PORT=8999
+      - TORRENTING_PORT=6881
+    volumes:
+      - /home/drynish/docker/qbittorrent:/config
+      - /home/drynish/mnt/Download:/downloads
+    restart: unless-stopped
+    cpu_shares: 256
+    depends_on:
+      gluetun:
+        condition: service_healthy
+
+    network_mode: "service:gluetun" # <-- ici
+
+networks:
+  caddy:
+    external: true
+
+

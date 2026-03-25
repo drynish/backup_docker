@@ -1,0 +1,81 @@
+counter:
+default_config:
+input_button:
+input_boolean:
+input_datetime:
+input_number:
+input_select:
+input_text:
+timer:
+utility_meter:
+
+group: !include groups.yaml
+automation: !include automations.yaml
+template: !include templates.yaml
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies: 
+    - 127.0.0.1
+    - ::1
+    - 192.168.13.1
+    - 172.25.0.0/16
+    - 172.18.0.0/16
+
+sensor:
+  - platform: time_date
+    display_options:
+    - 'time'
+  - platform: waste_collection_schedule
+    name: Collecte
+    types: 
+      - Déchets
+      - Recyclage
+      - Composte
+
+logger:
+  default: error
+
+sonoff:
+  devices:
+    100206027c:
+      reporting:
+        power: [30, 3600, 1]  # min seconds, max seconds, min delta value
+        current: [5, 3600, 0.1]
+        voltage: [60, 3600, 5]
+        energy: [3600, 10]
+    100205eba3:
+      reporting:
+        power: [30, 3600, 1]  # min seconds, max seconds, min delta value
+        current: [5, 3600, 0.1]
+        voltage: [60, 3600, 5]
+        energy: [3600, 10]
+
+zone:
+  - name: Cegep
+    latitude: 46.02581787109375
+    longitude: -73.43729297714367
+    radius: 200
+    icon: mdi:school
+
+tuya_smart_ir_ac:
+  access_id: !secret tuya_access_id
+  access_secret: !secret tuya_access_secret
+  country: "US"
+
+waste_collection_schedule:
+  sources:
+    - name: ics
+      args:
+        url: https://calendar.google.com/calendar/ical/70005f62143896bd690b0de68de8614aa08f68622f42921efca82f0faad119a3%40group.calendar.google.com/private-52b90b14764a4c70c064587cf532fa56/basic.ics
+      customize:
+        - type: Déchets
+          alias: Déchets
+          icon: mdi:trash-can
+        - type: Recyclage
+          alias: Recyclage
+          icon: mdi:recycle
+        - type: Composte
+          alias: Composte
+          icon: mdi:leaf
+
