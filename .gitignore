@@ -32,10 +32,12 @@ isabelle_website/composer.*
 **/secrets.yml
 **/.secrets
 **/authelia/secrets/
+**/authelia/config/configuration.yml
 **/gluetun/auth/
 **/SERVICE_ACCOUNT.JSON
 **/service_account.json
 **/.env
+prowlarr/config.xml
 
 # Clés de chiffrement
 prowlarr/asp/
