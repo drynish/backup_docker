@@ -4,14 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-A Home Assistant (2026.3.x) residential smart home configuration running in Docker. The instance manages climate, energy, presence, EV charging, and security for a multi-person household in Quebec, Canada. Automation aliases and entity names are primarily in French.
+A Home Assistant (2026.3.x) residential smart home configuration running in Docker. The instance manages climate, energy, presence, and security for a multi-person household in Quebec, Canada. Automation aliases and entity names are primarily in French.
 
 ## Configuration Architecture
 
 The configuration uses `!include` directives in `configuration.yaml` to split concerns into dedicated files:
 
 - `automations.yaml` — 40 automations (presence, climate, energy, security)
-- `scripts.yaml` — Reusable action sequences (EV control, climate sequencing, fan control)
+- `scripts.yaml` — Reusable action sequences (climate sequencing, fan control)
 - `templates.yaml` — Derived sensor values (external temp/humidity, energy sums, humidity differential)
 - `groups.yaml` — Entity groupings
 - `blueprints/` — Reusable automation/script/template patterns
@@ -28,10 +28,6 @@ Credentials are stored in `secrets.yaml` and referenced with `!secret key_name`.
 - `smartthinq_sensors` — LG appliance monitoring
 - `gree` — Gree AC units
 
-**EV & Charging**:
-- Vehicle control via MQTT (Chevy EV)
-- Chargepoint station via `shell_command` curl calls to local IP `192.168.101.90`
-
 **Networking**:
 - Runs behind a reverse proxy; trusted proxies configured for Docker subnets `172.25.0.0/16`, `172.18.0.0/16`, and `192.168.13.1`
 
@@ -41,7 +37,6 @@ Automations use several recurring patterns:
 - **Presence-based**: Triggered by `input_boolean.presence_isabelle` / `input_boolean.presence_michel` state changes
 - **Humidity differential**: Compares bathroom vs external humidity (template sensor in `templates.yaml`); fan automation uses `restart` mode to prevent rapid retriggering
 - **Sequential climate control**: Scripts coordinate thermostat + ventilation with `delay` steps
-- **Shell commands**: EV station commands are curl calls defined in `configuration.yaml` under `shell_command:`
 - **Conditional actions**: `if/then/else` blocks used inside automation actions for complex logic
 
 ## Editing Guidelines

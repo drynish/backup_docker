@@ -195,7 +195,7 @@
   alias: 'Matin: Allumer prises cuisine et devant'
   description: ''
   triggers:
-  - at: '07:00:00'
+  - at: 07:00:00
     trigger: time
   conditions:
   - condition: state
@@ -418,16 +418,15 @@
   - trigger: time_pattern
     hours: /1
   conditions:
-  - condition: state
-    entity_id: sensor.type_collecte_aujourd_hui
-    state:
-    - Déchets
+  - condition: template
+    value_template: >
+      {{ state_attr('sensor.collecte', (now().date() + timedelta(days=1)).isoformat()) == 'Déchets' }}
   - condition: time
     after: '17:00:00'
-    before: '23:01:59'
+    before: '23:00:00'
   - condition: numeric_state
-    entity_id: sensor.cp28_8eb2_estimated_distance
-    below: 60
+    entity_id: sensor.distance_moyenne_dechets_1h
+    below: 50
   actions:
   - action: notify.notify
     metadata: {}
@@ -442,22 +441,61 @@
   - trigger: time_pattern
     hours: /1
   conditions:
-  - condition: state
-    state:
-    - Composte
-    entity_id: sensor.type_collecte_aujourd_hui
+  - condition: template
+    value_template: >
+      {{ state_attr('sensor.collecte', (now().date() + timedelta(days=1)).isoformat()) == 'Composte' }}
   - condition: time
     after: '17:00:00'
     before: '23:00:00'
   - condition: numeric_state
-    entity_id: sensor.cp27_55dd_estimated_distance
-    below: 60
+    entity_id: sensor.distance_moyenne_composte_1h
+    below: 50
   actions:
   - action: notify.notify
     metadata: {}
     data:
       message: Mettre Composte au chemin
       title: Composte
+  mode: single
+- id: '1772155570004'
+  alias: 'Hilo: Laveuse/sécheuse démarrée pendant un événement'
+  description: Éteint et notifie si la laveuse ou la sécheuse est allumée pendant un défi Hilo.
+  triggers:
+  - trigger: state
+    entity_id:
+    - switch.bebe_lave_power_2
+    - switch.bebe_seche_power_2
+    to: 'on'
+  conditions:
+  - condition: state
+    entity_id: sensor.defi_hilo
+    state: reduction
+  actions:
+  - action: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.bebe_lave_power
+      - switch.bebe_seche_power
+  - action: notify.notify
+    data:
+      title: Défi Hilo en cours
+      message: '{{ trigger.to_state.name }} a été éteinte automatiquement (événement
+        Hilo en cours).'
+  mode: single
+- id: '1772155570005'
+  alias: 'Hilo: Éteindre laveuse avant événement'
+  description: Éteint la prise de la laveuse ~2h avant un défi Hilo (état appreciation).
+  triggers:
+  - trigger: state
+    entity_id: sensor.defi_hilo
+    to: appreciation
+  conditions: []
+  actions:
+  - action: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.bebe_lave
   mode: single
 - id: '1765081003809'
   alias: 'Hilo: Événement terminé'
@@ -477,6 +515,14 @@
       entity_id:
       - climate.cuisine
       - climate.salle_commune_2
+  - action: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.bebe_lave
+  - action: button.press
+    data: {}
+    target:
+      entity_id: button.cph25_start_charging
   mode: single
 - id: '1765081176415'
   alias: 'Hilo: Événement en cours'
@@ -496,6 +542,10 @@
       entity_id:
       - climate.cuisine
       - climate.salle_commune_2
+  - action: button.press
+    data: {}
+    target:
+      entity_id: button.cph25_stop_charging
   mode: single
 - id: '1767727234245'
   alias: 'Calendrier: Recyclage'
@@ -504,16 +554,15 @@
   - trigger: time_pattern
     hours: /1
   conditions:
-  - condition: state
-    entity_id: sensor.type_collecte_aujourd_hui
-    state:
-    - Recyclage
+  - condition: template
+    value_template: >
+      {{ state_attr('sensor.collecte', (now().date() + timedelta(days=1)).isoformat()) == 'Recyclage' }}
   - condition: time
     after: '17:00:00'
     before: '23:00:00'
   - condition: numeric_state
-    entity_id: sensor.cp28_8e9e_estimated_distance
-    below: 60
+    entity_id: sensor.distance_moyenne_recyclage_1h
+    below: 50
   actions:
   - action: notify.notify
     metadata: {}
@@ -625,4 +674,204 @@
     data: {}
     target:
       entity_id: switch.salle_de_jeu_mur
+  mode: restart
+- id: '1742860000000'
+  alias: 'Entrée: Éteindre lumière après 30 minutes'
+  description: Éteint automatiquement la lumière de l'entrée 30 minutes après son
+    allumage.
+  triggers:
+  - trigger: state
+    entity_id: switch.lumiere_entree
+    to: 'on'
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 30
+      seconds: 0
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.lumiere_entree
+  mode: restart
+- id: '1772155570000'
+  alias: 'Cuisine/SAM: Éteindre lumières après 2h (jour ensoleillé)'
+  description: Éteint les lumières cuisine et salle à manger 2h après allumage si
+    la météo est ensoleillée et qu'il reste plus d'une heure avant le coucher du soleil.
+    En soirée ou la nuit, les lumières restent allumées jusqu'à extinction manuelle.
+  triggers:
+  - trigger: state
+    entity_id:
+    - light.cuisine
+    - light.salle_a_manger
+    to: 'on'
+  conditions: []
+  actions:
+  - delay:
+      hours: 2
+      minutes: 0
+      seconds: 0
+  - if:
+    - condition: sun
+      after: sunrise
+      before: sunset
+      before_offset: -01:00:00
+    - condition: state
+      entity_id: weather.maison
+      state:
+      - sunny
+      - partlycloudy
+    then:
+    - action: light.turn_off
+      data: {}
+      target:
+        entity_id:
+        - light.cuisine
+        - light.salle_a_manger
+  mode: restart
+- id: '1772155570001'
+  alias: 'Porte avant: Alerte non verrouillée à 22h'
+  description: Envoie une notification si la porte avant n'est pas verrouillée à 22h00.
+  triggers:
+  - trigger: time
+    at: '22:00:00'
+  conditions:
+  - condition: state
+    entity_id: lock.porte_avant
+    state: unlocked
+  actions:
+  - action: notify.notify
+    data:
+      title: Sécurité
+      message: La porte avant n'est pas verrouillée.
+  mode: single
+- id: '1772155570002'
+  alias: 'Rangement: Éteindre lumière pendant cycle laveuse/sécheuse'
+  description: Éteint la lumière du rangement 5 minutes après le démarrage de la laveuse
+    ou de la sécheuse.
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.bebe_lave_run_state
+    - sensor.bebe_seche_run_state
+    not_to:
+    - Finished
+    - Cycle Finished
+    - Standby
+    - '-'
+    - 'off'
+    - unavailable
+    - unknown
+    for:
+      minutes: 5
+  conditions: []
+  actions:
+  - action: light.turn_off
+    data: {}
+    target:
+      entity_id: light.rangement
+  mode: single
+- id: '1772155570003'
+  alias: 'Rangement: Rallumer lumière fin de cycle laveuse/sécheuse'
+  description: Rallume la lumière du rangement dès qu'une des deux machines termine
+    son cycle.
+  triggers:
+  - trigger: state
+    entity_id: sensor.bebe_lave_run_state
+    to:
+    - Finished
+    - '-'
+  - trigger: state
+    entity_id: sensor.bebe_seche_run_state
+    to:
+    - Cycle Finished
+    - Standby
+    - '-'
+  conditions: []
+  actions:
+  - action: light.turn_on
+    data: {}
+    target:
+      entity_id: light.rangement
+  mode: single
+- id: '1742860001000'
+  alias: 'Salle de bain: Éteindre lumière après 1 heure'
+  description: Éteint automatiquement la lumière de la salle de bain 1 heure après
+    son allumage.
+  triggers:
+  - trigger: state
+    entity_id: light.lumiere_salle_de_bain
+    to: 'on'
+  conditions: []
+  actions:
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.lumiere_salle_de_bain
+  mode: restart
+
+- id: 'adaptive_lighting_disable_isabelle'
+  alias: 'Adaptive Lighting: Désactiver quand Isabelle est présente'
+  description: 'Désactive le tamis automatique des lumières quand Isabelle est à la maison'
+  triggers:
+  - trigger: state
+    entity_id: input_boolean.presence_isabelle
+    to: 'on'
+  conditions: []
+  actions:
+  - action: switch.turn_off
+    target:
+      entity_id: switch.adaptive_lighting_principal
+  mode: single
+
+- id: 'adaptive_lighting_enable_isabelle'
+  alias: 'Adaptive Lighting: Réactiver quand Isabelle part'
+  description: 'Réactive le tamis automatique des lumières quand Isabelle quitte la maison'
+  triggers:
+  - trigger: state
+    entity_id: input_boolean.presence_isabelle
+    to: 'off'
+  conditions: []
+  actions:
+  - action: switch.turn_on
+    target:
+      entity_id: switch.adaptive_lighting_principal
+  mode: single
+
+- id: 'adaptive_lighting_reapply_on_turn_on'
+  alias: 'Adaptive Lighting: Réappliquer au rallumage physique'
+  description: "Réapplique la luminosité circadienne quand une lumière s'allume via l'interrupteur physique"
+  triggers:
+  - trigger: state
+    entity_id:
+      - light.cuisine
+      - light.salle_a_manger
+      - light.lumiere_salle_de_bain
+      - light.lumiere_chambre
+    from: 'off'
+    to: 'on'
+  conditions:
+  - condition: state
+    entity_id: switch.adaptive_lighting_principal
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.presence_isabelle
+    state: 'off'
+  actions:
+  - delay: '00:00:02'
+  - action: adaptive_lighting.apply
+    data:
+      lights:
+        - "{{ trigger.entity_id }}"
+      adapt_brightness: true
+      adapt_color: true
+      turn_on_lights: false
+    target:
+      entity_id: switch.adaptive_lighting_principal
   mode: restart

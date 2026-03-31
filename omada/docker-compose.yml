@@ -3,7 +3,7 @@ version: "3.7"
 services:
   omada-controller:
     container_name: omada-controller
-    image: mbentley/omada-controller:beta-chromium
+    image: mbentley/omada-controller:latest
     restart: unless-stopped
     ulimits:
       nofile:

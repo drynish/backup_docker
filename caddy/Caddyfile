@@ -3,7 +3,7 @@
 }
 
 adguard.drynish.synology.me {
-    @internal remote_ip 192.168.90.0/24 192.168.13.0/24
+    @internal remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
     handle @internal {
         reverse_proxy adguardhome:88
     }
@@ -28,17 +28,26 @@ bazarr.drynish.synology.me {
 cours.drynish.synology.me {
 	reverse_proxy 10.88.88.4:3000
 }
+wol.drynish.synology.me {
+    @notLan {
+        not remote_ip 192.168.90.0/24 192.168.200.0/24 192.168.130.0/24 10.88.88.0/24
+    }
 
-logan.drynish.synology.me {
+    route @notLan {
+        forward_auth authelia:9091 {
+            uri /api/verify?rd=https://auth.drynish.synology.me
+            copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+        }
+    }
+
     @rootPath {
         path /
     }
-
     redir @rootPath /api/wakeup/computer/Windows
+
+
     reverse_proxy 192.168.90.3:4000
-
 }
-
 conservervotrepermis.ca {
 	reverse_proxy isabelle:80
 	tls {
@@ -111,7 +120,7 @@ homeassistant.drynish.synology.me {
 }
 
 omada.drynish.synology.me {
-  @local remote_ip 192.168.90.0/24 192.168.13.0/24
+  @local remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32 10.88.88.2/32
 
   handle @local {
     reverse_proxy https://omada-controller:8043 {
@@ -169,7 +178,7 @@ plex.dicroci.website {
 }
 
 portainer.drynish.synology.me {
-  @local remote_ip 192.168.90.0/24 192.168.13.0/24
+  @local remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
 
   handle @local {
     reverse_proxy 10.88.88.2:9000
@@ -208,7 +217,7 @@ wiki.dicroci.website {
 
 doc.drynish.synology.me {
     @internal {
-        remote_ip 192.168.90.0/24 192.168.13.0/24 70.55.121.27/32
+        remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32 70.55.121.27/32
     }
     handle @internal {
      reverse_proxy wikijs:3000
@@ -218,10 +227,15 @@ doc.drynish.synology.me {
 
 zigbee.drynish.synology.me {
     @internal {
-        remote_ip 192.168.90.0/24 192.168.13.0/24
+        remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
     }
     handle @internal {
         reverse_proxy zigbee2mqtt:8080
     }
+    respond 403
+}
+
+:443 {
+    tls internal
     respond 403
 }
