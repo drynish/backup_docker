@@ -43,6 +43,14 @@ sensor:
           - states('sensor.grizzl_e_powermeas') | float(0)
           - states('sensor.cph25_energy_output') | float(0), 0] | max | round(0) }}
 
+  - name: "Grizzl-E Énergie session"
+    unique_id: "grizzl_e_energie_session"
+    unit_of_measurement: "kWh"
+    device_class: energy
+    state_class: total
+    state: >
+      {{ states('sensor.grizzl_e_sessionenergy') | float(0) | round(0) | int }}
+
   - name: "CPH25 Autonomie ajoutée"
     unique_id: "cph25_autonomie_ajoutee"
     unit_of_measurement: "km"
