@@ -32,3 +32,18 @@ sensor:
     unique_id: "diff_humidity"
     state: >
       {{ (states('sensor.detecteur_temperature_et_humidite_sdb_humidity') | float(0) - states('sensor.detecteur_temperature_et_humidite_cuisine_humidity') | float(0)) | round(2) }}
+
+switch:
+  - name: grizzle_charge
+    state: "{{ is_state('binary_sensor.grizzl_e_evseenabled', 'off') }}"
+    turn_on:
+      action: rest_command.grizzle_charge_enable
+    turn_off:
+      action: rest_command.grizzle_charge_disable
+
+  - name: grizzle_ocpp
+    state: "{{ is_state('binary_sensor.grizzl_e_ocppenabled', 'on') }}"
+    turn_on:
+      action: rest_command.grizzle_ocpp_enable
+    turn_off:
+      action: rest_command.grizzle_ocpp_disable

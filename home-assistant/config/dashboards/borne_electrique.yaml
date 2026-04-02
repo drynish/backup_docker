@@ -1,0 +1,71 @@
+title: Borne électrique
+views:
+  - title: Borne
+    path: borne
+    icon: mdi:ev-station
+    cards:
+
+      - type: entities
+        title: Statut
+        entities:
+          - entity: sensor.grizzl_e_state
+            name: État
+          - entity: sensor.grizzl_e_substate
+            name: Sous-état
+          - entity: binary_sensor.grizzl_e_evseenabled
+            name: Charge activée
+          - entity: binary_sensor.grizzl_e_sessionstarted
+            name: Session en cours
+
+      - type: glance
+        title: Session en cours
+        columns: 3
+        entities:
+          - entity: sensor.grizzl_e_powermeas
+            name: Puissance
+          - entity: sensor.grizzl_e_sessionenergy
+            name: Énergie
+          - entity: sensor.grizzl_e_sessiontime
+            name: Durée
+
+      - type: entities
+        title: Mesures électriques
+        entities:
+          - entity: sensor.grizzl_e_voltmeas1
+            name: Tension L1
+          - entity: sensor.grizzl_e_voltmeas2
+            name: Tension L2
+          - entity: sensor.grizzl_e_curmeas1
+            name: Courant L1
+          - entity: sensor.grizzl_e_curmeas2
+            name: Courant L2
+          - entity: sensor.grizzl_e_currentset
+            name: Courant configuré
+
+      - type: statistic
+        entity: sensor.grizzl_e_totalenergy
+        name: Énergie totale ce mois
+        stat_type: sum
+        period:
+          calendar:
+            period: month
+
+      - type: entities
+        title: Contrôles
+        entities:
+          - type: button
+            name: Activer la charge
+            icon: mdi:power-plug
+            action_name: Activer
+            tap_action:
+              action: perform-action
+              perform_action: rest_command.grizzle_charge_enable
+              data: {}
+          - type: button
+            name: Désactiver la charge
+            icon: mdi:power-plug-off
+            action_name: Désactiver
+            tap_action:
+              action: perform-action
+              perform_action: rest_command.grizzle_charge_disable
+              data: {}

@@ -1,5 +1,15 @@
 counter:
 default_config:
+
+lovelace:
+  dashboards:
+    borne-electrique:
+      mode: yaml
+      title: Borne électrique
+      icon: mdi:ev-station
+      show_in_sidebar: true
+      filename: dashboards/borne_electrique.yaml
+
 input_button:
 input_boolean:
 input_datetime:
@@ -12,6 +22,8 @@ utility_meter:
 group: !include groups.yaml
 automation: !include automations.yaml
 template: !include templates.yaml
+rest: !include rest_grizzle.yaml
+rest_command: !include rest_command_grizzle.yaml
 
 http:
   use_x_forwarded_for: true
