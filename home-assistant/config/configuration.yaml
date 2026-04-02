@@ -35,6 +35,14 @@ http:
     - 172.18.0.0/16
 
 sensor:
+  - platform: integration
+    source: sensor.meter00_power
+    name: Énergie compteur principal
+    unique_id: energie_compteur_principal
+    unit_prefix: k
+    round: 2
+    method: trapezoid
+
   - platform: time_date
     display_options:
     - 'time'
