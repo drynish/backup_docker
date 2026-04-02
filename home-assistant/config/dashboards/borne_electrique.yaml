@@ -155,10 +155,10 @@ views:
         entities:
           - entity: number.cph25_charging_amperage_limit
             name: Limite d'ampérage
-          - entity: sensor.cph25_miles_hour_added
-            name: km/h ajoutés
-          - entity: sensor.cph25_miles_added
-            name: km ajoutés
+          - entity: sensor.cph25_autonomie_ajoutee_par_heure
+            name: Autonomie ajoutée/h
+          - entity: sensor.cph25_autonomie_ajoutee
+            name: Autonomie ajoutée
           - entity: sensor.cph25_charge_cost
             name: Coût de session
           - entity: number.cph25_led_brightness

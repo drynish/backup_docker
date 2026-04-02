@@ -43,6 +43,19 @@ sensor:
           - states('sensor.grizzl_e_powermeas') | float(0)
           - states('sensor.cph25_energy_output') | float(0), 0] | max | round(0) }}
 
+  - name: "CPH25 Autonomie ajoutée"
+    unique_id: "cph25_autonomie_ajoutee"
+    unit_of_measurement: "km"
+    device_class: distance
+    state: >
+      {{ (states('sensor.cph25_miles_added') | float(0) * 1.60934) | round(1) }}
+
+  - name: "CPH25 Autonomie ajoutée par heure"
+    unique_id: "cph25_autonomie_ajoutee_par_heure"
+    unit_of_measurement: "km/h"
+    state: >
+      {{ (states('sensor.cph25_miles_hour_added') | float(0) * 1.60934) | round(1) }}
+
 switch:
   - name: grizzle_charge
     state: "{{ is_state('binary_sensor.grizzl_e_evseenabled', 'off') }}"
