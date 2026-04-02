@@ -1043,7 +1043,7 @@
   triggers:
   - trigger: numeric_state
     entity_id: sensor.consommation_sans_bornes_et_hilo
-    above: 3000
+    above: 5000
     for:
       minutes: 2
   conditions:
