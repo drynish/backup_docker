@@ -41,7 +41,7 @@ sensor:
     unique_id: energie_compteur_principal
     unit_prefix: k
     round: 2
-    method: trapezoid
+    method: trapezoidal
 
   - platform: time_date
     display_options:
