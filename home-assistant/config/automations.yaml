@@ -419,8 +419,10 @@
     hours: /1
   conditions:
   - condition: template
-    value_template: >
-      {{ state_attr('sensor.collecte', (now().date() + timedelta(days=1)).isoformat()) == 'Déchets' }}
+    value_template: '{{ state_attr(''sensor.collecte'', (now().date() + timedelta(days=1)).isoformat())
+      == ''Déchets'' }}
+
+      '
   - condition: time
     after: '17:00:00'
     before: '23:00:00'
@@ -442,8 +444,10 @@
     hours: /1
   conditions:
   - condition: template
-    value_template: >
-      {{ state_attr('sensor.collecte', (now().date() + timedelta(days=1)).isoformat()) == 'Composte' }}
+    value_template: '{{ state_attr(''sensor.collecte'', (now().date() + timedelta(days=1)).isoformat())
+      == ''Composte'' }}
+
+      '
   - condition: time
     after: '17:00:00'
     before: '23:00:00'
@@ -459,7 +463,8 @@
   mode: single
 - id: '1772155570004'
   alias: 'Hilo: Laveuse/sécheuse démarrée pendant un événement'
-  description: Éteint et notifie si la laveuse ou la sécheuse est allumée pendant un défi Hilo.
+  description: Éteint et notifie si la laveuse ou la sécheuse est allumée pendant
+    un défi Hilo.
   triggers:
   - trigger: state
     entity_id:
@@ -555,8 +560,10 @@
     hours: /1
   conditions:
   - condition: template
-    value_template: >
-      {{ state_attr('sensor.collecte', (now().date() + timedelta(days=1)).isoformat()) == 'Recyclage' }}
+    value_template: '{{ state_attr(''sensor.collecte'', (now().date() + timedelta(days=1)).isoformat())
+      == ''Recyclage'' }}
+
+      '
   - condition: time
     after: '17:00:00'
     before: '23:00:00'
@@ -815,10 +822,37 @@
     target:
       entity_id: light.lumiere_salle_de_bain
   mode: restart
-
-- id: 'adaptive_lighting_disable_isabelle'
+- id: grizzle_charge_complete_notify_michel
+  alias: 'Grizzl-E: Notifier Michel — Charge terminée'
+  description: Envoie une notification à Michel quand le chargement est terminé et
+    qu'Isabelle est à la maison.
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.grizzl_e_powermeas
+    below: 1000
+    for:
+      minutes: 3
+  conditions:
+  - condition: state
+    entity_id: input_boolean.presence_isabelle
+    state: 'on'
+  - condition: numeric_state
+    entity_id: sensor.grizzl_e_sessionenergy
+    above: 0
+  actions:
+  - action: notify.mobile_app_michels_iphone
+    data:
+      title: Borne électrique
+      message: >-
+        Chargement terminé ! {{ states('sensor.grizzl_e_sessionenergy') }} kWh livrés en
+        {% set t = states('sensor.grizzl_e_sessiontime') | int %}
+        {% set h = t // 3600 %}{% set m = (t % 3600) // 60 %}{% set s = t % 60 %}
+        {% if h > 0 %}{{ h }}h {% endif %}{{ m }}m {{ s }}s.
+  mode: single
+- id: adaptive_lighting_disable_isabelle
   alias: 'Adaptive Lighting: Désactiver quand Isabelle est présente'
-  description: 'Désactive le tamis automatique des lumières quand Isabelle est à la maison'
+  description: Désactive le tamis automatique des lumières quand Isabelle est à la
+    maison
   triggers:
   - trigger: state
     entity_id: input_boolean.presence_isabelle
@@ -829,10 +863,10 @@
     target:
       entity_id: switch.adaptive_lighting_principal
   mode: single
-
-- id: 'adaptive_lighting_enable_isabelle'
+- id: adaptive_lighting_enable_isabelle
   alias: 'Adaptive Lighting: Réactiver quand Isabelle part'
-  description: 'Réactive le tamis automatique des lumières quand Isabelle quitte la maison'
+  description: Réactive le tamis automatique des lumières quand Isabelle quitte la
+    maison
   triggers:
   - trigger: state
     entity_id: input_boolean.presence_isabelle
@@ -843,17 +877,12 @@
     target:
       entity_id: switch.adaptive_lighting_principal
   mode: single
-
-- id: 'adaptive_lighting_reapply_on_turn_on'
-  alias: 'Adaptive Lighting: Réappliquer au rallumage physique'
-  description: "Réapplique la luminosité circadienne quand une lumière s'allume via l'interrupteur physique"
+- id: adaptive_lighting_reapply_cuisine
+  alias: 'Adaptive Lighting: Réappliquer — Cuisine'
+  description: Réapplique la luminosité circadienne quand la lumière cuisine s'allume
   triggers:
   - trigger: state
-    entity_id:
-      - light.cuisine
-      - light.salle_a_manger
-      - light.lumiere_salle_de_bain
-      - light.lumiere_chambre
+    entity_id: light.cuisine
     from: 'off'
     to: 'on'
   conditions:
@@ -864,11 +893,122 @@
     entity_id: input_boolean.presence_isabelle
     state: 'off'
   actions:
-  - delay: '00:00:02'
+  - delay: 00:00:03
+  - action: adaptive_lighting.set_manual_control
+    data:
+      lights:
+      - light.cuisine
+      manual_control: false
+    target:
+      entity_id: switch.adaptive_lighting_principal
   - action: adaptive_lighting.apply
     data:
       lights:
-        - "{{ trigger.entity_id }}"
+      - light.cuisine
+      adapt_brightness: true
+      adapt_color: true
+      turn_on_lights: false
+    target:
+      entity_id: switch.adaptive_lighting_principal
+  mode: restart
+- id: adaptive_lighting_reapply_salle_a_manger
+  alias: 'Adaptive Lighting: Réappliquer — Salle à manger'
+  description: Réapplique la luminosité circadienne quand la lumière salle à manger
+    s'allume
+  triggers:
+  - trigger: state
+    entity_id: light.salle_a_manger
+    from: 'off'
+    to: 'on'
+  conditions:
+  - condition: state
+    entity_id: switch.adaptive_lighting_principal
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.presence_isabelle
+    state: 'off'
+  actions:
+  - delay: 00:00:03
+  - action: adaptive_lighting.set_manual_control
+    data:
+      lights:
+      - light.salle_a_manger
+      manual_control: false
+    target:
+      entity_id: switch.adaptive_lighting_principal
+  - action: adaptive_lighting.apply
+    data:
+      lights:
+      - light.salle_a_manger
+      adapt_brightness: true
+      adapt_color: true
+      turn_on_lights: false
+    target:
+      entity_id: switch.adaptive_lighting_principal
+  mode: restart
+- id: adaptive_lighting_reapply_salle_de_bain
+  alias: 'Adaptive Lighting: Réappliquer — Salle de bain'
+  description: Réapplique la luminosité circadienne quand la lumière salle de bain
+    s'allume
+  triggers:
+  - trigger: state
+    entity_id: light.lumiere_salle_de_bain
+    from: 'off'
+    to: 'on'
+  conditions:
+  - condition: state
+    entity_id: switch.adaptive_lighting_principal
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.presence_isabelle
+    state: 'off'
+  actions:
+  - delay: 00:00:03
+  - action: adaptive_lighting.set_manual_control
+    data:
+      lights:
+      - light.lumiere_salle_de_bain
+      manual_control: false
+    target:
+      entity_id: switch.adaptive_lighting_principal
+  - action: adaptive_lighting.apply
+    data:
+      lights:
+      - light.lumiere_salle_de_bain
+      adapt_brightness: true
+      adapt_color: true
+      turn_on_lights: false
+    target:
+      entity_id: switch.adaptive_lighting_principal
+  mode: restart
+- id: adaptive_lighting_reapply_chambre
+  alias: 'Adaptive Lighting: Réappliquer — Chambre'
+  description: Réapplique la luminosité circadienne quand la lumière chambre s'allume
+  triggers:
+  - trigger: state
+    entity_id: light.lumiere_chambre
+    from: 'off'
+    to: 'on'
+  conditions:
+  - condition: state
+    entity_id: switch.adaptive_lighting_principal
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.presence_isabelle
+    state: 'off'
+  actions:
+  - delay: 00:00:03
+  - action: adaptive_lighting.set_manual_control
+    data:
+      lights:
+      - light.lumiere_chambre
+      manual_control: false
+    target:
+      entity_id: switch.adaptive_lighting_principal
+  - action: adaptive_lighting.apply
+    data:
+      lights:
+      - light.lumiere_chambre
       adapt_brightness: true
       adapt_color: true
       turn_on_lights: false
