@@ -132,7 +132,7 @@ views:
             name: État
           - entity: sensor.cph25_charging_status
             name: Statut charge
-          - entity: binary_sensor.cph25_charging_cable
+          - entity: sensor.cph25_charging_cable
             name: Câble branché
           - entity: sensor.cph25_network
             name: Réseau
@@ -153,7 +153,7 @@ views:
       - type: entities
         title: Mesures & Paramètres
         entities:
-          - entity: number.cph25_charging_amperage_limit
+          - entity: select.cph25_charging_amperage_limit
             name: Limite d'ampérage
           - entity: sensor.cph25_autonomie_ajoutee_par_heure
             name: Autonomie ajoutée/h
