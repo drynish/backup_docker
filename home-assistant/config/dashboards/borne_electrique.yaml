@@ -61,14 +61,21 @@ views:
             name: Session active
           - entity: binary_sensor.grizzl_e_evseenabled
             name: Charge activée
-          - type: divider
-          - entity: switch.grizzle_charge
-            name: Contrôle charge
-          - entity: switch.grizzle_ocpp
+          - entity: binary_sensor.grizzl_e_ocppenabled
             name: OCPP
 
       - type: entities
-        title: Mesures électriques
+        title: Contrôles
+        entities:
+          - entity: switch.grizzle_charge
+            name: Activer / Désactiver la charge
+            icon: mdi:power-plug
+          - entity: switch.grizzle_ocpp
+            name: Activer / Désactiver OCPP
+            icon: mdi:cloud-sync
+
+      - type: entities
+        title: Mesures & Paramètres
         entities:
           - entity: sensor.grizzl_e_voltmeas1
             name: Tension L1
@@ -87,7 +94,7 @@ views:
 
       - type: statistic
         entity: sensor.grizzl_e_totalenergy
-        name: Énergie totale ce mois
+        name: Énergie ce mois
         stat_type: sum
         period:
           calendar:
@@ -109,7 +116,7 @@ views:
     cards:
       - type: glance
         title: Session en cours
-        columns: 2
+        columns: 3
         entities:
           - entity: sensor.cph25_power_output
             name: Puissance
@@ -117,8 +124,6 @@ views:
             name: Énergie livrée
           - entity: sensor.cph25_charging_time
             name: Durée
-          - entity: sensor.cph25_charge_cost
-            name: Coût
 
       - type: entities
         title: État de la borne
@@ -146,12 +151,26 @@ views:
             icon: mdi:restart
 
       - type: entities
-        title: Paramètres
+        title: Mesures & Paramètres
         entities:
           - entity: number.cph25_charging_amperage_limit
             name: Limite d'ampérage
+          - entity: sensor.cph25_miles_hour_added
+            name: km/h ajoutés
+          - entity: sensor.cph25_miles_added
+            name: km ajoutés
+          - entity: sensor.cph25_charge_cost
+            name: Coût de session
           - entity: number.cph25_led_brightness
             name: Luminosité LED
+
+      - type: statistic
+        entity: sensor.cph25_energy_output
+        name: Énergie ce mois
+        stat_type: sum
+        period:
+          calendar:
+            period: month
 
       - type: history-graph
         title: Puissance — dernières 24 h
