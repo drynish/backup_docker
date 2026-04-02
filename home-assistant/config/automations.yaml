@@ -1015,3 +1015,23 @@
     target:
       entity_id: switch.adaptive_lighting_principal
   mode: restart
+- id: alerte_consommation_electrique_elevee
+  alias: 'Énergie: Alerte consommation élevée (hors bornes)'
+  description: >-
+    Envoie une notification à tous quand la consommation électrique nette
+    (hors bornes de recharge) dépasse 10 kW pendant au moins 5 minutes.
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.consommation_hors_bornes
+    above: 10000
+    for:
+      minutes: 5
+  actions:
+  - action: notify.notify
+    data:
+      title: "Alerte — Consommation électrique élevée"
+      message: >-
+        La consommation électrique (hors bornes) est de
+        {{ (states('sensor.consommation_hors_bornes') | float(0) / 1000) | round(1) }} kW.
+        Total compteur : {{ (states('sensor.meter00_power') | float(0) / 1000) | round(1) }} kW.
+  mode: single
