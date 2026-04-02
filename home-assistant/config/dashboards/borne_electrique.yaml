@@ -1,22 +1,44 @@
-title: Borne électrique
+title: Bornes électriques
 views:
-  - title: Borne
-    path: borne
+
+  # ─────────────────────────────────────────
+  # Vue d'ensemble — consommation globale
+  # ─────────────────────────────────────────
+  - title: Vue d'ensemble
+    path: overview
+    icon: mdi:lightning-bolt
+    cards:
+      - type: glance
+        title: Consommation électrique
+        columns: 3
+        entities:
+          - entity: sensor.meter00_power
+            name: Total compteur
+          - entity: sensor.consommation_hors_bornes
+            name: Hors bornes
+          - entity: sensor.grizzl_e_powermeas
+            name: Grizzl-E
+          - entity: sensor.cph25_power_output
+            name: ChargePoint
+
+      - type: history-graph
+        title: Puissance — dernières 24 h
+        hours_to_show: 24
+        entities:
+          - entity: sensor.consommation_hors_bornes
+            name: Hors bornes
+          - entity: sensor.grizzl_e_powermeas
+            name: Grizzl-E
+          - entity: sensor.cph25_power_output
+            name: ChargePoint
+
+  # ─────────────────────────────────────────
+  # Grizzl-E
+  # ─────────────────────────────────────────
+  - title: Grizzl-E
+    path: grizzl-e
     icon: mdi:ev-station
     cards:
-
-      - type: entities
-        title: Statut
-        entities:
-          - entity: sensor.grizzl_e_state
-            name: État
-          - entity: sensor.grizzl_e_substate
-            name: Sous-état
-          - entity: binary_sensor.grizzl_e_evseenabled
-            name: Charge activée
-          - entity: binary_sensor.grizzl_e_sessionstarted
-            name: Session en cours
-
       - type: glance
         title: Session en cours
         columns: 3
@@ -24,9 +46,26 @@ views:
           - entity: sensor.grizzl_e_powermeas
             name: Puissance
           - entity: sensor.grizzl_e_sessionenergy
-            name: Énergie
+            name: Énergie livrée
           - entity: sensor.grizzl_e_sessiontime
             name: Durée
+
+      - type: entities
+        title: État de la borne
+        entities:
+          - entity: sensor.grizzl_e_state
+            name: État
+          - entity: sensor.grizzl_e_substate
+            name: Sous-état
+          - entity: binary_sensor.grizzl_e_sessionstarted
+            name: Session active
+          - entity: binary_sensor.grizzl_e_evseenabled
+            name: Charge activée
+          - type: divider
+          - entity: switch.grizzle_charge
+            name: Contrôle charge
+          - entity: switch.grizzle_ocpp
+            name: OCPP
 
       - type: entities
         title: Mesures électriques
@@ -35,10 +74,14 @@ views:
             name: Tension L1
           - entity: sensor.grizzl_e_voltmeas2
             name: Tension L2
+          - entity: sensor.grizzl_e_voltmeas3
+            name: Tension L3
           - entity: sensor.grizzl_e_curmeas1
             name: Courant L1
           - entity: sensor.grizzl_e_curmeas2
             name: Courant L2
+          - entity: sensor.grizzl_e_curmeas3
+            name: Courant L3
           - entity: sensor.grizzl_e_currentset
             name: Courant configuré
 
@@ -50,22 +93,69 @@ views:
           calendar:
             period: month
 
+      - type: history-graph
+        title: Puissance — dernières 24 h
+        hours_to_show: 24
+        entities:
+          - entity: sensor.grizzl_e_powermeas
+            name: Puissance
+
+  # ─────────────────────────────────────────
+  # ChargePoint CPH25
+  # ─────────────────────────────────────────
+  - title: ChargePoint
+    path: chargepoint
+    icon: mdi:car-electric
+    cards:
+      - type: glance
+        title: Session en cours
+        columns: 2
+        entities:
+          - entity: sensor.cph25_power_output
+            name: Puissance
+          - entity: sensor.cph25_energy_output
+            name: Énergie livrée
+          - entity: sensor.cph25_charging_time
+            name: Durée
+          - entity: sensor.cph25_charge_cost
+            name: Coût
+
+      - type: entities
+        title: État de la borne
+        entities:
+          - entity: sensor.cph25_charger_state
+            name: État
+          - entity: sensor.cph25_charging_status
+            name: Statut charge
+          - entity: binary_sensor.cph25_charging_cable
+            name: Câble branché
+          - entity: sensor.cph25_network
+            name: Réseau
+
       - type: entities
         title: Contrôles
         entities:
-          - type: button
-            name: Activer la charge
-            icon: mdi:power-plug
-            action_name: Activer
-            tap_action:
-              action: perform-action
-              perform_action: rest_command.grizzle_charge_enable
-              data: {}
-          - type: button
-            name: Désactiver la charge
-            icon: mdi:power-plug-off
-            action_name: Désactiver
-            tap_action:
-              action: perform-action
-              perform_action: rest_command.grizzle_charge_disable
-              data: {}
+          - entity: button.cph25_start_charging
+            name: Démarrer la charge
+            icon: mdi:play-circle
+          - entity: button.cph25_stop_charging
+            name: Arrêter la charge
+            icon: mdi:stop-circle
+          - entity: button.cph25_restart_charger
+            name: Redémarrer la borne
+            icon: mdi:restart
+
+      - type: entities
+        title: Paramètres
+        entities:
+          - entity: number.cph25_charging_amperage_limit
+            name: Limite d'ampérage
+          - entity: number.cph25_led_brightness
+            name: Luminosité LED
+
+      - type: history-graph
+        title: Puissance — dernières 24 h
+        hours_to_show: 24
+        entities:
+          - entity: sensor.cph25_power_output
+            name: Puissance
