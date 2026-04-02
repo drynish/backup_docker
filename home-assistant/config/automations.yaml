@@ -1022,8 +1022,8 @@
     (hors bornes de recharge) dépasse 10 kW pendant au moins 5 minutes.
   triggers:
   - trigger: numeric_state
-    entity_id: sensor.consommation_hors_bornes
-    above: 10000
+    entity_id: sensor.consommation_sans_bornes_et_hilo
+    above: 5000
     for:
       minutes: 5
   actions:
@@ -1032,6 +1032,35 @@
       title: "Alerte — Consommation électrique élevée"
       message: >-
         La consommation électrique (hors bornes) est de
-        {{ (states('sensor.consommation_hors_bornes') | float(0) / 1000) | round(1) }} kW.
+        {{ (states('sensor.consommation_sans_bornes_et_hilo') | float(0) / 1000) | round(1) }} kW.
         Total compteur : {{ (states('sensor.meter00_power') | float(0) / 1000) | round(1) }} kW.
+  mode: single
+- id: alerte_consommation_electrique_defi_hilo
+  alias: 'Hilo: Alerte consommation élevée pendant un événement'
+  description: >-
+    Envoie une notification urgente si la consommation (hors bornes et chauffage)
+    dépasse 3 kW pendant un défi Hilo (état reduction).
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.consommation_sans_bornes_et_hilo
+    above: 3000
+    for:
+      minutes: 2
+  conditions:
+  - condition: state
+    entity_id: sensor.defi_hilo
+    state: reduction
+  actions:
+  - action: notify.notify
+    data:
+      title: "⚠️ Défi Hilo — Consommation trop élevée"
+      message: >-
+        La consommation (hors bornes et chauffage) est de
+        {{ (states('sensor.consommation_sans_bornes_et_hilo') | float(0) / 1000) | round(1) }} kW
+        pendant un événement Hilo. Éteins des appareils !
+      data:
+        push:
+          interruption-level: critical
+        ttl: 0
+        priority: high
   mode: single

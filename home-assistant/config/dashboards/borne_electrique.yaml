@@ -14,7 +14,7 @@ views:
         entities:
           - entity: sensor.meter00_power
             name: Total compteur
-          - entity: sensor.consommation_hors_bornes
+          - entity: sensor.consommation_sans_bornes_et_hilo
             name: Hors bornes
           - entity: sensor.grizzl_e_powermeas
             name: Grizzl-E
@@ -25,7 +25,7 @@ views:
         title: Puissance — dernières 24 h
         hours_to_show: 24
         entities:
-          - entity: sensor.consommation_hors_bornes
+          - entity: sensor.consommation_sans_bornes_et_hilo
             name: Hors bornes
           - entity: sensor.grizzl_e_powermeas
             name: Grizzl-E
