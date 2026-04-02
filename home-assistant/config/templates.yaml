@@ -51,6 +51,19 @@ sensor:
     state: >
       {{ states('sensor.grizzl_e_sessionenergy') | float(0) | round(0) | int }}
 
+  - name: "Grizzl-E Durée session"
+    unique_id: "grizzl_e_duree_session"
+    state: >
+      {% set t = states('sensor.grizzl_e_sessiontime') | int(0) %}
+      {% set j = t // 86400 %}
+      {% set h = (t % 86400) // 3600 %}
+      {% set m = (t % 3600) // 60 %}
+      {% set s = t % 60 %}
+      {% if j > 0 %}{{ j }}j {{ h }}h {{ m }}m {{ s }}s
+      {% elif h > 0 %}{{ h }}h {{ m }}m {{ s }}s
+      {% elif m > 0 %}{{ m }}m {{ s }}s
+      {% else %}{{ s }}s{% endif %}
+
   - name: "CPH25 Autonomie ajoutée"
     unique_id: "cph25_autonomie_ajoutee"
     unit_of_measurement: "km"

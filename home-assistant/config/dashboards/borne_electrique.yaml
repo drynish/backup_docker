@@ -47,7 +47,7 @@ views:
             name: Puissance
           - entity: sensor.grizzl_e_energie_session
             name: Énergie livrée
-          - entity: sensor.grizzl_e_sessiontime
+          - entity: sensor.grizzl_e_duree_session
             name: Durée
 
       - type: entities
