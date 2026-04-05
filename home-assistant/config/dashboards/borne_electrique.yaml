@@ -25,11 +25,11 @@ views:
         title: Puissance — dernières 24 h
         hours_to_show: 24
         entities:
-          - entity: sensor.consommation_sans_bornes_et_hilo
+          - entity: sensor.consommation_hors_bornes
             name: Hors bornes
           - entity: sensor.grizzl_e_powermeas
             name: Grizzl-E
-          - entity: sensor.cph25_power_output
+          - entity: sensor.cph25_puissance_w
             name: ChargePoint
 
   # ─────────────────────────────────────────

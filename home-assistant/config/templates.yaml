@@ -33,6 +33,24 @@ sensor:
     state: >
       {{ (states('sensor.detecteur_temperature_et_humidite_sdb_humidity') | float(0) - states('sensor.detecteur_temperature_et_humidite_cuisine_humidity') | float(0)) | round(2) }}
 
+  - name: "ChargePoint Puissance"
+    unique_id: "cph25_puissance_w"
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    state: >
+      {{ (states('sensor.cph25_power_output') | float(0) * 1000) | round(0) | int }}
+
+  - name: "Consommation hors bornes"
+    unique_id: "consommation_hors_bornes"
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    state: >
+      {{ [states('sensor.meter00_power') | float(0)
+          - states('sensor.grizzl_e_powermeas') | float(0)
+          - (states('sensor.cph25_power_output') | float(0) * 1000), 0] | max | round(0) | int }}
+
   - name: "Consommation sans bornes et Hilo"
     unique_id: "consommation_sans_bornes_et_hilo"
     unit_of_measurement: "W"
