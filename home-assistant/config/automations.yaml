@@ -794,7 +794,7 @@
     to: Finished
   - trigger: state
     entity_id: sensor.bebe_seche_run_state
-    to: Standby
+    to: Finished
   conditions: []
   actions:
   - action: light.turn_on
