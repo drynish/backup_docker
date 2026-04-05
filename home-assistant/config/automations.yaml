@@ -743,7 +743,7 @@
   mode: single
 - id: '1772155570002'
   alias: 'Rangement: Éteindre lumière pendant cycle laveuse/sécheuse'
-  description: Éteint la lumière du rangement 5 minutes après le démarrage de la laveuse
+  description: Éteint la lumière du rangement 1 minute après le démarrage de la laveuse
     ou de la sécheuse.
   triggers:
   - trigger: state
@@ -759,7 +759,7 @@
     - unavailable
     - unknown
     for:
-      minutes: 5
+      minutes: 1
   conditions: []
   actions:
   - action: light.turn_off
