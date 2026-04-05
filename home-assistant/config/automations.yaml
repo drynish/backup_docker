@@ -790,11 +790,12 @@
     son cycle.
   triggers:
   - trigger: state
-    entity_id: sensor.bebe_lave_run_state
-    to: Finished
-  - trigger: state
-    entity_id: sensor.bebe_seche_run_state
-    to: Finished
+    entity_id:
+    - sensor.bebe_lave_run_state
+    - sensor.bebe_seche_run_state
+    to:
+    - Finished
+    - Standby
   conditions: []
   actions:
   - action: light.turn_on
