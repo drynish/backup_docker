@@ -785,9 +785,9 @@
       entity_id: light.rangement
   mode: single
 - id: '1772155570003'
-  alias: 'Rangement: Rallumer lumière fin de cycle laveuse/sécheuse'
-  description: Rallume la lumière du rangement dès qu'une des deux machines termine
-    son cycle.
+  alias: 'Rangement: Allumer lumière — laveuse/sécheuse allumée ou cycle terminé'
+  description: Allume la lumière du rangement lorsque la laveuse ou la sécheuse est
+    allumée (Standby) ou que son cycle est terminé (Finished).
   triggers:
   - trigger: state
     entity_id:
