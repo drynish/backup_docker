@@ -741,23 +741,6 @@
       title: Sécurité
       message: La porte avant n'est pas verrouillée.
   mode: single
-- id: '1772155570001'
-  alias: 'Rangement: Allumer lumière à l''allumage laveuse/sécheuse'
-  description: Allume la lumière du rangement dès que la laveuse ou la sécheuse est
-    allumée (current_status passe à Standby).
-  triggers:
-  - trigger: state
-    entity_id:
-    - sensor.bebe_lave_run_state
-    - sensor.bebe_seche_run_state
-    to: Standby
-  conditions: []
-  actions:
-  - action: light.turn_on
-    data: {}
-    target:
-      entity_id: light.rangement
-  mode: single
 - id: '1772155570002'
   alias: 'Rangement: Éteindre lumière pendant cycle laveuse/sécheuse'
   description: Éteint la lumière du rangement 5 minutes après le démarrage de la laveuse
