@@ -18,7 +18,7 @@ views:
             name: Chauffage
           - entity: sensor.grizzl_e_powermeas
             name: Grizzl-E
-          - entity: sensor.cph25_puissance_w
+          - entity: sensor.chargepoint_puissance
             name: ChargePoint
           - entity: sensor.consommation_sans_bornes_et_chauffage
             name: Autres
@@ -33,7 +33,7 @@ views:
             name: Chauffage
           - entity: sensor.grizzl_e_powermeas
             name: Grizzl-E
-          - entity: sensor.cph25_puissance_w
+          - entity: sensor.chargepoint_puissance
             name: ChargePoint
           - entity: sensor.consommation_sans_bornes_et_chauffage
             name: Reste
