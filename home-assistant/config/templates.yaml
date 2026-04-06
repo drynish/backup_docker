@@ -41,6 +41,15 @@ sensor:
     state: >
       {{ (states('sensor.cph25_power_output') | float(0) * 1000) | round(0) | int }}
 
+  - name: "Consommation bornes"
+    unique_id: "consommation_bornes"
+    unit_of_measurement: "W"
+    device_class: power
+    state_class: measurement
+    state: >
+      {{ (states('sensor.grizzl_e_powermeas') | float(0)
+          + states('sensor.cph25_power_output') | float(0) * 1000) | round(0) | int }}
+
   - name: "Consommation hors bornes"
     unique_id: "consommation_hors_bornes"
     unit_of_measurement: "W"
