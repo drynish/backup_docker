@@ -35,8 +35,6 @@ views:
             name: Grizzl-E
           - entity: sensor.chargepoint_puissance
             name: ChargePoint
-          - entity: sensor.consommation_sans_bornes_et_chauffage
-            name: Reste
 
   # ─────────────────────────────────────────
   # Grizzl-E
