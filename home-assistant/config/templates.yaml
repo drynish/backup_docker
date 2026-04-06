@@ -59,7 +59,7 @@ sensor:
     state: >
       {{ [states('sensor.meter00_power') | float(0)
           - states('sensor.grizzl_e_powermeas') | float(0)
-          - states('sensor.cph25_energy_output') | float(0)
+          - (states('sensor.cph25_power_output') | float(0) * 1000)
           - states('sensor.hilo_consommation_totale') | float(0), 0] | max | round(0) }}
 
   - name: "Grizzl-E Énergie session"
