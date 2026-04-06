@@ -14,7 +14,7 @@ views:
         entities:
           - entity: sensor.meter00_power
             name: Total compteur
-          - entity: sensor.consommation_sans_bornes_et_hilo
+          - entity: sensor.consommation_sans_bornes_et_chauffage
             name: Hors bornes
           - entity: sensor.grizzl_e_powermeas
             name: Grizzl-E

@@ -1004,7 +1004,7 @@
     (hors bornes de recharge) dépasse 10 kW pendant au moins 5 minutes.
   triggers:
   - trigger: numeric_state
-    entity_id: sensor.consommation_sans_bornes_et_hilo
+    entity_id: sensor.consommation_sans_bornes_et_chauffage
     above: 9000
     for:
       minutes: 5
@@ -1012,7 +1012,7 @@
   - action: notify.notify
     data:
       title: Alerte — Consommation électrique élevée
-      message: 'La consommation électrique (hors bornes) est de {{ (states(''sensor.consommation_sans_bornes_et_hilo'')
+      message: 'La consommation électrique (hors bornes) est de {{ (states(''sensor.consommation_sans_bornes_et_chauffage'')
         | float(0) / 1000) | round(1) }} kW. Total compteur : {{ (states(''sensor.meter00_power'')
         | float(0) / 1000) | round(1) }} kW.'
   mode: single
@@ -1022,7 +1022,7 @@
     chauffage) dépasse 3 kW pendant un défi Hilo (état reduction).
   triggers:
   - trigger: numeric_state
-    entity_id: sensor.consommation_sans_bornes_et_hilo
+    entity_id: sensor.consommation_sans_bornes_et_chauffage
     above: 5000
     for:
       minutes: 2
@@ -1034,7 +1034,7 @@
   - action: notify.notify
     data:
       title: ⚠️ Défi Hilo — Consommation trop élevée
-      message: La consommation (hors bornes et chauffage) est de {{ (states('sensor.consommation_sans_bornes_et_hilo')
+      message: La consommation (hors bornes et chauffage) est de {{ (states('sensor.consommation_sans_bornes_et_chauffage')
         | float(0) / 1000) | round(1) }} kW pendant un événement Hilo. Éteins des
         appareils !
       data:
