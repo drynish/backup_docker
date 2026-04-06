@@ -10,16 +10,18 @@ views:
     cards:
       - type: glance
         title: Consommation électrique
-        columns: 3
+        columns: 5
         entities:
           - entity: sensor.meter00_power
-            name: Total compteur
-          - entity: sensor.consommation_sans_bornes_et_chauffage
-            name: Hors bornes
+            name: Total
+          - entity: sensor.consommation_chauffage
+            name: Chauffage
           - entity: sensor.grizzl_e_powermeas
             name: Grizzl-E
-          - entity: sensor.cph25_power_output
+          - entity: sensor.cph25_puissance_w
             name: ChargePoint
+          - entity: sensor.consommation_sans_bornes_et_chauffage
+            name: Autres
 
       - type: history-graph
         title: Puissance — dernières 24 h
