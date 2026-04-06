@@ -25,12 +25,16 @@ views:
         title: Puissance — dernières 24 h
         hours_to_show: 24
         entities:
-          - entity: sensor.consommation_hors_bornes
-            name: Hors bornes
+          - entity: sensor.meter00_power
+            name: Total compteur
+          - entity: sensor.consommation_chauffage
+            name: Chauffage
           - entity: sensor.grizzl_e_powermeas
             name: Grizzl-E
           - entity: sensor.cph25_puissance_w
             name: ChargePoint
+          - entity: sensor.consommation_sans_bornes_et_chauffage
+            name: Reste
 
   # ─────────────────────────────────────────
   # Grizzl-E
