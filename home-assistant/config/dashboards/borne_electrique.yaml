@@ -10,12 +10,14 @@ views:
     cards:
       - type: glance
         title: Consommation électrique
-        columns: 5
+        columns: 6
         entities:
           - entity: sensor.meter00_power
             name: Total
           - entity: sensor.consommation_chauffage
             name: Chauffage
+          - entity: sensor.consommation_eau_chaude
+            name: Eau chaude
           - entity: sensor.grizzl_e_powermeas
             name: Grizzl-E
           - entity: sensor.chargepoint_puissance
@@ -31,6 +33,8 @@ views:
             name: Total compteur
           - entity: sensor.consommation_chauffage
             name: Chauffage
+          - entity: sensor.consommation_eau_chaude
+            name: Eau chaude
           - entity: sensor.grizzl_e_powermeas
             name: Grizzl-E
           - entity: sensor.chargepoint_puissance
