@@ -416,20 +416,14 @@
   alias: 'Calendrier: Déchets'
   description: ''
   triggers:
-  - trigger: time_pattern
-    hours: /1
+  - trigger: time
+    at: '20:00:00'
   conditions:
   - condition: template
     value_template: '{{ state_attr(''sensor.collecte'', (now().date() + timedelta(days=1)).isoformat())
       == ''Déchets'' }}
 
       '
-  - condition: time
-    after: '17:00:00'
-    before: '23:00:00'
-  - condition: numeric_state
-    entity_id: sensor.distance_moyenne_dechets_1h
-    below: 50
   actions:
   - action: notify.notify
     metadata: {}
@@ -441,20 +435,14 @@
   alias: 'Calendrier: Composte'
   description: ''
   triggers:
-  - trigger: time_pattern
-    hours: /1
+  - trigger: time
+    at: '20:00:00'
   conditions:
   - condition: template
     value_template: '{{ state_attr(''sensor.collecte'', (now().date() + timedelta(days=1)).isoformat())
       == ''Composte'' }}
 
       '
-  - condition: time
-    after: '17:00:00'
-    before: '23:00:00'
-  - condition: numeric_state
-    entity_id: sensor.distance_moyenne_composte_1h
-    below: 50
   actions:
   - action: notify.notify
     metadata: {}
@@ -557,20 +545,14 @@
   alias: 'Calendrier: Recyclage'
   description: ''
   triggers:
-  - trigger: time_pattern
-    hours: /1
+  - trigger: time
+    at: '20:00:00'
   conditions:
   - condition: template
     value_template: '{{ state_attr(''sensor.collecte'', (now().date() + timedelta(days=1)).isoformat())
       == ''Recyclage'' }}
 
       '
-  - condition: time
-    after: '17:00:00'
-    before: '23:00:00'
-  - condition: numeric_state
-    entity_id: sensor.distance_moyenne_recyclage_1h
-    below: 50
   actions:
   - action: notify.notify
     metadata: {}
