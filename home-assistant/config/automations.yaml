@@ -172,7 +172,10 @@
       minutes: 0
       seconds: 0
     trigger: state
-  conditions: []
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.diff_humidity
+    below: 20
   actions:
   - delay:
       hours: 0
