@@ -99,41 +99,51 @@
       entity_id: lock.porte_avant
   mode: single
 - id: '1618324142625'
-  alias: 'Salle de bain: Ventilation humidité'
-  description: ''
+  alias: 'Salle de bain: Ventilation humidité — Allumer'
+  description: Allume le ventilateur quand l'humidité dépasse celle de la cuisine de plus de 20%
   triggers:
-  - minutes: /4
-    trigger: time_pattern
-  - entity_id:
-    - sensor.diff_humidity
+  - trigger: numeric_state
+    entity_id: sensor.diff_humidity
     above: 20
-    trigger: numeric_state
+  - trigger: time_pattern
+    minutes: /5
   conditions:
   - condition: numeric_state
     entity_id: sensor.diff_humidity
     above: 20
-  - condition: not
-    conditions:
-    - condition: state
-      entity_id: sensor.defi_hilo
-      state:
-      - reduction
+  - condition: state
+    entity_id: switch.ventilateur
+    state: 'off'
   actions:
-  - metadata: {}
-    data: {}
-    target:
-      device_id: 1ffffab501e5511b64a9c10b2c3c797a
-    action: switch.turn_on
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
   - target:
-      device_id:
-      - 1ffffab501e5511b64a9c10b2c3c797a
+      entity_id: switch.ventilateur
+    data: {}
+    action: switch.turn_on
+  mode: single
+- id: '1618324142626'
+  alias: 'Salle de bain: Ventilation humidité — Éteindre'
+  description: Éteint le ventilateur quand l'humidité revient au niveau de la cuisine pendant 5 minutes
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.diff_humidity
+    below: 20
+    for:
+      minutes: 5
+  - trigger: time_pattern
+    minutes: /5
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.diff_humidity
+    below: 20
+  - condition: state
+    entity_id: switch.ventilateur
+    state: 'on'
+  actions:
+  - target:
+      entity_id: switch.ventilateur
     data: {}
     action: switch.turn_off
-  mode: restart
+  mode: single
 - id: '1623868900937'
   alias: 'Porte avant: Éteindre lumière entrée'
   description: ''
