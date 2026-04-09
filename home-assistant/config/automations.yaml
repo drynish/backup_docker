@@ -429,7 +429,7 @@
     before: '23:00:00'
   - condition: numeric_state
     entity_id: sensor.distance_moyenne_dechets_1h
-    below: 50
+    below: 40
   actions:
   - action: notify.notify
     metadata: {}
@@ -564,7 +564,7 @@
     before: '23:00:00'
   - condition: numeric_state
     entity_id: sensor.distance_moyenne_recyclage_1h
-    below: 50
+    below: 40
   actions:
   - action: notify.notify
     metadata: {}
