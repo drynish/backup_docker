@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cheat Sheets</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 13px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #181825;
+      padding: 10px 20px;
+      border-bottom: 1px solid #313244;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 15px;
+      color: #89b4fa;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .tab {
+      padding: 4px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #a6adc8;
+      transition: background 0.15s;
+      font-size: 12px;
+    }
+    .tab:hover { background: #313244; color: #cdd6f4; }
+    .tab.active { background: #313244; color: #89b4fa; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #313244;
+      overflow: hidden;
+    }
+    .panel:last-child { border-right: none; }
+
+    .panel-title {
+      background: #181825;
+      padding: 8px 16px;
+      font-size: 11px;
+      color: #6c7086;
+      border-bottom: 1px solid #313244;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .panel-title span { color: #89b4fa; }
+
+    .panel-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 16px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* Scrollbar */
+    .panel-content::-webkit-scrollbar { width: 6px; }
+    .panel-content::-webkit-scrollbar-track { background: transparent; }
+    .panel-content::-webkit-scrollbar-thumb { background: #45475a; border-radius: 3px; }
+
+    /* Separators */
+    .sep {
+      display: block;
+      height: 1px;
+      background: #313244;
+      margin: 10px 0;
+    }
+
+    /* Comments */
+    .comment { color: #585b70; font-style: italic; }
+
+    /* Keywords */
+    .kw { color: #cba6f7; }
+
+    /* Types / class names */
+    .type { color: #89dceb; }
+
+    /* Strings */
+    .str { color: #a6e3a1; }
+
+    /* Methods */
+    .method { color: #89b4fa; }
+
+    /* Section headers */
+    .section {
+      color: #f38ba8;
+      font-weight: bold;
+      display: block;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+
+    /* Big mode: single column view */
+    body.focus-1 .panel:nth-child(2),
+    body.focus-1 .panel:nth-child(3) { display: none; }
+    body.focus-1 .grid { grid-template-columns: 1fr; }
+
+    body.focus-2 .panel:nth-child(1),
+    body.focus-2 .panel:nth-child(3) { display: none; }
+    body.focus-2 .grid { grid-template-columns: 1fr; }
+
+    body.focus-3 .panel:nth-child(1),
+    body.focus-3 .panel:nth-child(2) { display: none; }
+    body.focus-3 .grid { grid-template-columns: 1fr; }
+
+    body.focus-all .grid { grid-template-columns: 1fr 1fr 1fr; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Cheat Sheets</h1>
+  <div class="tab active" onclick="setFocus('all')">Tout voir</div>
+  <div class="tab" onclick="setFocus(1)">Git + OOP</div>
+  <div class="tab" onclick="setFocus(2)">Collections</div>
+  <div class="tab" onclick="setFocus(3)">Optional / Stream</div>
+</header>
+
+<div class="grid">
+
+  <!-- PANEL 1: CheatSheet.md -->
+  <div class="panel">
+    <div class="panel-title"><span>1</span> — Git · Javadoc · OOP</div>
+    <div class="panel-content" id="p1"></div>
+  </div>
+
+  <!-- PANEL 2: CheatSheet2.md -->
+  <div class="panel">
+    <div class="panel-title"><span>2</span> — Matrices · Collections · Lambda</div>
+    <div class="panel-content" id="p2"></div>
+  </div>
+
+  <!-- PANEL 3: CheatSheet3.md -->
+  <div class="panel">
+    <div class="panel-title"><span>3</span> — Optional&lt;T&gt;</div>
+    <div class="panel-content" id="p3"></div>
+  </div>
+
+</div>
+
+<script>
+function setFocus(n) {
+  document.body.className = n === 'all' ? 'focus-all' : 'focus-' + n;
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', i === (n === 'all' ? 0 : n));
+  });
+}
+
+// Simple renderer: converts raw cheatsheet text to highlighted HTML
+function render(raw) {
+  const lines = raw.split('\n');
+  let html = '';
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    // Separator lines
+    if (/^~{4,}$/.test(trimmed)) {
+      html += '<span class="sep"></span>';
+      continue;
+    }
+
+    // Section headers (// UPPERCASE or // TITRE)
+    if (/^\/\/\s+[A-ZÀÂÉÈÊËÎÏÔÙÛÜÇ][A-ZÀÂÉÈÊËÎÏÔÙÛÜÇ\s\/]+$/.test(trimmed)) {
+      html += `<span class="section">${esc(trimmed)}</span>\n`;
+      continue;
+    }
+
+    // Full-line comments
+    if (/^\/\//.test(trimmed)) {
+      html += `<span class="comment">${esc(line)}</span>\n`;
+      continue;
+    }
+
+    // Git commands block
+    let l = esc(line);
+
+    // Keywords
+    l = l.replace(/\b(git|pub|class|interface|enum|new|static|final|return|if|else|for|void|int|String|List|Map|Set|new|throws|null|true|false|var|finale)\b/g,
+      '<span class="kw">$1</span>');
+
+    // Types / generics
+    l = l.replace(/\b([A-Z][a-zA-Z]+)(?=[&lt;&gt;\s\(\),;])/g,
+      '<span class="type">$1</span>');
+
+    // Methods .xxx()
+    l = l.replace(/\.([a-zA-ZÀ-ÿ]+)\(/g,
+      '.<span class="method">$1</span>(');
+
+    // Strings
+    l = l.replace(/(&quot;.*?&quot;|&#39;.*?&#39;)/g,
+      '<span class="str">$1</span>');
+
+    html += l + '\n';
+  }
+  return html;
+}
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+const sheet1 = `git clone / git init
+git rm
+git mv
+git remote add origin abc@...
+git add .
+git commit -m ""
+git push / pull
+
+git branch -c nomBranche (feature/fix/refactor/test)
+git push -u origin nom-de-la-branche
+
+git branch -d / -D nomBranche
+git push origin --delete nom-de-la-branche
+
+git switch nomBranche
+git merge nomBranche
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+javadoc
+/**
+ *blablablabla
+ *
+ *@param x
+ *@param y
+ *
+ *@return
+ *@throws
+ *
+ */
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+enum -> couleur.ROUGE
+pub enum Couleur {
+    ROUGE,
+    VERT,
+    BLEU
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pub class Parent {
+    attribut A
+    Constructeur(A) { this.A = A; }
+    get/set A
+}
+
+pub class Enfant extends Parent {
+    attribut B
+    Constructeur(A, B) { super(A); this.B = B; }
+    get/set B
+    @Override toString() { ... }
+}
+Enfant e = new Enfant(a, b);`;
+
+const sheet2 = `matrice[0][0] = 1; / matrice.length / matrice[0].length
+// double boucle ( 1ere dim / 2eme dim )
+// schéma visuel ->     B
+                     _|_|_
+                   A _|_|_
+                      | |
+~~~~~~~~~~~~~~~~~~~~
+// static : variable partagée / méthode accessible via classe
+~~~~~~~~~~~~~~~~~~~~
+O(1) / O(n) / O(log n) / O(n²)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Générique <T/E/K/V/N/R> -> même lettre = même type
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ArrayList<>
+.add("") / .set(0, "") / .get(0) / .remove(0) / .size()
+~~~~~~~~~~~~~~~~~~~~
+// HashSet<> -> @hashCode + @equals
+~~~~~~~~~~~~~~~~~~~~
+// HashMap<K, V>
+.put(A, B) / .get(K) / .remove(K) / .size() / .keySet()
+~~~~~~~~~~~~~~~~~~~~
+// ArrayDeque — Pile / File
+addFirst()    addLast()
+removeFirst() removeLast()
+peekFirst()   peekLast()
+offerFirst()  offerLast()
+size()        isEmpty()  clear()
+// + rapide que Stack / LinkedList
+~~~~~~~~~~~~~~~~~~~~
+// Lambda : (params) -> {}  |  forEach
+// Supplier / Consumer / Comparator / Predicate / Function
+~~~~~~~~~~~~~~~~~~~~
+// Comparable<T> -> compareTo(T)  |  Collections.sort()
+// Comparator<T> -> (e1, e2) -> ...  |  list.sort()`;
+
+const sheet3 = `// Optional<T> -> null safety
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// AVANT
+Etudiant e = trouverParNom("Alice");
+e.getNote(); // NullPointerException
+// APRÈS
+Optional<Etudiant> e = trouverParNom("Alice");
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// CRÉATION
+Optional.of(x);         // x != null
+Optional.ofNullable(x); // x peut être null
+Optional.empty();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// CHECK / GET
+opt.isPresent();
+opt.get();              // NoSuchElementException si vide
+opt.ifPresent(System.out::println);
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// DEFAULT
+opt.orElse("x");
+opt.orElseGet(() -> "x");
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// EXCEPTION
+opt.orElseThrow(() -> new IllegalStateException());
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// STREAM
+List.of("A","B","C")
+    .stream()
+    .filter()
+    .findFirst(); // retourne Optional`;
+
+document.getElementById('p1').innerHTML = render(sheet1);
+document.getElementById('p2').innerHTML = render(sheet2);
+document.getElementById('p3').innerHTML = render(sheet3);
+</script>
+</body>
+</html>

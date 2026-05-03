@@ -1,0 +1,13 @@
+site_name: École Di Croci
+theme:
+  name: material
+  language: fr
+  palette:
+    primary: indigo
+    accent: indigo
+  features:
+    - navigation.tabs
+    - navigation.top
+
+nav:
+  - Cheat Sheets: index.html

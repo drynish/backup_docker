@@ -1,0 +1,14 @@
+services:
+  ecole:
+    image: squidfunk/mkdocs-material
+    container_name: ecole
+    restart: unless-stopped
+    command: serve --dev-addr=0.0.0.0:8000
+    volumes:
+      - /home/drynish/docker/ecole:/docs
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    external: true
