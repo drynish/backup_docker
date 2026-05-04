@@ -8,6 +8,10 @@
 		api_key {$CROWDSEC_API_KEY}
 		ticker_interval 15s
 	}
+
+	servers {
+		trusted_proxies cloudflare
+	}
 }
 
 (crowdsec_protect) {
@@ -252,7 +256,7 @@ wiki.dicroci.website {
 doc.drynish.synology.me {
 	import crowdsec_protect
 	@internal {
-		remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32 70.55.121.27/32
+		remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32 70.55.121.27/32 69.157.173.254/32
 	}
 	handle @internal {
 		reverse_proxy wikijs:3000

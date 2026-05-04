@@ -2,7 +2,7 @@ version: "3.7"
 services:
   caddy:
     container_name: caddy
-    image: ghcr.io/caddybuilds/caddy-cloudflare:latest
+    image: caddy-crowdsec:latest
     ports:
       - 80:80
       - 443:443
