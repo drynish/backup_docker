@@ -46,6 +46,14 @@ auth.drynish.synology.me {
 	reverse_proxy authelia:9091
 }
 
+auth.dicroci.website {
+	import crowdsec_protect
+	reverse_proxy authelia:9091
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	}
+}
+
 bazarr.drynish.synology.me {
 	import crowdsec_protect
 	reverse_proxy bazarr:6767
@@ -253,15 +261,27 @@ wiki.dicroci.website {
 	}
 }
 
-doc.drynish.synology.me {
+doc.dicroci.website {
 	import crowdsec_protect
 	@internal {
-		remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32 70.55.121.27/32 69.157.173.254/32
+		remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32 70.55.121.27/32 69.157.173.254/32 209.169.149.48/32
 	}
+
 	handle @internal {
 		reverse_proxy wikijs:3000
 	}
-	respond 403
+
+	handle {
+		forward_auth http://authelia:9091 {
+			uri /api/authz/forward-auth
+			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+		}
+		reverse_proxy wikijs:3000
+	}
+
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	}
 }
 
 zigbee.drynish.synology.me {
