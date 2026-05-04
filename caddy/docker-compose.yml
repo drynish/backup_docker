@@ -10,6 +10,7 @@ services:
     environment:
       - CADDY_INGRESS_NETWORKS=caddy
       - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+      - CROWDSEC_API_KEY=${CROWDSEC_API_KEY}
     networks:
       - caddy
     volumes:
@@ -17,32 +18,60 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/drynish/docker/caddy/data:/data
     restart: unless-stopped
+    depends_on:
+      - crowdsec
+
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    container_name: crowdsec
+    environment:
+      - GID=1000
+      - COLLECTIONS=crowdsecurity/caddy
+      - TZ=America/Montreal
+    volumes:
+      - /home/drynish/docker/crowdsec/config:/etc/crowdsec
+      - /home/drynish/docker/crowdsec/data:/var/lib/crowdsec/data
+      - /home/drynish/docker/caddy/data/logs:/var/log/caddy:ro
+    networks:
+      - caddy
+    restart: unless-stopped
 
   authelia:
     image: authelia/authelia:latest
     container_name: authelia
     restart: unless-stopped
-    networks: 
+    networks:
       - caddy
     volumes:
       - /home/drynish/docker/authelia/config:/config
       - /home/drynish/docker/authelia/lib:/var/lib/authelia
     environment:
-      - TZ=America/Montreal  # Modifiez selon votre fuseau horaire
+      - TZ=America/Montreal
+
+  cloudflare-ddns:
+    container_name: cloudflare-ddns
+    image: favonia/cloudflare-ddns:latest
+    environment:
+      CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN}
+      DOMAINS: "plex.dicroci.website,ecole.dicroci.website,wiki.dicroci.website,conservervotrepermis.ca"
+      PROXIED: "is(ecole.dicroci.website) || is(wiki.dicroci.website) || is(conservervotrepermis.ca)"
+      IP6_PROVIDER: "none"
+    restart: unless-stopped
+
   redis:
     image: redis:alpine
     container_name: redis
     restart: unless-stopped
-    networks: 
+    networks:
       - caddy
     volumes:
       - /home/drynish/docker/redis:/data
     environment:
       - TZ=America/Montreal
+
 volumes:
   redis_data:
+
 networks:
   caddy:
     external: true
-    
-
