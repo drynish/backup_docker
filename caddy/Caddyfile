@@ -25,26 +25,7 @@
 	crowdsec
 }
 
-adguard.drynish.synology.me {
-	import crowdsec_protect
-	@internal remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
-	handle @internal {
-		reverse_proxy adguardhome:88
-	}
-	handle {
-		forward_auth authelia:9091 {
-			uri /api/verify?rd=https://auth.drynish.synology.me
-			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-		}
-		reverse_proxy adguardhome:88
-	}
-	respond 403
-}
-
-auth.drynish.synology.me {
-	import crowdsec_protect
-	reverse_proxy authelia:9091
-}
+# ─── dicroci.website ─────────────────────────────────────────────────────────
 
 auth.dicroci.website {
 	import crowdsec_protect
@@ -54,76 +35,27 @@ auth.dicroci.website {
 	}
 }
 
-bazarr.drynish.synology.me {
+doc.dicroci.website {
 	import crowdsec_protect
-	reverse_proxy bazarr:6767
-}
-
-cours.drynish.synology.me {
-	import crowdsec_protect
-	reverse_proxy 10.88.88.4:3000
-}
-
-wol.drynish.synology.me {
-	import crowdsec_protect
-	@notLan {
-		not remote_ip 192.168.90.0/24 192.168.200.0/24 192.168.130.0/24 10.88.88.0/24
+	@local {
+		client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32 70.55.121.27/32 69.157.173.254/32 209.169.149.48/32
 	}
-
-	route @notLan {
-		forward_auth authelia:9091 {
-			uri /api/verify?rd=https://auth.drynish.synology.me
-			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-		}
-	}
-
-	@rootPath {
-		path /
-	}
-	redir @rootPath /api/wakeup/computer/Windows
-
-	reverse_proxy 192.168.90.3:4000
-}
-
-conservervotrepermis.ca {
-	import crowdsec_protect
-	reverse_proxy isabelle:80
-	tls {
-		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
-	}
-}
-
-famille.drynish.synology.me {
-	import crowdsec_protect
-	reverse_proxy family:80
-}
-
-nas.drynish.synology.me {
-	import crowdsec_protect
-	@local remote_ip 192.168.13.0/24 192.168.90.0/24
 
 	handle @local {
-		reverse_proxy 192.168.90.3:5000 {
-			header_up Host {upstream_hostport}
-			header_up X-Real-IP {remote_host}
-			header_up X-Forwarded-For {remote_host}
-			header_up X-Forwarded-Proto {scheme}
-		}
+		reverse_proxy wikijs:3000
 	}
 
 	handle {
 		forward_auth http://authelia:9091 {
-			uri /api/verify?rd=https://auth.drynish.synology.me
+			uri /api/authz/forward-auth
 			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
 		}
-		reverse_proxy 192.168.90.3:5000 {
-			header_up Host {upstream_hostport}
-			header_up X-Real-IP {remote_host}
-			header_up X-Forwarded-For {remote_host}
-			header_up X-Forwarded-Proto {scheme}
-		}
+		reverse_proxy wikijs:3000
 	}
-	respond 403
+
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	}
 }
 
 ecole.dicroci.website {
@@ -132,64 +64,6 @@ ecole.dicroci.website {
 	tls {
 		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
 	}
-}
-
-download.drynish.synology.me {
-	import crowdsec_protect
-	reverse_proxy gluetun:8999
-}
-
-flaresolverr.drynish.synology.me {
-	import crowdsec_protect
-	reverse_proxy flaresolverr:8191
-}
-
-homeassistant.drynish.synology.me {
-	import crowdsec_protect
-	@local remote_ip 192.168.13.0/24 192.168.90.0/24
-
-	handle @local {
-		reverse_proxy 10.88.88.2:8123
-	}
-
-	handle {
-		forward_auth http://authelia:9091 {
-			uri /api/verify?rd=https://auth.drynish.synology.me
-			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-		}
-		reverse_proxy 10.88.88.2:8123
-	}
-
-	respond 403
-}
-
-omada.drynish.synology.me {
-	import crowdsec_protect
-	@local remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
-
-	handle @local {
-		reverse_proxy https://omada-controller:8043 {
-			transport http {
-				tls
-				tls_insecure_skip_verify
-			}
-		}
-	}
-
-	handle {
-		forward_auth http://authelia:9091 {
-			uri /api/verify?rd=https://auth.drynish.synology.me
-			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-		}
-		reverse_proxy https://10.88.88.2:8043 {
-			transport http {
-				tls
-				tls_insecure_skip_verify
-			}
-		}
-	}
-
-	respond 403
 }
 
 plex.dicroci.website {
@@ -219,9 +93,141 @@ plex.dicroci.website {
 	}
 }
 
+wiki.dicroci.website {
+	import crowdsec_protect
+	reverse_proxy ghost:2368
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	}
+}
+
+# ─── drynish.synology.me ─────────────────────────────────────────────────────
+
+adguard.drynish.synology.me {
+	import crowdsec_protect
+	@local client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
+	handle @local {
+		reverse_proxy adguardhome:88
+	}
+	handle {
+		forward_auth authelia:9091 {
+			uri /api/verify?rd=https://auth.drynish.synology.me
+			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+		}
+		reverse_proxy adguardhome:88
+	}
+	respond 403
+}
+
+auth.drynish.synology.me {
+	import crowdsec_protect
+	reverse_proxy authelia:9091
+}
+
+bazarr.drynish.synology.me {
+	import crowdsec_protect
+	reverse_proxy bazarr:6767
+}
+
+cours.drynish.synology.me {
+	import crowdsec_protect
+	reverse_proxy 10.88.88.4:3000
+}
+
+download.drynish.synology.me {
+	import crowdsec_protect
+	reverse_proxy gluetun:8999
+}
+
+famille.drynish.synology.me {
+	import crowdsec_protect
+	reverse_proxy family:80
+}
+
+flaresolverr.drynish.synology.me {
+	import crowdsec_protect
+	reverse_proxy flaresolverr:8191
+}
+
+homeassistant.drynish.synology.me {
+	import crowdsec_protect
+	@local client_ip 192.168.13.0/24 192.168.90.0/24
+
+	handle @local {
+		reverse_proxy 10.88.88.2:8123
+	}
+
+	handle {
+		forward_auth http://authelia:9091 {
+			uri /api/verify?rd=https://auth.drynish.synology.me
+			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+		}
+		reverse_proxy 10.88.88.2:8123
+	}
+
+	respond 403
+}
+
+nas.drynish.synology.me {
+	import crowdsec_protect
+	@local client_ip 192.168.13.0/24 192.168.90.0/24
+
+	handle @local {
+		reverse_proxy 192.168.90.3:5000 {
+			header_up Host {upstream_hostport}
+			header_up X-Real-IP {remote_host}
+			header_up X-Forwarded-For {remote_host}
+			header_up X-Forwarded-Proto {scheme}
+		}
+	}
+
+	handle {
+		forward_auth http://authelia:9091 {
+			uri /api/verify?rd=https://auth.drynish.synology.me
+			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+		}
+		reverse_proxy 192.168.90.3:5000 {
+			header_up Host {upstream_hostport}
+			header_up X-Real-IP {remote_host}
+			header_up X-Forwarded-For {remote_host}
+			header_up X-Forwarded-Proto {scheme}
+		}
+	}
+	respond 403
+}
+
+omada.drynish.synology.me {
+	import crowdsec_protect
+	@local client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
+
+	handle @local {
+		reverse_proxy https://omada-controller:8043 {
+			transport http {
+				tls
+				tls_insecure_skip_verify
+			}
+		}
+	}
+
+	handle {
+		forward_auth http://authelia:9091 {
+			uri /api/verify?rd=https://auth.drynish.synology.me
+			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+		}
+		reverse_proxy https://10.88.88.2:8043 {
+			transport http {
+				tls
+				tls_insecure_skip_verify
+			}
+		}
+	}
+
+	respond 403
+}
+
 portainer.drynish.synology.me {
 	import crowdsec_protect
-	@local remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
+	@local client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
 
 	handle @local {
 		reverse_proxy 10.88.88.2:9000
@@ -253,46 +259,46 @@ sonarr.drynish.synology.me {
 	reverse_proxy sonarr:8989
 }
 
-wiki.dicroci.website {
+wol.drynish.synology.me {
 	import crowdsec_protect
-	reverse_proxy ghost:2368
-	tls {
-		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
-	}
-}
+	@local client_ip 192.168.90.0/24 192.168.200.0/24 192.168.130.0/24 10.88.88.0/24
 
-doc.dicroci.website {
-	import crowdsec_protect
-	@internal {
-		remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32 70.55.121.27/32 69.157.173.254/32 209.169.149.48/32
-	}
-
-	handle @internal {
-		reverse_proxy wikijs:3000
+	handle @local {
+		@rootPath path /
+		redir @rootPath /api/wakeup/computer/Windows
+		reverse_proxy 192.168.90.3:4000
 	}
 
 	handle {
-		forward_auth http://authelia:9091 {
-			uri /api/authz/forward-auth
+		forward_auth authelia:9091 {
+			uri /api/verify?rd=https://auth.drynish.synology.me
 			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
 		}
-		reverse_proxy wikijs:3000
-	}
-
-	tls {
-		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+		@rootPath path /
+		redir @rootPath /api/wakeup/computer/Windows
+		reverse_proxy 192.168.90.3:4000
 	}
 }
 
 zigbee.drynish.synology.me {
 	import crowdsec_protect
-	@internal {
-		remote_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
+	@local {
+		client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
 	}
-	handle @internal {
+	handle @local {
 		reverse_proxy zigbee2mqtt:8080
 	}
 	respond 403
+}
+
+# ─── autres domaines ──────────────────────────────────────────────────────────
+
+conservervotrepermis.ca {
+	import crowdsec_protect
+	reverse_proxy isabelle:80
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+	}
 }
 
 :443 {
