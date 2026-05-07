@@ -38,7 +38,7 @@ auth.dicroci.website {
 doc.dicroci.website {
 	import crowdsec_protect
 	@local {
-		client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32 70.55.121.27/32 69.157.173.254/32 209.169.149.48/32
+		client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32 70.55.121.27/32 69.157.173.254/32
 	}
 
 	handle @local {
