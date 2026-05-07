@@ -1,0 +1,30 @@
+/* Styles spécifiques pour le site Conserver Votre Permis */
+
+/* Scroll margin pour compenser la barre de navigation fixe */
+html {
+  scroll-behavior: smooth;
+}
+
+#cours, #monitrice, #modalites, #inscription {
+  scroll-margin-top: 100px;
+}
+
+.figure img {
+  max-width: 99%;
+  height: auto;
+}
+
+/* .course-details is controlled by Tailwind 'hidden' class and JavaScript */
+
+.signature {
+  color: #FFFFFF;
+  text-align: center;
+  font-weight: bold;
+}
+
+.signature2 {
+  color: #FFFFFF;
+  text-align: center;
+  font-weight: bold;
+}
+

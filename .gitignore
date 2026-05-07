@@ -23,9 +23,8 @@ home-assistant/config/tts/
 home-assistant/config/www/community/
 home-assistant/config/secrets.yaml
 
-# isabelle_website — code géré dans /home/drynish/git/isabelle_website
-isabelle_website/site/
-isabelle_website/composer.*
+# isabelle_website
+isabelle_website/site/vendor/
 
 # Credentials / secrets
 **/secrets.yaml

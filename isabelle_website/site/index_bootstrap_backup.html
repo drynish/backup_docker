@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="1gi7Buwn1o-Z390iwgApP7blW00RgposjeIWLFU2hNo" />
+  <title>Conserver Votre Permis - Cours de Conduite</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/main.css">
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<div class="w-full">
+		<div class="w-full px-4 hidden sm:block">
+			<!-- Logo -->
+			<p class="text-right hidden sm:block pt-2 me-2 text-lg font-bold text-5xl"><b>conservervotrepermis.ca</b></p>
+			<p class="text-right hidden sm:block me-1 mb-3 text-2xl font-bold">
+				<small>
+					Cours et perfectionnement
+					<br>
+					des techniques de conduite
+				</small>
+			</p>
+		</div>
+
+		<nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-slate-900 p-3">
+			<button class="md:hidden block bg-slate-900 text-white border-0 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span>☰</span>&nbsp;&nbsp;&nbsp;Menu
+			</button>
+<div class="text-lg font-bold sm:hidden text-right">
+				<span class="text-lg font-bold"><b>conservervotrepermis.ca</b><br><em><small>Cours et perfectionnement <br>techniques de conduite</small></em></span>
+			</div>
+
+			<div class="hidden md:flex" id="navbarSupportedContent">
+				<ul class="flex flex-col md:flex-row">
+					<li class="block">
+						<a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#">Accueil <span class="sr-only">(current)</span></a>
+					</li>					
+          <li class="block">
+						<a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#cours">Vos cours</a>
+					</li>
+					<li class="block">
+						<a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#monitrice">Votre monitrice</a>
+					</li>
+					<li class="block">
+						<a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#modalites.html">Les modalités</a>
+					</li>
+          <li class="block">
+            <a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#inscription">Inscription</a>
+          </li>
+          <li class="block">
+            <a class="block px-4 py-2 hover:bg-slate-800 text-gray-400" href="index_en.html">EN</a>
+          </li>
+        </ul>
+        <ul class="flex flex-col md:flex-row md:ml-auto">
+          <li class="block">
+            <a href="sms:514-867-2886" class="block px-4 py-2 hover:bg-slate-800 text-white">
+              📱 514-867-2886
+            </a>
+          </li>
+				</ul>
+			</div>
+		</nav>
+
+<div class="w-full">
+      <div class="grid grid-cols-12">
+        <div class="col-span-12">
+          <figure class="relative">
+            <img class="w-full h-auto" src="images/Conduite.jpg" alt="Conduite">
+            <figcaption class="text-center bg-slate-900 text-white p-3 w-3/4 absolute bottom-0 left-1/2 -translate-x-1/2">
+              <h2 class="text-2xl font-bold">Améliorez vos compétences de conduite</h2>
+          </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nos Cours Section -->
+    <div class="container my-5" id="cours">
+      <h2 class="text-center">Nos Cours</h2>
+      <p>
+        Que vous soyez un conducteur-apprenti qui a besoin de cours supplémentaires, un immigrant nouvellement arrivé au Québec, ou que vous conduisez déjà mais avez besoin d’un rafraîchissement du code de la route, j’offre des cours personnalisés selon vos besoins et objectifs et je m’adapte à vos horaires et contraintes. Si vous avez reçu une lettre de la SAAQ vous demandant de passer un examen de conduite obligatoire, je peux également vous accompagner pendant le processus. 
+        Finalement, vous avez seulement besoin d’un petit cours avant le examen de conduite à la saaq, je vais vous accompagner à travers toutes les exigences et critères de réussite de l’examen. 
+        Pour en savoir plus, je vous invite à cliquer sur le boutin correspondant à votre situation. </p>
+
+      <!-- Liste de boutons pour les types de cours -->
+      <div class="text-center">
+        <button class="btn btn-outline-primary" onclick="toggleCourseDetails(1)">Apprenti conducteur</button>
+        <button class="btn btn-outline-primary" onclick="toggleCourseDetails(2)">Réévaluation de compétence</button>
+        <button class="btn btn-outline-primary" onclick="toggleCourseDetails(3)">Échange de permis</button>
+        <button class="btn btn-outline-primary" onclick="toggleCourseDetails(4)">Déjà conducteur</button>
+      </div>
+
+      <!-- Détails des cours -->
+      <div id="course1" class="course-details mt-4">
+        <h4>Apprenti conducteur</h4>
+        <p>Tu stresses pour l'examen? Ça fait déjà 3 fois que tu échoues, tu n'as pas conduit depuis
+          longtemps et tu aimerais avoir un rafraîchissement... Eh bien! Tu es à la bonne place. En
+          tant qu'ancienne évaluatrice de la SAAQ, j'ai fait passer des milliers d'examens à des
+          candidats comme toi. Je sais parfaitement ce que tu ressens!! Textez-moi au <a
+            href="sms:514-867-2886">514-867-2886</a>, je vais t'expliquer exactement ce que
+          l'évaluateur(-trice) de la SAAQ attend de toi.</p>
+      </div>
+      <div id="course2" class="course-details mt-4">
+        <h4>Réévaluation de compétence</h4>
+        <p>Vous avez reçu une lettre de la SAAQ vous obligeant à passer un examen de conduite sur la
+          route faute de quoi votre permis sera suspendu. Vous craignez de ne pas réussir l'examen car
+          les normes et techniques de conduite ainsi que les règlements ont bien évolué depuis votre
+          jeunesse. Je suis une ancienne évaluatrice de la SAAQ et j'ai fait passer des examens à des
+          centaines de personnes dans votre situation. Textez-moi au <a
+            href="sms:514-867-2886">514-867-2886</a>, car un rafraîchissement des techniques de
+          conduite ne peut qu'être bénéfique avant votre examen. Je vous donnerai les conditions de
+          réussite pour que vous puissiez conserver votre permis.</p>
+      </div>
+      <div id="course3" class="course-details mt-4">
+        <h4>Échange de permis</h4>
+        <p> Vous avez quitté votre pays et vous êtes nouveaux résidents au Québec. Vous avez un permis étranger et vous
+          voulez un permis québécois, mais vous réalisez que les règles et certaines techniques de
+          conduite ne sont pas les mêmes que celles de votre pays. Je suis une ancienne évaluatrice de
+          la SAAQ et j'ai fait passer des milliers d'examens à des nouveaux résidents du Québec.
+          Textez-moi au <a href="sms:514-867-2886">514-867-2886</a>, car je connais quelles sont les
+          techniques de conduite que vous devez absolument adapter et je vais vous faire assimiler les
+          règles du code de sécurité routière qui vous donnent le plus de difficulté.</p>
+      </div>
+      <div id="course4" class="course-details mt-4">
+        <h4>Déjà conducteur</h4>
+        <p>Vous conduisez depuis très
+          longtemps et vous pensez peut-être avoir acquis de mauvaises habitudes de conduite et qu'une
+          mise à jour de vos techniques de conduite serait nécessaire. Textez-moi au <a
+            href="sms:514-867-2886">514-867-2886</a>et je vous aiderai à mettre à jour vos
+          connaissances du code de sécurité routière ainsi que vos techniques.</p>
+      </div>
+    </div>
+
+    <!-- La Monitrice Section -->
+    <div class="container my-5" id="monitrice">
+      <h2 class="text-center">La Monitrice</h2>
+      <p>J'étais à l'emploi de la SAAQ pendant près de 10 ans. Ma tâche principale était d'évaluer les performances de milliers de conducteurs et d'apprentis-conducteurs de voiture. J'ai également évalué de futurs conducteurs de moto en circuit fermé. Je suis donc une excellence référence pour toute personne devant passer un examen de conduite à la SAAQ ou qui veut simplement mettre à jour et améliorer sa conduite sur la route. Je vais vous aider à comprendre et à répondre aux critères de performance et de compétence exigés par la SAAQ pour avoir votre permis ou le conserver.</p>
+    </div>
+
+    <!-- Modalités Section -->
+    <div class="container my-5" id="modalites">
+      <h2 class="text-center">Modalités</h2>
+      <p>Consultez les informations pratiques concernant nos cours, les horaires, et les conditions d'inscription.</p>
+    </div>
+
+    <!-- Inscription Section -->
+    <div class="container my-5" id="inscription">
+      <h2 class="text-center">Inscription</h2>
+      <form action="sendmail.php" method="post" id="contactForm">
+        <div class="mb-3">
+          <label for="nom" class="form-label">Nom</label>
+          <input type="text" class="form-control" id="nom" name="nom" placeholder="Votre nom">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Votre email">
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Message</label>
+          <textarea class="form-control" id="message" name="message" rows="3" placeholder="Votre message"></textarea>
+        </div>
+        <div class="mb-3">
+          <div class="g-recaptcha" data-sitekey="6LdX32EUAAAAAGinQxTr6lpt0Vzw1lSo2A_tfPbt"></div>
+        </div>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+      </form>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="container my-5">
+      <div class="mt-4 text-center">
+        <h4>Contactez-nous par :</h4>
+        <div class="text-center">
+          <span class="fa-stack fa-4x text-center">
+            <a href="sms:514-867-2886">
+              <i class="fas fa-square fa-stack-2x"></i>
+              <i class="fas fa-sms fa-stack-1x fa-inverse"></i>
+            </a>
+          </span>
+          <span class="fa-stack fa-4x text-center">
+            <a href="mailto:isabelle@conservervotrepermis.ca">
+              <i class="fas fa-square fa-stack-2x"></i>
+              <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-center py-4">
+    <p>&copy; 2025 Conserver Votre Permis | Tous droits réservés</p>
+  </footer>
+  
+   
+  <script>
+    // Fonction pour afficher/masquer les détails des cours
+    function toggleCourseDetails(courseNumber) {
+      // Cacher tous les détails des cours
+      var courses = document.querySelectorAll('.course-details');
+      courses.forEach(function(course) {
+        course.style.display = 'none';
+      });
+
+      // Afficher le cours sélectionné
+      var selectedCourse = document.getElementById('course' + courseNumber);
+      if (selectedCourse) {
+        selectedCourse.style.display = 'block';
+      }
+    }
+  </script>
+  
+  <script src='https://www.google.com/recaptcha/api.js?hl=fr'></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> 
+
+</body>
+</html>

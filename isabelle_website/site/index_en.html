@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="1gi7Buwn1o-Z390iwgApP7blW00RgposjeIWLFU2hNo" />
+  <title>conservervotrepermis.ca - Driving Lessons</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body class="bg-white">
+	<div class="w-full">
+		<!-- Navigation -->
+		<nav class="fixed top-0 left-0 right-0 z-50 bg-slate-900 p-3">
+      <div class="flex items-center justify-between">
+        <!-- Hamburger Button -->
+        <button class="md:hidden block bg-slate-900 text-white border-0 p-2 text-xl" type="button" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+          ☰ Menu
+        </button>
+
+        <!-- Header Mobile -->
+        <div class="text-lg font-bold sm:hidden text-right text-white">
+          <span class="text-lg font-bold"><b>conservervotrepermis.ca</b><br><em><small>Driving Courses &<br>Coaching</small></em></span>
+        </div>
+
+        <!-- Desktop Header Text -->
+        <div class="hidden sm:flex flex-col items-end text-white text-right mr-4">
+          <span class="text-sm font-semibold">Driving Courses &</span>
+          <span class="text-xs">Professional Coaching</span>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex">
+          <ul class="flex flex-row items-center">
+            <li class="block">
+              <a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>					
+            <li class="block">
+              <a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#courses">Our Courses</a>
+            </li>
+            <li class="block">
+              <a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#instructor">Your Instructor</a>
+            </li>
+            <li class="block">
+              <a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#details">Details</a>
+            </li>
+            <li class="block">
+              <a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#registration">Registration</a>
+            </li>
+            <li class="block">
+              <a class="block px-4 py-2 hover:bg-slate-800 text-yellow-400 font-semibold" href="index.html">FR</a>
+            </li>
+            <li class="block">
+              <a href="sms:514-867-2886" class="block px-4 py-2 hover:bg-slate-800 text-white">
+                📱 514-867-2886
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="hidden md:hidden mt-3 bg-slate-800 rounded-lg">
+        <ul class="flex flex-col">
+          <li class="block">
+            <a class="block px-4 py-2 hover:bg-slate-700 text-white" href="#">Home</a>
+          </li>					
+          <li class="block">
+            <a class="block px-4 py-2 hover:bg-slate-700 text-white" href="#courses" onclick="toggleMobileMenu()">Our Courses</a>
+          </li>
+          <li class="block">
+            <a class="block px-4 py-2 hover:bg-slate-700 text-white" href="#instructor" onclick="toggleMobileMenu()">Your Instructor</a>
+          </li>
+          <li class="block">
+            <a class="block px-4 py-2 hover:bg-slate-700 text-white" href="#details" onclick="toggleMobileMenu()">Details</a>
+          </li>
+          <li class="block">
+            <a class="block px-4 py-2 hover:bg-slate-700 text-white" href="#registration" onclick="toggleMobileMenu()">Registration</a>
+          </li>
+          <li class="block">
+            <a class="block px-4 py-2 hover:bg-slate-700 text-yellow-400 font-semibold" href="index.html" onclick="toggleMobileMenu()">FR</a>
+          </li>
+          <li class="block">
+            <a href="sms:514-867-2886" class="block px-4 py-2 hover:bg-slate-700 text-white">
+              📱 514-867-2886
+            </a>
+          </li>
+        </ul>
+      </div>
+		</nav>
+
+		<!-- Hero Section -->
+    <div class="w-full pt-16 pb-8">
+      <div class="grid grid-cols-12">
+        <div class="col-span-12">
+          <figure class="relative max-h-96 shadow-lg rounded-lg overflow-hidden">
+            <img class="w-full h-auto object-cover max-h-96" src="images/Conduite.jpg" alt="Driving">
+            <figcaption class="text-center bg-gradient-to-r from-blue-600 to-blue-800 text-white p-6 w-full absolute bottom-0 left-0">
+              <h2 class="text-3xl font-bold">Improve Your Driving Skills</h2>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- Our Courses Section -->
+    <div class="bg-gray-50 py-12">
+      <div class="max-w-7xl mx-auto px-4" id="courses">
+        <h2 class="text-center text-4xl font-bold mb-2 text-slate-900">Our Courses</h2>
+        <p class="text-center text-gray-600 mb-8 max-w-3xl mx-auto">
+          Whether you're a learner driver needing extra practice, a newcomer to Quebec, or an experienced driver wanting to refresh your skills, I offer personalized coaching tailored to your needs and goals.
+        </p>
+
+        <!-- Course Selection Buttons -->
+        <div class="text-center mb-8 flex flex-wrap justify-center gap-4">
+          <button class="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-semibold shadow-md transition transform hover:scale-105" onclick="toggleCourseDetails(1)">👨‍🎓 Learner Driver</button>
+          <button class="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-semibold shadow-md transition transform hover:scale-105" onclick="toggleCourseDetails(2)">📋 Re-evaluation</button>
+          <button class="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-semibold shadow-md transition transform hover:scale-105" onclick="toggleCourseDetails(3)">🌍 License Exchange</button>
+          <button class="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-semibold shadow-md transition transform hover:scale-105" onclick="toggleCourseDetails(4)">🚗 Experienced Driver</button>
+        </div>
+
+        <!-- Course Details -->
+        <div id="course1" class="course-details mt-6 bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600">
+          <h4 class="text-2xl font-bold text-slate-900 mb-3">Learner Driver</h4>
+          <p class="text-slate-700 leading-relaxed">Stressed about your exam? Failed multiple times? Haven't driven in a while and need a refresher? You've come to the right place! As a former SAAQ examiner, I've administered thousands of driving tests. I understand exactly what you're going through! Text me at <a class="text-blue-600 hover:underline font-semibold" href="sms:514-867-2886">514-867-2886</a> and I'll explain precisely what the SAAQ examiner is looking for.</p>
+        </div>
+        <div id="course2" class="course-details mt-6 bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600" style="display: none;">
+          <h4 class="text-2xl font-bold text-slate-900 mb-3">Mandatory Re-evaluation</h4>
+          <p class="text-slate-700 leading-relaxed">You've received a letter from SAAQ requiring you to pass a road test or your license will be suspended. You're worried about passing because driving rules and techniques have evolved significantly. As a former SAAQ examiner with experience evaluating hundreds of people in your situation, I can help! Text me at <a class="text-blue-600 hover:underline font-semibold" href="sms:514-867-2886">514-867-2886</a>. A refresher course will be invaluable before your test, and I'll ensure you meet all success criteria.</p>
+        </div>
+        <div id="course3" class="course-details mt-6 bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600" style="display: none;">
+          <h4 class="text-2xl font-bold text-slate-900 mb-3">License Exchange</h4>
+          <p class="text-slate-700 leading-relaxed">You've relocated to Quebec with a foreign driver's license and need a Quebec license, but you realize the rules and techniques differ from your home country. As a former SAAQ examiner who has tested thousands of newcomers, I know exactly which driving techniques you need to adapt. Text me at <a class="text-blue-600 hover:underline font-semibold" href="sms:514-867-2886">514-867-2886</a> and I'll help you master Quebec's road safety code and techniques.</p>
+        </div>
+        <div id="course4" class="course-details mt-6 bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600" style="display: none;">
+          <h4 class="text-2xl font-bold text-slate-900 mb-3">Experienced Driver</h4>
+          <p class="text-slate-700 leading-relaxed">You've been driving for years and suspect you may have picked up bad habits. A skills refresh might be just what you need! Text me at <a class="text-blue-600 hover:underline font-semibold" href="sms:514-867-2886">514-867-2886</a> and I'll help you update your knowledge of traffic safety regulations and driving techniques.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Your Instructor Section -->
+    <div class="bg-white py-12">
+      <div class="max-w-7xl mx-auto px-4" id="instructor">
+        <h2 class="text-center text-4xl font-bold mb-8 text-slate-900">Your Instructor</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-8 shadow-lg">
+            <h3 class="text-2xl font-bold text-blue-600 mb-4">📊 My Experience</h3>
+            <p class="text-slate-700 leading-relaxed">I worked for SAAQ for nearly 10 years, primarily evaluating the driving performance of thousands of drivers and learner drivers. I also evaluated potential motorcycle drivers on closed circuits. My extensive experience makes me an excellent resource for anyone preparing for a SAAQ test.</p>
+          </div>
+          <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-8 shadow-lg">
+            <h3 class="text-2xl font-bold text-blue-600 mb-4">🎯 My Goal</h3>
+            <p class="text-slate-700 leading-relaxed">I'm an excellent resource for anyone needing to pass a SAAQ driving test or simply wanting to update and improve their driving skills. I'll help you understand and meet the performance and competency criteria required by SAAQ to obtain or maintain your license.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Details Section -->
+    <div class="bg-gray-50 py-12 pb-21">
+      <div class="max-w-7xl mx-auto px-4" id="details">
+        <h2 class="text-center text-4xl font-bold mb-8 text-slate-900">Course Details</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-lg shadow-lg p-6 border-t-4 border-blue-600">
+            <h3 class="text-xl font-bold text-slate-900 mb-3">⏰ Flexible Hours</h3>
+            <p class="text-slate-700">Lessons adapted to your schedule based on your availability and constraints.</p>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg p-6 border-t-4 border-blue-600">
+            <h3 class="text-xl font-bold text-slate-900 mb-3">🎓 Personalized</h3>
+            <p class="text-slate-700">Each lesson is customized to your specific needs and skill level.</p>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg p-6 border-t-4 border-blue-600">
+            <h3 class="text-xl font-bold text-slate-900 mb-3">📞 Responsive</h3>
+            <p class="text-slate-700">Contact me at 514-867-2886 to discuss your needs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Registration Section -->
+    <div class="bg-gradient-to-r from-blue-600 to-blue-800 py-12 pb-20 m-0">
+      <div class="max-w-7xl mx-auto px-4" id="registration">
+        <h2 class="text-center text-4xl font-bold mb-3 text-white">Registration</h2>
+        <p class="text-center text-blue-100 mb-8 max-w-2xl mx-auto">Fill out the form below and we'll contact you within 24 hours</p>
+        
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-2xl mx-auto">
+          <form action="sendmail.php" method="post" id="contactForm">
+            <div class="mb-6">
+              <label for="nom" class="flex items-center text-sm font-semibold text-slate-900 mb-2">
+                <span class="mr-2 text-lg">👤</span> Your Name
+              </label>
+              <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-200 transition" id="nom" name="nom" placeholder="John Smith" required>
+            </div>
+            
+            <div class="mb-6">
+              <label for="email" class="flex items-center text-sm font-semibold text-slate-900 mb-2">
+                <span class="mr-2 text-lg">📧</span> Your Email
+              </label>
+              <input type="email" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-200 transition" id="email" name="email" placeholder="john@example.com" required>
+            </div>
+            
+            <div class="mb-6">
+              <label for="message" class="flex items-center text-sm font-semibold text-slate-900 mb-2">
+                <span class="mr-2 text-lg">💬</span> Your Message
+              </label>
+              <textarea class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-200 transition resize-none" id="message" name="message" rows="5" placeholder="Describe your situation and goals..." required></textarea>
+              <p class="text-xs text-gray-500 mt-1">Minimum 10 characters</p>
+            </div>
+            
+            <div class="mb-6 flex justify-center">
+              <div class="g-recaptcha" data-sitekey="6LdX32EUAAAAAGinQxTr6lpt0Vzw1lSo2A_tfPbt"></div>
+            </div>
+            
+            <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-200">
+              📨 Send My Request
+            </button>
+            
+            <p class="text-center text-xs text-gray-500 mt-4">We protect your data • Guaranteed response</p>
+          </form>
+        </div>
+
+        <!-- Contact Methods in Blue Section -->
+        <div class="mt-12 pt-8 border-t border-blue-500">
+          <h4 class="text-2xl font-bold mb-8 text-white text-center">Prefer to contact us directly?</h4>
+          <div class="text-center flex justify-center gap-12">
+            <a href="sms:514-867-2886" class="inline-block hover:transform hover:scale-110 transition">
+              <div class="text-6xl mb-2">📱</div>
+              <p class="text-white font-semibold">514-867-2886</p>
+              <p class="text-blue-100 text-sm">Text/SMS</p>
+            </a>
+            <a href="mailto:isabelle@conservervotrepermis.ca" class="inline-block hover:transform hover:scale-110 transition">
+              <div class="text-6xl mb-2">✉️</div>
+              <p class="text-white font-semibold">Isabelle</p>
+              <p class="text-blue-100 text-sm">Email</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="fixed bottom-0 left-0 right-0 bg-slate-900 text-center py-4 text-white border-t border-slate-700">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="mb-1 text-sm">&copy; 2026 conservervotrepermis.ca - Driving Lessons in Montreal, Longueuil and Laval</p>
+      <p class="text-gray-400 text-xs">All rights reserved</p>
+    </div>
+  </footer>
+
+  <script src="/js/script.js"></script>
+  <script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
+
+</body>
+</html>
