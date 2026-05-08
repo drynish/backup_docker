@@ -27,4 +27,5 @@ html {
 
 .grecaptcha-badge {
   bottom: 75px !important;
+  right: 5px !important;
 }
