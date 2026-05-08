@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', function() {
           })
           .then(function(response) { return response.json(); })
           .then(function(data) {
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
             if (data.success) {
               alert('✅ Email envoyé avec succès! Nous vous répondrons bientôt.');
               form.reset();
@@ -61,12 +63,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           })
           .catch(function(error) {
-            console.error('Erreur:', error);
-            alert('❌ Erreur réseau: impossible d\'envoyer le formulaire');
-          })
-          .finally(function() {
             submitButton.disabled = false;
             submitButton.textContent = originalText;
+            console.error('Erreur:', error);
+            alert('❌ Erreur réseau: impossible d\'envoyer le formulaire');
           });
       });
     });
