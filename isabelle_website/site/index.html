@@ -39,10 +39,10 @@
 <body class="bg-white">
 	<div class="w-full">
 		<!-- Navigation -->
-		<nav class="fixed top-0 left-0 right-0 z-50 bg-blue-900 p-3">
+		<nav class="fixed top-0 left-0 right-0 z-50 bg-slate-900 p-3">
       <div class="flex items-center justify-between">
         <!-- Hamburger Button -->
-        <button class="md:hidden block bg-blue-900 text-white border-0 p-2 text-xl" type="button" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+        <button class="md:hidden block bg-slate-900 text-white border-0 p-2 text-xl" type="button" id="mobileMenuBtn" onclick="toggleMobileMenu()">
           ☰ Menu
         </button>
 
@@ -61,25 +61,25 @@
         <div class="hidden md:flex">
           <ul class="flex flex-row items-center">
             <li class="block">
-              <a class="block px-4 py-2 hover:bg-blue-800 text-white" href="#">Accueil <span class="sr-only">(current)</span></a>
+              <a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#">Accueil <span class="sr-only">(current)</span></a>
             </li>					
             <li class="block">
-              <a class="block px-4 py-2 hover:bg-blue-800 text-white" href="#cours">Vos cours</a>
+              <a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#cours">Vos cours</a>
             </li>
             <li class="block">
-              <a class="block px-4 py-2 hover:bg-blue-800 text-white" href="#monitrice">Votre monitrice</a>
+              <a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#monitrice">Votre monitrice</a>
             </li>
             <li class="block">
-              <a class="block px-4 py-2 hover:bg-blue-800 text-white" href="#modalites">Les modalités</a>
+              <a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#modalites">Les modalités</a>
             </li>
             <li class="block">
-              <a class="block px-4 py-2 hover:bg-blue-800 text-white" href="#inscription">Inscription</a>
+              <a class="block px-4 py-2 hover:bg-slate-800 text-white" href="#inscription">Inscription</a>
             </li>
             <li class="block">
-              <a class="block px-4 py-2 hover:bg-blue-800 text-yellow-400 font-semibold" href="index_en.html">EN</a>
+              <a class="block px-4 py-2 hover:bg-slate-800 text-yellow-400 font-semibold" href="index_en.html">EN</a>
             </li>
             <li class="block">
-              <a href="sms:514-867-2886" class="block px-4 py-2 hover:bg-blue-800 text-white">
+              <a href="sms:514-867-2886" class="block px-4 py-2 hover:bg-slate-800 text-white">
                 📱 514-867-2886
               </a>
             </li>
@@ -88,28 +88,28 @@
       </div>
 
       <!-- Mobile Menu -->
-      <div id="mobileMenu" class="hidden md:hidden mt-3 bg-blue-800 rounded-lg">
+      <div id="mobileMenu" class="hidden md:hidden mt-3 bg-slate-800 rounded-lg">
         <ul class="flex flex-col">
           <li class="block">
-            <a class="block px-4 py-2 hover:bg-blue-700 text-white" href="#">Accueil</a>
+            <a class="block px-4 py-2 hover:bg-slate-700 text-white" href="#">Accueil</a>
           </li>					
           <li class="block">
-            <a class="block px-4 py-2 hover:bg-blue-700 text-white" href="#cours" onclick="toggleMobileMenu()">Vos cours</a>
+            <a class="block px-4 py-2 hover:bg-slate-700 text-white" href="#cours" onclick="toggleMobileMenu()">Vos cours</a>
           </li>
           <li class="block">
-            <a class="block px-4 py-2 hover:bg-blue-700 text-white" href="#monitrice" onclick="toggleMobileMenu()">Votre monitrice</a>
+            <a class="block px-4 py-2 hover:bg-slate-700 text-white" href="#monitrice" onclick="toggleMobileMenu()">Votre monitrice</a>
           </li>
           <li class="block">
-            <a class="block px-4 py-2 hover:bg-blue-700 text-white" href="#modalites" onclick="toggleMobileMenu()">Les modalités</a>
+            <a class="block px-4 py-2 hover:bg-slate-700 text-white" href="#modalites" onclick="toggleMobileMenu()">Les modalités</a>
           </li>
           <li class="block">
-            <a class="block px-4 py-2 hover:bg-blue-700 text-white" href="#inscription" onclick="toggleMobileMenu()">Inscription</a>
+            <a class="block px-4 py-2 hover:bg-slate-700 text-white" href="#inscription" onclick="toggleMobileMenu()">Inscription</a>
           </li>
           <li class="block">
-            <a class="block px-4 py-2 hover:bg-blue-700 text-yellow-400 font-semibold" href="index_en.html" onclick="toggleMobileMenu()">EN</a>
+            <a class="block px-4 py-2 hover:bg-slate-700 text-yellow-400 font-semibold" href="index_en.html" onclick="toggleMobileMenu()">EN</a>
           </li>
           <li class="block">
-            <a href="sms:514-867-2886" class="block px-4 py-2 hover:bg-blue-700 text-white">
+            <a href="sms:514-867-2886" class="block px-4 py-2 hover:bg-slate-700 text-white">
               📱 514-867-2886
             </a>
           </li>
@@ -144,10 +144,10 @@
 
         <!-- Liste de boutons pour les types de cours -->
         <div class="text-center mb-8 flex flex-wrap justify-center gap-4">
-          <button class="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-semibold shadow-md transition transform hover:scale-105" onclick="toggleCourseDetails(1)">👨‍🎓 Apprenti conducteur</button>
-          <button class="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-semibold shadow-md transition transform hover:scale-105" onclick="toggleCourseDetails(2)">📋 Réévaluation</button>
-          <button class="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-semibold shadow-md transition transform hover:scale-105" onclick="toggleCourseDetails(3)">🌍 Échange de permis</button>
-          <button class="px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-semibold shadow-md transition transform hover:scale-105" onclick="toggleCourseDetails(4)">🚗 Déjà conducteur</button>
+          <button class="px-6 py-3 bg-blue-600 text-white hover:bg-slate-700 rounded-lg font-semibold shadow-md transition transform hover:scale-105" onclick="toggleCourseDetails(1)">👨‍🎓 Apprenti conducteur</button>
+          <button class="px-6 py-3 bg-blue-600 text-white hover:bg-slate-700 rounded-lg font-semibold shadow-md transition transform hover:scale-105" onclick="toggleCourseDetails(2)">📋 Réévaluation</button>
+          <button class="px-6 py-3 bg-blue-600 text-white hover:bg-slate-700 rounded-lg font-semibold shadow-md transition transform hover:scale-105" onclick="toggleCourseDetails(3)">🌍 Échange de permis</button>
+          <button class="px-6 py-3 bg-blue-600 text-white hover:bg-slate-700 rounded-lg font-semibold shadow-md transition transform hover:scale-105" onclick="toggleCourseDetails(4)">🚗 Déjà conducteur</button>
         </div>
 
         <!-- Détails des cours -->
