@@ -32,50 +32,42 @@ document.addEventListener('DOMContentLoaded', function() {
   if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      
-      // Vérifier si le widget reCAPTCHA a chargé
+
       if (typeof grecaptcha === 'undefined') {
         alert('❌ Erreur: Le reCAPTCHA n\'a pas pu se charger. Veuillez rafraîchir la page.');
         return;
       }
 
-      // Vérifier si le captcha a été rempli
-      var recaptchaResponse = grecaptcha.getResponse();
-      if (!recaptchaResponse) {
-        alert('❌ Erreur: Veuillez cocher le reCAPTCHA');
-        return;
-      }
-      
-      var formData = new FormData(this);
-      formData.append('captcha', recaptchaResponse);
-      var submitButton = this.querySelector('button[type="submit"]');
+      var form = this;
+      var submitButton = form.querySelector('button[type="submit"]');
       var originalText = submitButton.textContent;
       submitButton.disabled = true;
       submitButton.textContent = 'Envoi en cours...';
-      
-      fetch('sendmail.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert('✅ Email envoyé avec succès! Nous vous répondrons bientôt.');
-          contactForm.reset();
-          grecaptcha.reset();
-        } else {
-          alert('❌ Erreur: ' + (data.message || 'Une erreur est survenue'));
-          grecaptcha.reset();
-        }
-      })
-      .catch(error => {
-        console.error('Erreur:', error);
-        alert('❌ Erreur réseau: impossible d\'envoyer le formulaire');
-        grecaptcha.reset();
-      })
-      .finally(() => {
-        submitButton.disabled = false;
-        submitButton.textContent = originalText;
+
+      grecaptcha.ready(function() {
+        grecaptcha.execute('6LfM4t4sAAAAAPfPPD_PZvlq0WRLZKnb53tC9DPJ', {action: 'contact'})
+          .then(function(token) {
+            var formData = new FormData(form);
+            formData.append('captcha', token);
+            return fetch('sendmail.php', { method: 'POST', body: formData });
+          })
+          .then(function(response) { return response.json(); })
+          .then(function(data) {
+            if (data.success) {
+              alert('✅ Email envoyé avec succès! Nous vous répondrons bientôt.');
+              form.reset();
+            } else {
+              alert('❌ Erreur: ' + (data.message || 'Une erreur est survenue'));
+            }
+          })
+          .catch(function(error) {
+            console.error('Erreur:', error);
+            alert('❌ Erreur réseau: impossible d\'envoyer le formulaire');
+          })
+          .finally(function() {
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
+          });
       });
     });
   }

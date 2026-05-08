@@ -47,7 +47,7 @@ $context = stream_context_create($options);
 $verify_response = file_get_contents($verify_url, false, $context);
 $captcha_success = json_decode($verify_response);
 
-if (!$captcha_success->success) {
+if (!$captcha_success->success || $captcha_success->score < 0.5) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'reCAPTCHA verification failed']);
     exit;
