@@ -25,6 +25,7 @@ home-assistant/config/secrets.yaml
 
 # isabelle_website
 isabelle_website/site/vendor/
+isabelle_website/config.php
 
 # Credentials / secrets
 **/secrets.yaml
