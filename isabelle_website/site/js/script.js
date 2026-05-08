@@ -27,6 +27,26 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  // Hamburger menu
+  var mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+  }
+
+  // Fermer le menu mobile quand on clique sur un lien
+  var mobileMenuLinks = document.querySelectorAll('#mobileMenu a');
+  mobileMenuLinks.forEach(function(link) {
+    link.addEventListener('click', toggleMobileMenu);
+  });
+
+  // Boutons des cours
+  var courseButtons = document.querySelectorAll('.course-btn');
+  courseButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      toggleCourseDetails(this.dataset.course);
+    });
+  });
+
   // Gestion du formulaire de contact
   var contactForm = document.getElementById('contactForm');
   if (contactForm) {
