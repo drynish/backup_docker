@@ -15,10 +15,11 @@ header('Content-Type: application/json');
 require 'vendor/autoload.php';
 use Mailgun\Mailgun;
 
-// Clés de sécurité (injectées via variables d'environnement Docker)
-$recaptcha_secret = getenv('RECAPTCHA_SECRET');
-$mailgun_api_key  = getenv('MAILGUN_API_KEY');
-$mailgun_domain   = getenv('MAILGUN_DOMAIN') ?: 'conservervotrepermis.ca';
+// Clés de sécurité
+require '/var/www/config.php';
+$recaptcha_secret = RECAPTCHA_SECRET;
+$mailgun_api_key  = MAILGUN_API_KEY;
+$mailgun_domain   = MAILGUN_DOMAIN;
 
 // Valider le reCAPTCHA
 if (!isset($_POST['captcha']) || empty($_POST['captcha'])) {
@@ -47,7 +48,7 @@ $context = stream_context_create($options);
 $verify_response = file_get_contents($verify_url, false, $context);
 $captcha_success = json_decode($verify_response);
 
-if (!$captcha_success->success || $captcha_success->score < 0.5) {
+if (!$captcha_success || !$captcha_success->success || $captcha_success->score < 0.5) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'reCAPTCHA verification failed']);
     exit;
