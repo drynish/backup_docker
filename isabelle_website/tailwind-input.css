@@ -26,12 +26,5 @@ html {
 }
 
 .grecaptcha-badge {
-  bottom: 75px !important;
-  right: 5px !important;
-  width: 70px !important;
-  overflow: hidden !important;
-  transition: width 0.3s ease !important;
-}
-.grecaptcha-badge:hover {
-  width: 256px !important;
+  visibility: hidden !important;
 }
