@@ -30,11 +30,20 @@ document.addEventListener('DOMContentLoaded', function() {
   // Gestion du formulaire de contact
   var contactForm = document.getElementById('contactForm');
   if (contactForm) {
+    var formMessage = document.getElementById('formMessage');
+
+    function showMessage(text, success) {
+      formMessage.textContent = text;
+      formMessage.className = 'mt-4 px-4 py-3 rounded-lg text-sm font-semibold text-center ' +
+        (success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800');
+    }
+
     contactForm.addEventListener('submit', function(e) {
       e.preventDefault();
+      formMessage.className = 'hidden';
 
       if (typeof grecaptcha === 'undefined') {
-        alert('❌ Erreur: Le reCAPTCHA n\'a pas pu se charger. Veuillez rafraîchir la page.');
+        showMessage('Le reCAPTCHA n\'a pas pu se charger. Veuillez rafraîchir la page.', false);
         return;
       }
 
@@ -56,17 +65,17 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.disabled = false;
             submitButton.textContent = originalText;
             if (data.success) {
-              alert('✅ Email envoyé avec succès! Nous vous répondrons bientôt.');
+              showMessage('✅ Message envoyé! Nous vous répondrons dans les 24 heures.', true);
               form.reset();
             } else {
-              alert('❌ Erreur: ' + (data.message || 'Une erreur est survenue'));
+              showMessage('❌ ' + (data.message || 'Une erreur est survenue'), false);
             }
           })
           .catch(function(error) {
             submitButton.disabled = false;
             submitButton.textContent = originalText;
             console.error('Erreur:', error);
-            alert('❌ Erreur réseau: impossible d\'envoyer le formulaire');
+            showMessage('❌ Erreur réseau: impossible d\'envoyer le formulaire.', false);
           });
       });
     });
