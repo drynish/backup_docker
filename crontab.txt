@@ -1,0 +1,9 @@
+# Crontab de drynish — à restaurer avec : crontab crontab.txt
+
+# Chaque nuit à minuit
+0 0 * * * /home/drynish/bin/update-ha-integrations.sh >> /home/drynish/bin/update-ha-integrations.log 2>&1
+
+# Chaque dimanche
+0 2 * * 0 /home/drynish/bin/sync-portainer-stacks.sh >> /home/drynish/bin/sync-portainer-stacks.log 2>&1
+0 3 * * 0 /home/drynish/docker/omada/cleanup-logs.sh
+0 4 * * 0 /home/drynish/bin/update-caddy.sh >> /home/drynish/bin/update-caddy.log 2>&1
