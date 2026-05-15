@@ -88,6 +88,12 @@ wikijs/
 authelia/config/notification.txt
 authelia/config/users_database.yml
 authelia/config/db.sqlite3*
+crowdsec/config/hub/.index.json
+crowdsec/config/hub/postoverflows/s01-whitelist/crowdsecurity/google-special-crawlers-whitelist.yaml
+crowdsec/config/hub/scenarios/crowdsecurity/http-technology-probing.yaml
+crowdsec/data/google_special_crawlers_ipv4.txt
+crowdsec/data/google_special_crawlers_ipv6.txt
+crowdsec/data/technology_probing.json
 
 # Synology metadata
 @eaDir/
