@@ -1,350 +1,336 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cheat Sheets</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<title>Java Cheatsheet — MT4</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-      background: #1e1e2e;
-      color: #cdd6f4;
-      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
-      font-size: 13px;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+  html, body {
+    width: 100vw; height: 100vh; overflow: hidden;
+    background: #12141f;
+    color: #c8d0e0;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 11px;
+    line-height: 1.55;
+  }
 
-    header {
-      background: #181825;
-      padding: 10px 20px;
-      border-bottom: 1px solid #313244;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
+  /* NAV */
+  nav {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    background: #0e1019;
+    border-bottom: 1px solid #1e2235;
+  }
+  nav .brand {
+    font-size: 11px; font-weight: 700; letter-spacing: .08em;
+    color: #c8d0e0; background: #1e2235;
+    padding: 3px 10px; border-radius: 5px;
+    margin-right: 6px; white-space: nowrap;
+  }
+  nav button {
+    font-family: inherit; font-size: 10.5px;
+    background: none; border: none; cursor: pointer;
+    padding: 3px 11px; border-radius: 5px;
+    color: #5a6280; transition: all .15s;
+  }
+  nav button:hover { color: #c8d0e0; background: #1a1d2e; }
+  nav button.active { background: #c8d0e0; color: #12141f; font-weight: 700; }
 
-    header h1 {
-      font-size: 15px;
-      color: #89b4fa;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: calc(100vh - 32px);
+  }
+  .grid.single { grid-template-columns: 1fr; }
 
-    .tab {
-      padding: 4px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      color: #a6adc8;
-      transition: background 0.15s;
-      font-size: 12px;
-    }
-    .tab:hover { background: #313244; color: #cdd6f4; }
-    .tab.active { background: #313244; color: #89b4fa; }
+  /* COLUMN */
+  .col {
+    border-right: 1px solid #1e2235;
+    padding: 10px 13px;
+    overflow-y: auto; overflow-x: hidden;
+    height: 100%;
+  }
+  .col:last-child { border-right: none; }
+  .col::-webkit-scrollbar { width: 4px; }
+  .col::-webkit-scrollbar-thumb { background: #1e2235; border-radius: 2px; }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0;
-      flex: 1;
-      overflow: hidden;
-    }
+  .col-header {
+    font-size: 9px; font-weight: 700; letter-spacing: .12em;
+    color: #3a405e; text-transform: uppercase;
+    margin-bottom: 10px; padding-bottom: 5px;
+    border-bottom: 1px solid #1a1d2e;
+  }
+  .col-header span { color: #252840; margin: 0 3px; }
 
-    .panel {
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid #313244;
-      overflow: hidden;
-    }
-    .panel:last-child { border-right: none; }
+  /* SECTIONS */
+  .section { margin-bottom: 11px; }
+  .h {
+    font-size: 9px; font-weight: 700; letter-spacing: .1em;
+    color: #3ecf8e; text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  hr { border: none; border-top: 1px solid #1a1d2e; margin: 8px 0; }
 
-    .panel-title {
-      background: #181825;
-      padding: 8px 16px;
-      font-size: 11px;
-      color: #6c7086;
-      border-bottom: 1px solid #313244;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .panel-title span { color: #89b4fa; }
-
-    .panel-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px 16px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    /* Scrollbar */
-    .panel-content::-webkit-scrollbar { width: 6px; }
-    .panel-content::-webkit-scrollbar-track { background: transparent; }
-    .panel-content::-webkit-scrollbar-thumb { background: #45475a; border-radius: 3px; }
-
-    /* Separators */
-    .sep {
-      display: block;
-      height: 1px;
-      background: #313244;
-      margin: 10px 0;
-    }
-
-    /* Comments */
-    .comment { color: #585b70; font-style: italic; }
-
-    /* Keywords */
-    .kw { color: #cba6f7; }
-
-    /* Types / class names */
-    .type { color: #89dceb; }
-
-    /* Strings */
-    .str { color: #a6e3a1; }
-
-    /* Methods */
-    .method { color: #89b4fa; }
-
-    /* Section headers */
-    .section {
-      color: #f38ba8;
-      font-weight: bold;
-      display: block;
-      margin-top: 8px;
-      margin-bottom: 4px;
-    }
-
-    /* Big mode: single column view */
-    body.focus-1 .panel:nth-child(2),
-    body.focus-1 .panel:nth-child(3) { display: none; }
-    body.focus-1 .grid { grid-template-columns: 1fr; }
-
-    body.focus-2 .panel:nth-child(1),
-    body.focus-2 .panel:nth-child(3) { display: none; }
-    body.focus-2 .grid { grid-template-columns: 1fr; }
-
-    body.focus-3 .panel:nth-child(1),
-    body.focus-3 .panel:nth-child(2) { display: none; }
-    body.focus-3 .grid { grid-template-columns: 1fr; }
-
-    body.focus-all .grid { grid-template-columns: 1fr 1fr 1fr; }
-  </style>
+  /* CODE */
+  .li { display: block; white-space: pre; overflow: hidden; text-overflow: ellipsis; }
+  .kw { color: #3ecf8e; }
+  .fn { color: #6ab0f5; }
+  .op { color: #e8a87c; }
+  .cm { color: #3a405e; font-style: italic; }
+  .br { display: block; height: 3px; }
+</style>
 </head>
 <body>
 
-<header>
-  <h1>Cheat Sheets</h1>
-  <div class="tab active" onclick="setFocus('all')">Tout voir</div>
-  <div class="tab" onclick="setFocus(1)">Git + OOP</div>
-  <div class="tab" onclick="setFocus(2)">Collections</div>
-  <div class="tab" onclick="setFocus(3)">Optional / Stream</div>
-</header>
+<nav>
+  <div class="brand">Cheat Sheets</div>
+  <button class="active" onclick="show('all',this)">Tout voir</button>
+  <button onclick="show('stream',this)">Stream</button>
+  <button onclick="show('parallel',this)">Parallèle</button>
+  <button onclick="show('complexity',this)">Complexité / Tris</button>
+</nav>
 
-<div class="grid">
+<div class="grid" id="grid">
 
-  <!-- PANEL 1: CheatSheet.md -->
-  <div class="panel">
-    <div class="panel-title"><span>1</span> — Git · Javadoc · OOP</div>
-    <div class="panel-content" id="p1"></div>
+<!-- COL 1 : STREAMS -->
+<div class="col" id="tab-stream">
+  <div class="col-header">1 <span>&mdash;</span> STREAMS <span>&middot;</span> OPTIONAL <span>&middot;</span> INTSTREAM</div>
+
+  <div class="section">
+    <span class="li"><span class="fn">list</span>.stream() / <span class="fn">list</span>.parallelStream()</span>
+    <span class="li"><span class="kw">Stream</span>.of(<span class="op">"A"</span>, <span class="op">"B"</span>)</span>
+    <span class="li"><span class="kw">Arrays</span>.stream(tab)</span>
+    <span class="li"><span class="kw">IntStream</span>.range(<span class="op">1</span>, <span class="op">6</span>)  </span>
+    <span class="li"><span class="kw">IntStream</span>.rangeClosed(<span class="op">1</span>, <span class="op">5</span>)  </span>
+    <span class="li">.parallel()  </span>
   </div>
+  <hr>
 
-  <!-- PANEL 2: CheatSheet2.md -->
-  <div class="panel">
-    <div class="panel-title"><span>2</span> — Matrices · Collections · Lambda</div>
-    <div class="panel-content" id="p2"></div>
+  <div class="section">
+    <span class="li">.filter(n <span class="op">-></span> n <span class="op">></span> <span class="op">10</span>)</span>
+    <span class="li">.filter(n <span class="op">-></span> n.startsWith(<span class="op">"A"</span>))</span>
+    <span class="li">.map(n <span class="op">-></span> n <span class="op">*</span> <span class="op">2</span>)</span>
+    <span class="li">.map(<span class="kw">String</span>::toUpperCase)</span>
+    <span class="li">.map(<span class="kw">Personne</span>::getNom)</span>
+    <span class="li">.sorted() / .sorted(<span class="kw">Comparator</span>.reverseOrder())</span>
+    <span class="li">.sorted(<span class="kw">Comparator</span>.comparingInt(...))</span>
+    <span class="li">.distinct() / .limit(<span class="op">5</span>) / .skip(<span class="op">3</span>)</span>
+    <span class="li">.peek(<span class="kw">System</span>.out::println)</span>
   </div>
+  <hr>
 
-  <!-- PANEL 3: CheatSheet3.md -->
-  <div class="panel">
-    <div class="panel-title"><span>3</span> — Optional&lt;T&gt;</div>
-    <div class="panel-content" id="p3"></div>
+  <div class="section">
+    <span class="li">.collect(<span class="kw">Collectors</span>.toList())</span>
+    <span class="li">.collect(<span class="kw">Collectors</span>.toSet())</span>
+    <span class="li">.collect(<span class="kw">Collectors</span>.joining(<span class="op">", "</span>))</span>
+    <span class="li">.collect(<span class="kw">Collectors</span>.groupingBy(...))</span>
+    <span class="li">.collect(<span class="kw">Collectors</span>.toMap(...))</span>
+    <span class="li">.forEach(<span class="kw">System</span>.out::println)</span>
+    <span class="li">.reduce(<span class="op">0</span>, (a,b) <span class="op">-></span> a<span class="op">+</span>b)</span>
+    <span class="li">.reduce(<span class="kw">Integer</span>.MIN_VALUE, <span class="kw">Integer</span>::max)</span>
+    <span class="li">.count() / .findFirst()</span>
+    <span class="li">.anyMatch(n <span class="op">-></span> n<span class="op">%</span><span class="op">2</span><span class="op">==</span><span class="op">0</span>)</span>
+    <span class="li">.allMatch(n <span class="op">-></span> n<span class="op">></span><span class="op">0</span>) / .noneMatch(n <span class="op">-></span> n<span class="op">&lt;</span><span class="op">0</span>)</span>
   </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"><span class="kw">Optional</span>.of(<span class="op">"Alice"</span>)  </span>
+    <span class="li"><span class="kw">Optional</span>.ofNullable(val)  </span>
+    <span class="li"><span class="kw">Optional</span>.empty()</span>
+    <span class="li">.isPresent() / .isEmpty()</span>
+    <span class="li">.get() / .orElse(<span class="op">"x"</span>)</span>
+    <span class="li">.orElseGet(() <span class="op">-></span> calc())</span>
+    <span class="li">.orElseThrow(() <span class="op">-></span> <span class="kw">new</span> Ex())</span>
+    <span class="li">.ifPresent(<span class="kw">System</span>.out::println)</span>
+  </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"><span class="kw">IntStream</span>.of(<span class="op">1</span>,<span class="op">2</span>,<span class="op">3</span>).sum()</span>
+    <span class="li"><span class="kw">IntStream</span>.of(<span class="op">1</span>,<span class="op">2</span>,<span class="op">3</span>).average()</span>
+    <span class="li"><span class="kw">IntStream</span>.of(<span class="op">1</span>,<span class="op">2</span>,<span class="op">3</span>).min() / .max()</span>
+  </div>
+</div>
+
+<!-- COL 2 : PARALLÈLE -->
+<div class="col" id="tab-parallel">
+  <div class="col-header">2 <span>&mdash;</span> PROGRAMMATION PARALLÈLE</div>
+
+  <div class="section">
+    <span class="li"><span class="kw">class</span> T <span class="kw">extends</span> <span class="kw">Thread</span> {</span>
+    <span class="li">  <span class="kw">public void</span> run() { ... }</span>
+    <span class="li">}</span>
+    <span class="li"><span class="kw">new</span> T().start()</span>
+    <span class="br"></span>
+    <span class="li"><span class="kw">Runnable</span> r = () <span class="op">-></span> { ... }</span>
+    <span class="li"><span class="kw">new</span> Thread(r).start()</span>
+    <span class="li">t.start() / t.join()</span>
+  </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"><span class="kw">public synchronized void</span> retirer() { ... }</span>
+    <span class="li"><span class="kw">synchronized</span>(lock) { ... }</span>
+  </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"><span class="kw">AtomicInteger</span> c = <span class="kw">new</span> <span class="kw">AtomicInteger</span>(<span class="op">0</span>)</span>
+    <span class="li">c.incrementAndGet() / c.get()</span>
+    <span class="li">c.addAndGet(<span class="op">5</span>)</span>
+    <span class="li"><span class="kw">AtomicReference</span>&lt;String&gt; ref</span>
+    <span class="li">ref.set(<span class="op">"B"</span>) / ref.get()</span>
+  </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"><span class="kw">CopyOnWriteArrayList</span>&lt;&gt;()</span>
+    <span class="li"><span class="kw">ConcurrentHashMap</span>&lt;&gt;()</span>
+    <span class="li"><span class="kw">ConcurrentLinkedQueue</span>&lt;&gt;()</span>
+    <span class="li"><span class="kw">Collections</span>.synchronizedList(list)</span>
+    <span class="li">queue.offer(<span class="op">"A"</span>) / queue.poll()</span>
+  </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"><span class="kw">Lock</span> l = <span class="kw">new</span> <span class="kw">ReentrantLock</span>()</span>
+    <span class="li">l.lock()</span>
+    <span class="li"><span class="kw">try</span> { ... } <span class="kw">finally</span> { l.unlock() }</span>
+    <span class="li"><span class="kw">ReentrantReadWriteLock</span> rw</span>
+    <span class="li">rw.readLock().lock() / unlock()</span>
+    <span class="li">rw.writeLock().lock() / unlock()</span>
+  </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"><span class="kw">ExecutorService</span> p =</span>
+    <span class="li">  <span class="kw">Executors</span>.newFixedThreadPool(<span class="op">4</span>)</span>
+    <span class="li">p.submit(() <span class="op">-></span> { ... }) / p.shutdown()</span>
+    <span class="li"><span class="kw">Callable</span>&lt;String&gt; t = () <span class="op">-></span> <span class="op">"R"</span></span>
+    <span class="li"><span class="kw">Future</span>&lt;String&gt; f = p.submit(t)</span>
+    <span class="li">f.get() / f.isDone() / f.cancel(<span class="kw">true</span>)</span>
+    <span class="li">p.invokeAll(tasks) / p.invokeAny(tasks)</span>
+  </div>
+</div>
+
+<!-- COL 3 : COMPLEXITÉ + TRIS -->
+<div class="col" id="tab-complexity">
+  <div class="col-header">3 <span>&mdash;</span> COMPLEXITÉ <span>&middot;</span> TRI <span>&middot;</span> FOUILLE</div>
+
+  <div class="section">
+    <span class="li"><span class="op">O(1)</span>       arr[i] / map.get() / set.contains()</span>
+    <span class="li"><span class="op">O(log n)</span>   fouille dichotomique</span>
+    <span class="li"><span class="op">O(n)</span>       boucle simple, filter, map</span>
+    <span class="li"><span class="op">O(n log n)</span> Arrays.sort() / .sorted()</span>
+    <span class="li"><span class="op">O(n²)</span>      boucles imbriquées</span>
+    <span class="li"><span class="op">O(n³)</span>      3 boucles imbriquées</span>
+    <span class="li"><span class="op">O(2ⁿ)</span>      fibonacci récursif</span>
+    <span class="li"><span class="op">O(n!)</span>      permutations</span>
+  </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"><span class="op">O(1)</span>  swap, sum, min/max en place</span>
+    <span class="li"><span class="op">O(1)</span>  tri insertion, tri sélection</span>
+    <span class="li"><span class="op">O(n)</span>  copier tableau / filter collect</span>
+    <span class="li"><span class="op">O(n)</span>  .map().collect() / new ArrayList</span>
+    <span class="li"><span class="op">O(n²)</span> matrice n×n</span>
+  </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"></span>
+    <span class="li"><span class="kw">int</span> debut=<span class="op">0</span>, fin=tab.length<span class="op">-1</span></span>
+    <span class="li"><span class="kw">while</span>(debut <span class="op">&lt;=</span> fin) {</span>
+    <span class="li">  <span class="kw">int</span> mil = debut+(fin-debut)/<span class="op">2</span></span>
+    <span class="li">  <span class="kw">if</span>(tab[mil] <span class="op">==</span> val) <span class="kw">return</span> mil</span>
+    <span class="li">  <span class="kw">else if</span>(tab[mil] <span class="op">&lt;</span> val) debut=mil+<span class="op">1</span></span>
+    <span class="li">  <span class="kw">else</span> fin = mil<span class="op">-1</span></span>
+    <span class="li">}  <span class="kw">return</span> <span class="op">-1</span></span>
+    <span class="br"></span>
+    <span class="li"></span>
+    <span class="li"><span class="kw">int</span> cmp = list.get(mil).compareTo(val)</span>
+    <span class="li"><span class="kw">if</span>(cmp<span class="op">==</span><span class="op">0</span>) <span class="kw">return</span> mil</span>
+    <span class="li"><span class="kw">else if</span>(cmp<span class="op">&lt;</span><span class="op">0</span>) debut=mil+<span class="op">1</span></span>
+    <span class="li"><span class="kw">else</span> fin=mil<span class="op">-1</span></span>
+    <span class="br"></span>
+    <span class="li"><span class="kw">Arrays</span>.binarySearch(tab, <span class="op">13</span>)</span>
+  </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"><span class="kw">for</span>(<span class="kw">int</span> i=<span class="op">0</span>; i&lt;tab.length; i++)</span>
+    <span class="li">  <span class="kw">if</span>(tab[i]<span class="op">==</span>val) <span class="kw">return</span> i</span>
+    <span class="li"><span class="kw">return</span> <span class="op">-1</span></span>
+  </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"><span class="kw">for</span>(<span class="kw">int</span> i=<span class="op">1</span>; i&lt;arr.length; i++) {</span>
+    <span class="li">  <span class="kw">int</span> key=arr[i], j=i<span class="op">-1</span></span>
+    <span class="li">  <span class="kw">while</span>(j<span class="op">&gt;=</span><span class="op">0</span> <span class="op">&amp;&amp;</span> arr[j]<span class="op">&gt;</span>key) {</span>
+    <span class="li">    arr[j<span class="op">+1</span>]=arr[j]; j--</span>
+    <span class="li">  }</span>
+    <span class="li">  arr[j<span class="op">+1</span>]=key</span>
+    <span class="li">}</span>
+    <span class="li"></span>
+    <span class="li"></span>
+    <span class="li"></span>
+    <span class="br"></span>
+    <span class="li">insertionSort(p, <span class="kw">Comparator</span>.comparing(...))</span>
+  </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"></span>
+    <span class="li"><span class="kw">for</span>(<span class="kw">int</span> i=n/<span class="op">2</span><span class="op">-1</span>; i<span class="op">&gt;=</span><span class="op">0</span>; i--) heapify(arr,n,i)</span>
+    <span class="li"></span>
+    <span class="li"><span class="kw">for</span>(<span class="kw">int</span> i=n<span class="op">-1</span>; i<span class="op">&gt;</span><span class="op">0</span>; i--) {</span>
+    <span class="li">  swap(arr,<span class="op">0</span>,i); heapify(arr,i,<span class="op">0</span>)</span>
+    <span class="li">}</span>
+    <span class="br"></span>
+    <span class="li"></span>
+    <span class="li"><span class="kw">int</span> largest=i, l=<span class="op">2</span>*i+<span class="op">1</span>, r=<span class="op">2</span>*i+<span class="op">2</span></span>
+    <span class="li"><span class="kw">if</span>(l&lt;n <span class="op">&amp;&amp;</span> arr[l]&gt;arr[largest]) largest=l</span>
+    <span class="li"><span class="kw">if</span>(r&lt;n <span class="op">&amp;&amp;</span> arr[r]&gt;arr[largest]) largest=r</span>
+    <span class="li"><span class="kw">if</span>(largest!=i) { swap; i=largest; loop }</span>
+    <span class="br"></span>
+    <span class="li"></span>
+    <span class="li">parent = (i<span class="op">-1</span>) / <span class="op">2</span></span>
+    <span class="li">left   = <span class="op">2</span>*i + <span class="op">1</span></span>
+    <span class="li">right  = <span class="op">2</span>*i + <span class="op">2</span></span>
+  </div>
+  <hr>
+
+  <div class="section">
+    <span class="li"></span>
+    <span class="li"><span class="kw">if</span>(tabChar[tabIndex[j]] <span class="op">&gt;</span> tabChar[tabIndex[j<span class="op">+1</span>]])</span>
+    <span class="li">  swap(tabIndex, j, j+<span class="op">1</span>)</span>
+    <span class="li"></span>
+  </div>
+</div>
 
 </div>
 
 <script>
-function setFocus(n) {
-  document.body.className = n === 'all' ? 'focus-all' : 'focus-' + n;
-  document.querySelectorAll('.tab').forEach((t, i) => {
-    t.classList.toggle('active', i === (n === 'all' ? 0 : n));
-  });
-}
-
-// Simple renderer: converts raw cheatsheet text to highlighted HTML
-function render(raw) {
-  const lines = raw.split('\n');
-  let html = '';
-  for (const line of lines) {
-    const trimmed = line.trim();
-
-    // Separator lines
-    if (/^~{4,}$/.test(trimmed)) {
-      html += '<span class="sep"></span>';
-      continue;
+  function show(tab, btn) {
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const grid = document.getElementById('grid');
+    const ids = { stream: 'tab-stream', parallel: 'tab-parallel', complexity: 'tab-complexity' };
+    if (tab === 'all') {
+      grid.className = 'grid';
+      Object.values(ids).forEach(id => document.getElementById(id).style.display = '');
+    } else {
+      grid.className = 'grid single';
+      Object.entries(ids).forEach(([k, id]) => {
+        document.getElementById(id).style.display = k === tab ? '' : 'none';
+      });
     }
-
-    // Section headers (// UPPERCASE or // TITRE)
-    if (/^\/\/\s+[A-ZÀÂÉÈÊËÎÏÔÙÛÜÇ][A-ZÀÂÉÈÊËÎÏÔÙÛÜÇ\s\/]+$/.test(trimmed)) {
-      html += `<span class="section">${esc(trimmed)}</span>\n`;
-      continue;
-    }
-
-    // Full-line comments
-    if (/^\/\//.test(trimmed)) {
-      html += `<span class="comment">${esc(line)}</span>\n`;
-      continue;
-    }
-
-    // Git commands block
-    let l = esc(line);
-
-    // Keywords
-    l = l.replace(/\b(git|pub|class|interface|enum|new|static|final|return|if|else|for|void|int|String|List|Map|Set|new|throws|null|true|false|var|finale)\b/g,
-      '<span class="kw">$1</span>');
-
-    // Types / generics
-    l = l.replace(/\b([A-Z][a-zA-Z]+)(?=[&lt;&gt;\s\(\),;])/g,
-      '<span class="type">$1</span>');
-
-    // Methods .xxx()
-    l = l.replace(/\.([a-zA-ZÀ-ÿ]+)\(/g,
-      '.<span class="method">$1</span>(');
-
-    // Strings
-    l = l.replace(/(&quot;.*?&quot;|&#39;.*?&#39;)/g,
-      '<span class="str">$1</span>');
-
-    html += l + '\n';
   }
-  return html;
-}
-
-function esc(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-const sheet1 = `git clone / git init
-git rm
-git mv
-git remote add origin abc@...
-git add .
-git commit -m ""
-git push / pull
-
-git branch -c nomBranche (feature/fix/refactor/test)
-git push -u origin nom-de-la-branche
-
-git branch -d / -D nomBranche
-git push origin --delete nom-de-la-branche
-
-git switch nomBranche
-git merge nomBranche
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-javadoc
-/**
- *blablablabla
- *
- *@param x
- *@param y
- *
- *@return
- *@throws
- *
- */
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-enum -> couleur.ROUGE
-pub enum Couleur {
-    ROUGE,
-    VERT,
-    BLEU
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pub class Parent {
-    attribut A
-    Constructeur(A) { this.A = A; }
-    get/set A
-}
-
-pub class Enfant extends Parent {
-    attribut B
-    Constructeur(A, B) { super(A); this.B = B; }
-    get/set B
-    @Override toString() { ... }
-}
-Enfant e = new Enfant(a, b);`;
-
-const sheet2 = `matrice[0][0] = 1; / matrice.length / matrice[0].length
-// double boucle ( 1ere dim / 2eme dim )
-// schéma visuel ->     B
-                     _|_|_
-                   A _|_|_
-                      | |
-~~~~~~~~~~~~~~~~~~~~
-// static : variable partagée / méthode accessible via classe
-~~~~~~~~~~~~~~~~~~~~
-O(1) / O(n) / O(log n) / O(n²)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Générique <T/E/K/V/N/R> -> même lettre = même type
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// ArrayList<>
-.add("") / .set(0, "") / .get(0) / .remove(0) / .size()
-~~~~~~~~~~~~~~~~~~~~
-// HashSet<> -> @hashCode + @equals
-~~~~~~~~~~~~~~~~~~~~
-// HashMap<K, V>
-.put(A, B) / .get(K) / .remove(K) / .size() / .keySet()
-~~~~~~~~~~~~~~~~~~~~
-// ArrayDeque — Pile / File
-addFirst()    addLast()
-removeFirst() removeLast()
-peekFirst()   peekLast()
-offerFirst()  offerLast()
-size()        isEmpty()  clear()
-// + rapide que Stack / LinkedList
-~~~~~~~~~~~~~~~~~~~~
-// Lambda : (params) -> {}  |  forEach
-// Supplier / Consumer / Comparator / Predicate / Function
-~~~~~~~~~~~~~~~~~~~~
-// Comparable<T> -> compareTo(T)  |  Collections.sort()
-// Comparator<T> -> (e1, e2) -> ...  |  list.sort()`;
-
-const sheet3 = `// Optional<T> -> null safety
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// AVANT
-Etudiant e = trouverParNom("Alice");
-e.getNote(); // NullPointerException
-// APRÈS
-Optional<Etudiant> e = trouverParNom("Alice");
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// CRÉATION
-Optional.of(x);         // x != null
-Optional.ofNullable(x); // x peut être null
-Optional.empty();
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// CHECK / GET
-opt.isPresent();
-opt.get();              // NoSuchElementException si vide
-opt.ifPresent(System.out::println);
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// DEFAULT
-opt.orElse("x");
-opt.orElseGet(() -> "x");
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// EXCEPTION
-opt.orElseThrow(() -> new IllegalStateException());
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// STREAM
-List.of("A","B","C")
-    .stream()
-    .filter()
-    .findFirst(); // retourne Optional`;
-
-document.getElementById('p1').innerHTML = render(sheet1);
-document.getElementById('p2').innerHTML = render(sheet2);
-document.getElementById('p3').innerHTML = render(sheet3);
 </script>
 </body>
 </html>

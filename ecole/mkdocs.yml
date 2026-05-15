@@ -10,4 +10,5 @@ theme:
     - navigation.top
 
 nav:
-  - Cheat Sheets: index.html
+  - MT4 — Streams / Parallèle / Complexité: index.html
+  - MT3 — Git / OOP / Collections: mt3/index.html
