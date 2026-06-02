@@ -119,6 +119,17 @@ adguard.drynish.synology.me {
 	respond 403
 }
 
+ai.drynish.synology.me {
+	import crowdsec_protect
+	@local client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
+
+	handle @local {
+		reverse_proxy openhands:3000
+	}
+
+	respond 403
+}
+
 auth.drynish.synology.me {
 	import crowdsec_protect
 	reverse_proxy authelia:9091

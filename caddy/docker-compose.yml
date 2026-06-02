@@ -28,6 +28,8 @@
         - GID=1000
         - COLLECTIONS=crowdsecurity/caddy
         - TZ=America/Montreal
+      ports:
+        - "127.0.0.1:6060:6060"
       volumes:
         - /home/drynish/docker/crowdsec/config:/etc/crowdsec
         - /home/drynish/docker/crowdsec/data:/var/lib/crowdsec/data
