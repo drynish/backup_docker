@@ -100,7 +100,8 @@
   mode: single
 - id: '1618324142625'
   alias: 'Salle de bain: Ventilation humidité — Allumer'
-  description: Allume le ventilateur quand l'humidité dépasse celle de la cuisine de plus de 20%
+  description: Allume le ventilateur quand l'humidité dépasse celle de la cuisine
+    de plus de 20%
   triggers:
   - trigger: numeric_state
     entity_id: sensor.diff_humidity
@@ -122,7 +123,8 @@
   mode: single
 - id: '1618324142626'
   alias: 'Salle de bain: Ventilation humidité — Éteindre'
-  description: Éteint le ventilateur quand l'humidité revient au niveau de la cuisine pendant 5 minutes
+  description: Éteint le ventilateur quand l'humidité revient au niveau de la cuisine
+    pendant 5 minutes
   triggers:
   - trigger: numeric_state
     entity_id: sensor.diff_humidity
@@ -839,172 +841,6 @@
         set h = t // 3600 %}{% set m = (t % 3600) // 60 %}{% set s = t % 60 %} {%
         if h > 0 %}{{ h }}h {% endif %}{{ m }}m {{ s }}s.
   mode: single
-- id: adaptive_lighting_disable_isabelle
-  alias: 'Adaptive Lighting: Désactiver quand Isabelle est présente'
-  description: Désactive le tamis automatique des lumières quand Isabelle est à la
-    maison
-  triggers:
-  - trigger: state
-    entity_id: input_boolean.presence_isabelle
-    to: 'on'
-  conditions: []
-  actions:
-  - action: switch.turn_off
-    target:
-      entity_id: switch.adaptive_lighting_principal
-  mode: single
-- id: adaptive_lighting_enable_isabelle
-  alias: 'Adaptive Lighting: Réactiver quand Isabelle part'
-  description: Réactive le tamis automatique des lumières quand Isabelle quitte la
-    maison
-  triggers:
-  - trigger: state
-    entity_id: input_boolean.presence_isabelle
-    to: 'off'
-  conditions: []
-  actions:
-  - action: switch.turn_on
-    target:
-      entity_id: switch.adaptive_lighting_principal
-  mode: single
-- id: adaptive_lighting_reapply_cuisine
-  alias: 'Adaptive Lighting: Réappliquer — Cuisine'
-  description: Réapplique la luminosité circadienne quand la lumière cuisine s'allume
-  triggers:
-  - trigger: state
-    entity_id: light.cuisine
-    from: 'off'
-    to: 'on'
-  conditions:
-  - condition: state
-    entity_id: switch.adaptive_lighting_principal
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.presence_isabelle
-    state: 'off'
-  actions:
-  - delay: 00:00:03
-  - action: adaptive_lighting.set_manual_control
-    data:
-      lights:
-      - light.cuisine
-      manual_control: false
-    target:
-      entity_id: switch.adaptive_lighting_principal
-  - action: adaptive_lighting.apply
-    data:
-      lights:
-      - light.cuisine
-      adapt_brightness: true
-      adapt_color: true
-      turn_on_lights: false
-    target:
-      entity_id: switch.adaptive_lighting_principal
-  mode: restart
-- id: adaptive_lighting_reapply_salle_a_manger
-  alias: 'Adaptive Lighting: Réappliquer — Salle à manger'
-  description: Réapplique la luminosité circadienne quand la lumière salle à manger
-    s'allume
-  triggers:
-  - trigger: state
-    entity_id: light.salle_a_manger
-    from: 'off'
-    to: 'on'
-  conditions:
-  - condition: state
-    entity_id: switch.adaptive_lighting_principal
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.presence_isabelle
-    state: 'off'
-  actions:
-  - delay: 00:00:03
-  - action: adaptive_lighting.set_manual_control
-    data:
-      lights:
-      - light.salle_a_manger
-      manual_control: false
-    target:
-      entity_id: switch.adaptive_lighting_principal
-  - action: adaptive_lighting.apply
-    data:
-      lights:
-      - light.salle_a_manger
-      adapt_brightness: true
-      adapt_color: true
-      turn_on_lights: false
-    target:
-      entity_id: switch.adaptive_lighting_principal
-  mode: restart
-- id: adaptive_lighting_reapply_salle_de_bain
-  alias: 'Adaptive Lighting: Réappliquer — Salle de bain'
-  description: Réapplique la luminosité circadienne quand la lumière salle de bain
-    s'allume
-  triggers:
-  - trigger: state
-    entity_id: light.lumiere_salle_de_bain
-    from: 'off'
-    to: 'on'
-  conditions:
-  - condition: state
-    entity_id: switch.adaptive_lighting_principal
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.presence_isabelle
-    state: 'off'
-  actions:
-  - delay: 00:00:03
-  - action: adaptive_lighting.set_manual_control
-    data:
-      lights:
-      - light.lumiere_salle_de_bain
-      manual_control: false
-    target:
-      entity_id: switch.adaptive_lighting_principal
-  - action: adaptive_lighting.apply
-    data:
-      lights:
-      - light.lumiere_salle_de_bain
-      adapt_brightness: true
-      adapt_color: true
-      turn_on_lights: false
-    target:
-      entity_id: switch.adaptive_lighting_principal
-  mode: restart
-- id: adaptive_lighting_reapply_chambre
-  alias: 'Adaptive Lighting: Réappliquer — Chambre'
-  description: Réapplique la luminosité circadienne quand la lumière chambre s'allume
-  triggers:
-  - trigger: state
-    entity_id: light.lumiere_chambre
-    from: 'off'
-    to: 'on'
-  conditions:
-  - condition: state
-    entity_id: switch.adaptive_lighting_principal
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.presence_isabelle
-    state: 'off'
-  actions:
-  - delay: 00:00:03
-  - action: adaptive_lighting.set_manual_control
-    data:
-      lights:
-      - light.lumiere_chambre
-      manual_control: false
-    target:
-      entity_id: switch.adaptive_lighting_principal
-  - action: adaptive_lighting.apply
-    data:
-      lights:
-      - light.lumiere_chambre
-      adapt_brightness: true
-      adapt_color: true
-      turn_on_lights: false
-    target:
-      entity_id: switch.adaptive_lighting_principal
-  mode: restart
 - id: alerte_consommation_electrique_elevee
   alias: 'Énergie: Alerte consommation élevée (hors bornes)'
   description: Envoie une notification à tous quand la consommation électrique nette
@@ -1049,4 +885,83 @@
           interruption-level: critical
         ttl: 0
         priority: high
+
+- id: arrosage_cedres_normal
+  alias: "Arrosage cèdres - programme normal"
+  description: "Lun/mer/ven à 6h30, mai-oct, si pas de pluie"
+  triggers:
+    - trigger: time
+      at: "06:30:00"
+  conditions:
+    - condition: state
+      entity_id: input_boolean.arrosage_cedres_actif
+      state: "on"
+    - condition: template
+      value_template: "{{ now().month >= 5 and now().month <= 10 }}"
+    - condition: template
+      value_template: "{{ now().weekday() in [0, 2, 4] }}"
+    - condition: template
+      value_template: >
+        {{ states('weather.maison') not in ['rainy', 'pouring', 'lightning-rainy'] }}
+  actions:
+    - action: number.set_value
+      target:
+        entity_id: number.zone_1_manual_duration
+      data:
+        value: "{{ states('input_number.arrosage_cedres_duree') | int }}"
+    - action: switch.turn_on
+      target:
+        entity_id: switch.zone_1
+  mode: single
+
+- id: arrosage_cedres_canicule
+  alias: "Arrosage cèdres - canicule"
+  description: "Arrosage supplémentaire mar/jeu/sam/dim si température ≥ 30°C"
+  triggers:
+    - trigger: time
+      at: "06:30:00"
+  conditions:
+    - condition: state
+      entity_id: input_boolean.arrosage_cedres_actif
+      state: "on"
+    - condition: template
+      value_template: "{{ now().month >= 5 and now().month <= 10 }}"
+    - condition: template
+      value_template: "{{ now().weekday() in [1, 3, 5, 6] }}"
+    - condition: template
+      value_template: >
+        {{ state_attr('weather.maison', 'temperature') | float(0) >= 30 }}
+    - condition: template
+      value_template: >
+        {{ states('weather.maison') not in ['rainy', 'pouring', 'lightning-rainy'] }}
+  actions:
+    - action: number.set_value
+      target:
+        entity_id: number.zone_1_manual_duration
+      data:
+        value: "{{ states('input_number.arrosage_cedres_duree') | int }}"
+    - action: switch.turn_on
+      target:
+        entity_id: switch.zone_1
+  mode: single
+
+- id: arrosage_cedres_arret_pluie
+  alias: "Arrosage cèdres - arrêt si pluie"
+  description: "Coupe l'arrosage immédiatement si la pluie commence"
+  triggers:
+    - trigger: state
+      entity_id: weather.maison
+      to:
+        - rainy
+        - pouring
+        - lightning-rainy
+  conditions:
+    - condition: state
+      entity_id: switch.zone_1
+      state: "on"
+  actions:
+    - action: switch.turn_off
+      target:
+        entity_id: switch.zone_1
+  mode: single
   mode: single
