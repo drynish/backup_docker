@@ -38,7 +38,7 @@ auth.dicroci.website {
 doc.dicroci.website {
 	import crowdsec_protect
 	@local {
-		client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32 70.55.121.27/32 69.157.173.254/32
+		client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32 70.55.121.27/32 69.157.173.254/32 24.50.90.220/32
 	}
 
 	handle @local {
@@ -116,17 +116,6 @@ adguard.drynish.synology.me {
 		}
 		reverse_proxy adguardhome:88
 	}
-	respond 403
-}
-
-ai.drynish.synology.me {
-	import crowdsec_protect
-	@local client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
-
-	handle @local {
-		reverse_proxy openhands:3000
-	}
-
 	respond 403
 }
 
@@ -291,6 +280,14 @@ wol.drynish.synology.me {
 	}
 }
 
+wstunnel.drynish.synology.me {
+ 	import crowdsec_protect
+	reverse_proxy 10.88.88.2:8080
+        tls {
+            alpn http/1.1
+        }
+}
+
 zigbee.drynish.synology.me {
 	import crowdsec_protect
 	@local {
@@ -302,15 +299,7 @@ zigbee.drynish.synology.me {
 	respond 403
 }
 
-# ─── autres domaines ──────────────────────────────────────────────────────────
-
-conservervotrepermis.ca {
-	import crowdsec_protect
-	reverse_proxy isabelle:80
-	tls {
-		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
-	}
-}
+# ─── catch-all ───────────────────────────────────────────────────────────────
 
 :443 {
 	tls internal

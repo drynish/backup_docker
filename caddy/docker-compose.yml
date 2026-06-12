@@ -55,8 +55,8 @@
       image: favonia/cloudflare-ddns:latest
       environment:
         CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN}
-        DOMAINS: "plex.dicroci.website,ecole.dicroci.website,wiki.dicroci.website,conservervotrepermis.ca,doc.dicroci.website,auth.dicroci.website"
-        PROXIED: "is(ecole.dicroci.website) || is(wiki.dicroci.website) || is(conservervotrepermis.ca) || is(doc.dicroci.website) || is(auth.dicroci.website)"
+        DOMAINS: "plex.dicroci.website,ecole.dicroci.website,wiki.dicroci.website,doc.dicroci.website,auth.dicroci.website"
+        PROXIED: "is(ecole.dicroci.website) || is(wiki.dicroci.website) || is(doc.dicroci.website) || is(auth.dicroci.website)"
         IP6_PROVIDER: "none"
       restart: unless-stopped
 

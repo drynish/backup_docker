@@ -103,3 +103,4 @@ crowdsec/data/technology_probing.json
 
 # Divers
 **/.DS_Store
+.aider*
