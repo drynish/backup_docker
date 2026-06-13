@@ -888,10 +888,14 @@
 
 - id: arrosage_cedres_normal
   alias: "Arrosage cèdres - programme normal"
-  description: "Lun/mer/ven à 6h30, mai-oct, si pas de pluie"
+  description: "Tous les jours à 6h30, 18h30 et 20h00, mai-oct, si pas de pluie (sécheresse 2026)"
   triggers:
     - trigger: time
       at: "06:30:00"
+    - trigger: time
+      at: "18:30:00"
+    - trigger: time
+      at: "20:00:00"
   conditions:
     - condition: state
       entity_id: input_boolean.arrosage_cedres_actif
@@ -899,10 +903,9 @@
     - condition: template
       value_template: "{{ now().month >= 5 and now().month <= 10 }}"
     - condition: template
-      value_template: "{{ now().weekday() in [0, 2, 4] }}"
-    - condition: template
       value_template: >
-        {{ states('weather.maison') not in ['rainy', 'pouring', 'lightning-rainy'] }}
+        {{ states('weather.maison') not in ['pouring', 'lightning-rainy'] and
+           state_attr('weather.maison', 'precipitation') | float(0) < 10 }}
   actions:
     - action: number.set_value
       target:
@@ -914,40 +917,10 @@
         entity_id: switch.zone_1
   mode: single
 
-- id: arrosage_cedres_canicule
-  alias: "Arrosage cèdres - canicule"
-  description: "Arrosage supplémentaire mar/jeu/sam/dim si température ≥ 30°C"
-  triggers:
-    - trigger: time
-      at: "06:30:00"
-  conditions:
-    - condition: state
-      entity_id: input_boolean.arrosage_cedres_actif
-      state: "on"
-    - condition: template
-      value_template: "{{ now().month >= 5 and now().month <= 10 }}"
-    - condition: template
-      value_template: "{{ now().weekday() in [1, 3, 5, 6] }}"
-    - condition: template
-      value_template: >
-        {{ state_attr('weather.maison', 'temperature') | float(0) >= 30 }}
-    - condition: template
-      value_template: >
-        {{ states('weather.maison') not in ['rainy', 'pouring', 'lightning-rainy'] }}
-  actions:
-    - action: number.set_value
-      target:
-        entity_id: number.zone_1_manual_duration
-      data:
-        value: "{{ states('input_number.arrosage_cedres_duree') | int }}"
-    - action: switch.turn_on
-      target:
-        entity_id: switch.zone_1
-  mode: single
 
 - id: arrosage_cedres_arret_pluie
   alias: "Arrosage cèdres - arrêt si pluie"
-  description: "Coupe l'arrosage immédiatement si la pluie commence"
+  description: "Coupe l'arrosage si pluie significative (≥ 10mm) ou orage"
   triggers:
     - trigger: state
       entity_id: weather.maison
@@ -959,9 +932,12 @@
     - condition: state
       entity_id: switch.zone_1
       state: "on"
+    - condition: template
+      value_template: >
+        {{ states('weather.maison') in ['pouring', 'lightning-rainy'] or
+           state_attr('weather.maison', 'precipitation') | float(0) >= 10 }}
   actions:
     - action: switch.turn_off
       target:
         entity_id: switch.zone_1
-  mode: single
   mode: single
