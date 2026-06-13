@@ -149,6 +149,11 @@ flaresolverr.drynish.synology.me {
 	reverse_proxy flaresolverr:8191
 }
 
+overseerr.drynish.synology.me {
+	import crowdsec_protect
+	reverse_proxy overseerr:5055
+}
+
 homeassistant.drynish.synology.me {
 	import crowdsec_protect
 	@local client_ip 192.168.13.0/24 192.168.90.0/24
@@ -193,6 +198,25 @@ nas.drynish.synology.me {
 			header_up X-Forwarded-Proto {scheme}
 		}
 	}
+	respond 403
+}
+
+ollama.drynish.synology.me {
+	import crowdsec_protect
+	@local client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
+
+	handle @local {
+		reverse_proxy 192.168.90.4:11434
+	}
+
+	handle {
+		forward_auth http://authelia:9091 {
+			uri /api/verify?rd=https://auth.drynish.synology.me
+			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+		}
+		reverse_proxy 192.168.90.4:11434
+	}
+
 	respond 403
 }
 
