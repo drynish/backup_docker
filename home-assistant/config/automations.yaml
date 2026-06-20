@@ -885,20 +885,6 @@
           interruption-level: critical
         ttl: 0
         priority: high
-- id: arrosage_sauvegarder_pluie_hier
-  alias: 'Arrosage: Sauvegarder pluie du jour'
-  description: Sauvegarde la pluie accumulée du jour dans input_number.pluie_hier avant le reset de minuit
-  triggers:
-  - trigger: time
-    at: '23:59:00'
-  conditions: []
-  actions:
-  - action: input_number.set_value
-    target:
-      entity_id: input_number.pluie_hier
-    data:
-      value: '{{ states(''sensor.pluie_aujourd_hui'') | float(0) }}'
-  mode: single
 - id: arrosage_cedres_normal
   alias: Arrosage cèdres - programme normal
   description: Jours pairs à 6h30, 18h30 et 20h00, mai-oct, si pas de pluie (règlement
@@ -917,9 +903,10 @@
   - condition: template
     value_template: '{{ now().day % 2 == 0 }}'
   - condition: template
-    value_template: "{{ states('weather.maison') not in ['rainy', 'pouring', 'lightning-rainy']\n\
-      \   and states('sensor.pluie_aujourd_hui') | float(0) < 10\n   and states('input_number.pluie_hier')\
-      \ | float(0) < 20 }}\n"
+    value_template: >
+      {{ states('weather.maison') not in ['rainy', 'pouring', 'lightning-rainy']
+         and states('sensor.pluie_hier') | float(0) < states('input_number.seuil_pluie_hier') | float(20)
+         and states('sensor.pluie_prevue_aujourd_hui') | float(0) < states('input_number.seuil_pluie_aujourd_hui') | float(10) }}
   actions:
   - action: number.set_value
     target:

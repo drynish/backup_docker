@@ -141,6 +141,22 @@ sensor:
     state: >
       {{ (states('sensor.cph25_miles_hour_added') | float(0) * 1.60934) | round(1) }}
 
+  - name: "Pluie hier"
+    unique_id: pluie_hier
+    unit_of_measurement: mm
+    device_class: precipitation
+    state_class: measurement
+    state: >
+      {{ state_attr('sensor.precipitations_open_meteo', 'precipitation_sum')[0] | float(0) }}
+
+  - name: "Pluie prevue aujourd'hui"
+    unique_id: pluie_prevue_aujourd_hui
+    unit_of_measurement: mm
+    device_class: precipitation
+    state_class: measurement
+    state: >
+      {{ state_attr('sensor.precipitations_open_meteo', 'precipitation_sum')[1] | float(0) }}
+
 switch:
   - name: grizzle_charge
     state: "{{ is_state('binary_sensor.grizzl_e_evseenabled', 'off') }}"

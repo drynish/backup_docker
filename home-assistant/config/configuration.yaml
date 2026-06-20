@@ -14,20 +14,26 @@ input_button:
 input_boolean:
 input_datetime:
 input_number:
-  pluie_hier:
-    name: Pluie hier
+  seuil_pluie_hier:
+    name: Seuil pluie hier (mm)
     min: 0
-    max: 500
-    step: 0.1
+    max: 100
+    step: 1
+    initial: 20
+    unit_of_measurement: mm
+    mode: box
+  seuil_pluie_aujourd_hui:
+    name: Seuil pluie aujourd'hui prévue (mm)
+    min: 0
+    max: 100
+    step: 1
+    initial: 10
     unit_of_measurement: mm
     mode: box
 input_select:
 input_text:
 timer:
 utility_meter:
-  pluie_aujourd_hui:
-    source: sensor.pluie_accumulee
-    cycle: daily
 
 group: !include groups.yaml
 automation: !include automations.yaml
@@ -53,25 +59,32 @@ sensor:
     round: 2
     method: trapezoidal
 
-  - platform: integration
-    source: sensor.openweathermap_rain
-    name: Pluie accumulée
-    unique_id: pluie_accumulee
-    unit_time: h
-    round: 2
-    method: left
+  - platform: rest
+    name: "Précipitations Open-Meteo"
+    unique_id: precipitations_openmeteo
+    resource: "https://api.open-meteo.com/v1/forecast?latitude=45.74743132532387&longitude=-73.46529360103081&daily=precipitation_sum&timezone=America%2FToronto&forecast_days=1&past_days=1"
+    scan_interval: 3600
+    value_template: "{{ value_json.daily.precipitation_sum[1] | float(0) }}"
+    unit_of_measurement: mm
+    device_class: precipitation
+    json_attributes_path: "$.daily"
+    json_attributes:
+      - precipitation_sum
+      - time
 
   - platform: time_date
     display_options:
     - 'time'
   - platform: waste_collection_schedule
     name: Collecte
+    unique_id: collecte
     types:
       - Déchets
       - Recyclage
       - Composte
   - platform: statistics
     name: "Distance moyenne déchets 1h"
+    unique_id: distance_moyenne_dechets_1h
     entity_id: sensor.cp28_8eb2_estimated_distance
     state_characteristic: mean
     max_age:
@@ -79,6 +92,7 @@ sensor:
     sampling_size: 50
   - platform: statistics
     name: "Distance moyenne composte 1h"
+    unique_id: distance_moyenne_composte_1h
     entity_id: sensor.cp27_55dd_estimated_distance
     state_characteristic: mean
     max_age:
@@ -86,6 +100,7 @@ sensor:
     sampling_size: 50
   - platform: statistics
     name: "Distance moyenne recyclage 1h"
+    unique_id: distance_moyenne_recyclage_1h
     entity_id: sensor.cp28_8e9e_estimated_distance
     state_characteristic: mean
     max_age:
