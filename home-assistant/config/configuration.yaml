@@ -77,7 +77,6 @@ sensor:
     - 'time'
   - platform: waste_collection_schedule
     name: Collecte
-    unique_id: collecte
     types:
       - Déchets
       - Recyclage
