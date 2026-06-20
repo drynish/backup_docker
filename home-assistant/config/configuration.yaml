@@ -72,6 +72,17 @@ sensor:
       - precipitation_sum
       - time
 
+  - platform: rest
+    name: "Précipitations EC L'Assomption"
+    unique_id: precipitations_ec_lassomption
+    resource_template: "https://api.weather.gc.ca/collections/climate-daily/items?CLIMATE_IDENTIFIER=7014160&datetime={{ (now().date() - timedelta(days=1)).isoformat() }}&f=json"
+    scan_interval: 3600
+    value_template: >
+      {{ value_json.features[0].properties.TOTAL_PRECIPITATION | float(0)
+         if value_json.features | length > 0 else 0 }}
+    unit_of_measurement: mm
+    device_class: precipitation
+
   - platform: time_date
     display_options:
     - 'time'

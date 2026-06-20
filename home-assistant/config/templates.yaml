@@ -147,7 +147,7 @@ sensor:
     device_class: precipitation
     state_class: measurement
     state: >
-      {{ state_attr('sensor.precipitations_open_meteo', 'precipitation_sum')[0] | float(0) }}
+      {{ states('sensor.precipitations_ec_l_assomption') | float(0) }}
 
   - name: "Pluie prevue aujourd'hui"
     unique_id: pluie_prevue_aujourd_hui
