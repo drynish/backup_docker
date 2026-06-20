@@ -157,8 +157,13 @@ overseerr.drynish.synology.me {
 homeassistant.drynish.synology.me {
 	import crowdsec_protect
 	@local client_ip 192.168.13.0/24 192.168.90.0/24
+	@websocket path /api/websocket
 
 	handle @local {
+		reverse_proxy 10.88.88.2:8123
+	}
+
+	handle @websocket {
 		reverse_proxy 10.88.88.2:8123
 	}
 
