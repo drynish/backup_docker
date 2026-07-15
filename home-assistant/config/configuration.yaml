@@ -12,6 +12,8 @@ lovelace:
 
 input_button:
 input_boolean:
+  collecte_bacs_confirmee:
+    name: Collecte bacs confirmée
 input_datetime:
 input_number:
   seuil_pluie_hier:
@@ -178,4 +180,3 @@ waste_collection_schedule:
         - type: Composte
           alias: Composte
           icon: mdi:leaf
-

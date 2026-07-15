@@ -415,48 +415,75 @@
     domain: switch
   mode: single
 - id: '1760743167349'
-  alias: 'Calendrier: Déchets'
+  alias: 'Calendrier: Rappel collecte bacs'
   description: ''
   triggers:
   - trigger: time_pattern
     hours: /1
   conditions:
   - condition: template
-    value_template: '{{ state_attr(''sensor.collecte'', (now().date() + timedelta(days=1)).isoformat())
-      == ''Déchets'' }}
-
-      '
+    value_template: >-
+      {% set demain = (now().date() + timedelta(days=1)).isoformat() %}
+      {% set brut = state_attr('sensor.collecte', demain) %}
+      {% if brut is string %}
+        {% set collectes = brut.split(',') | map('trim') | list %}
+      {% elif brut is iterable and brut is not string %}
+        {% set collectes = brut | list %}
+      {% else %}
+        {% set collectes = [] %}
+      {% endif %}
+      {{ collectes | select('in', ['Déchets', 'Recyclage', 'Composte']) | list | count > 0 }}
   - condition: time
     after: '17:00:00'
     before: '23:00:00'
-  - condition: numeric_state
-    entity_id: sensor.distance_moyenne_dechets_1h
-    below: 40
+  - condition: state
+    entity_id: input_boolean.collecte_bacs_confirmee
+    state: 'off'
   actions:
-  - action: notify.notify
+  - action: notify.mobile_app_michels_iphone
     metadata: {}
     data:
-      message: Mettre poubelle au chemin
-      title: Poubelle
+      title: Collecte demain
+      message: >-
+        {% set demain = (now().date() + timedelta(days=1)).isoformat() %}
+        {% set brut = state_attr('sensor.collecte', demain) %}
+        {% if brut is string %}
+          {% set collectes = brut.split(',') | map('trim') | list %}
+        {% elif brut is iterable and brut is not string %}
+          {% set collectes = brut | list %}
+        {% else %}
+          {% set collectes = [] %}
+        {% endif %}
+        {% set cible = collectes | select('in', ['Déchets', 'Recyclage', 'Composte']) | list %}
+        Sors : {{ cible | join(' + ') }}. Quand ce sera fait, appuie sur "C'est fait" et je ne te renotifierai plus ce soir.
+      data:
+        tag: rappel_collecte_bacs
+        actions:
+        - action: COLLECTE_BACS_FAIT
+          title: C'est fait
   mode: single
 - id: '1760743341892'
-  alias: 'Calendrier: Composte'
+  alias: 'Calendrier: Confirmation bacs sortis'
   description: ''
   triggers:
-  - trigger: time
-    at: '20:00:00'
-  conditions:
-  - condition: template
-    value_template: '{{ state_attr(''sensor.collecte'', (now().date() + timedelta(days=1)).isoformat())
-      == ''Composte'' }}
-
-      '
+  - trigger: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: COLLECTE_BACS_FAIT
+  conditions: []
   actions:
-  - action: notify.notify
+  - action: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.collecte_bacs_confirmee
+  - action: notify.mobile_app_michels_iphone
     metadata: {}
     data:
-      message: Mettre Composte au chemin
-      title: Composte
+      message: Merci, je ne te relancerai plus ce soir.
+      data:
+        tag: rappel_collecte_bacs
+        clear_notification: true
   mode: single
 - id: '1772155570004'
   alias: 'Hilo: Laveuse/sécheuse démarrée pendant un événement'
@@ -550,29 +577,18 @@
       entity_id: button.cph25_stop_charging
   mode: single
 - id: '1767727234245'
-  alias: 'Calendrier: Recyclage'
+  alias: 'Calendrier: Réinitialiser confirmation collecte'
   description: ''
   triggers:
-  - trigger: time_pattern
-    hours: /1
-  conditions:
-  - condition: template
-    value_template: '{{ state_attr(''sensor.collecte'', (now().date() + timedelta(days=1)).isoformat())
-      == ''Recyclage'' }}
-
-      '
-  - condition: time
-    after: '17:00:00'
-    before: '23:00:00'
-  - condition: numeric_state
-    entity_id: sensor.distance_moyenne_recyclage_1h
-    below: 40
+  - trigger: time
+    at: 00:05:00
+  conditions: []
   actions:
-  - action: notify.notify
+  - action: input_boolean.turn_off
     metadata: {}
-    data:
-      message: Mettre Recyclage au chemin
-      title: Recyclage
+    data: {}
+    target:
+      entity_id: input_boolean.collecte_bacs_confirmee
   mode: single
 - id: '1772155569015'
   alias: 'Salle de jeu: Éteindre lumière après 2h'
@@ -597,7 +613,7 @@
       entity_id: switch.lumiere_salle_de_jeu
   mode: restart
 - id: '1772937225179'
-  alias: 'Détecteur eau: Démarrer pompe Esther'
+  alias: 'Esther: Détecteur eau -> Démarrer pompe'
   description: ''
   triggers:
   - type: moist
@@ -903,10 +919,10 @@
   - condition: template
     value_template: '{{ now().day % 2 == 0 }}'
   - condition: template
-    value_template: >
-      {{ states('weather.maison') not in ['rainy', 'pouring', 'lightning-rainy']
-         and states('sensor.pluie_hier') | float(0) < states('input_number.seuil_pluie_hier') | float(20)
-         and states('sensor.pluie_prevue_aujourd_hui') | float(0) < states('input_number.seuil_pluie_aujourd_hui') | float(10) }}
+    value_template: "{{ states('weather.maison') not in ['rainy', 'pouring', 'lightning-rainy']\n
+      \  and states('sensor.pluie_hier') | float(0) < states('input_number.seuil_pluie_hier')
+      | float(20)\n   and states('sensor.pluie_prevue_aujourd_hui') | float(0) < states('input_number.seuil_pluie_aujourd_hui')
+      | float(10) }}\n"
   actions:
   - action: number.set_value
     target:
@@ -938,4 +954,54 @@
   - action: switch.turn_off
     target:
       entity_id: switch.zone_1
+  mode: single
+- id: alerte_melnor_zones_inaccessibles
+  alias: Arrosage cèdres - alerte zone inaccessible
+  description: Notification critique quand une zone Melnor devient inaccessible.
+  triggers:
+  - trigger: state
+    entity_id:
+    - switch.zone_1
+    - switch.zone_2
+    to: unavailable
+    for:
+      minutes: 2
+  conditions: []
+  actions:
+  - action: notify.notify
+    data:
+      title: Urgent
+      message: '{% set zone = trigger.to_state.name if trigger is defined and trigger.to_state
+        is defined else ''Une zone Melnor'' %} {{ zone }} est inaccessible (batterie
+        faible possible).'
+  mode: single
+- id: switch_sonoff_chambre_vs_cuisine
+  alias: Température trop haute chambre principale
+  description: Allume le switch quand la chambre est plus chaude que la cuisine; sinon
+    l'éteint.
+  triggers:
+  - trigger: state
+    entity_id: climate.chambre_des_maitres
+    attribute: current_temperature
+  - trigger: state
+    entity_id: climate.cuisine_2
+    attribute: current_temperature
+  - trigger: homeassistant
+    event: start
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: "{{ state_attr('climate.chambre_des_maitres', 'current_temperature')
+          | float(-1000)\n   > state_attr('climate.cuisine_2', 'current_temperature')
+          | float(-1000) }}"
+      sequence:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.sonoff_100206027c
+    default:
+    - action: switch.turn_off
+      target:
+        entity_id: switch.sonoff_100206027c
   mode: single
