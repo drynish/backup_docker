@@ -2,6 +2,7 @@ version: "3"
 services:
   watchtower:
     image: nickfedor/watchtower
+    container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 3600

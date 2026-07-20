@@ -1,0 +1,15 @@
+services:
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    environment:
+      - TZ=America/Montreal
+    volumes:
+      - /home/drynish/docker/overseerr/config:/app/config
+    restart: unless-stopped
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    external: true

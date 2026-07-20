@@ -87,6 +87,19 @@ services:
     labels:
        caddy: flaresolverr.drynish.synology.me
        caddy.reverse_proxy: "{{upstreams 8191}}"
+
+  overseerr:
+    image:  ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
+    init: true
+    environment:
+      - TZ=America/Montreal
+    volumes:
+      - /home/drynish/docker/overseerr/config:/app/config
+    restart: unless-stopped
+    networks:
+      - caddy
+
 networks:
   caddy:
     external: true

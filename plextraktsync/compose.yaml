@@ -1,0 +1,15 @@
+services:
+  plextraktsync:
+    image: ghcr.io/taxel/plextraktsync:latest
+    container_name: plextraktsync
+    environment:
+      - PUID=1026
+      - PGID=1026
+      - TZ=America/Toronto
+    volumes:
+      - ./config:/app/config
+    # Pas de network_mode: host nécessaire ici — c'est un client qui va
+    # se connecter au Plex existant via son adresse réseau (ZoneMAC),
+    # pas un serveur qu'on veut découvrir sur le LAN.
+    stdin_open: true   # nécessaire pour l'auth interactive Plex/Trakt (OAuth) au premier lancement
+    tty: true

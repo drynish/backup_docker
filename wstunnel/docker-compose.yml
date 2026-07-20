@@ -1,0 +1,11 @@
+services:
+  wstunnel:
+    image: ghcr.io/erebe/wstunnel:latest
+    container_name: wstunnel
+    restart: unless-stopped
+    command: >
+      /home/app/wstunnel server
+      --log-lvl INFO
+      --restrict-to 192.168.130.1:51820
+      ws://0.0.0.0:8080
+    network_mode: host

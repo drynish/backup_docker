@@ -1,0 +1,12 @@
+servers:
+  default:
+    token: null
+    urls:
+    - null
+    - null
+  ZonePLEX:
+    token: 2y6us9cRxRrsxiNsxfPC
+    urls:
+    - https://10-88-88-2.d430a461539242daaf3d0a3725271abe.plex.direct:32400
+    - http://10.88.88.2:32400
+    id: f5d21bc9beb48fa779d8c6287bda7888e5124e66

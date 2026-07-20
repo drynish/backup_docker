@@ -1,0 +1,66 @@
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host   # recommandé par linuxserver pour la découverte GDM/DLNA et éviter les soucis de streaming/transcodage
+    environment:
+      - PUID=1026
+      - PGID=1026
+      - TZ=America/Toronto
+      - VERSION=docker
+      - PLEX_CLAIM=claim-eKq3YyjuzCGfu1bX87Qg   # remplace par un token frais de https://plex.tv/claim (valide 4 min seulement)
+    volumes:
+      - /home/drynish/plex:/config
+      - /home/drynish/mnt/Movies:/movies
+      - /home/drynish/mnt/Series:/tv
+      - /home/drynish/mnt/Music:/music
+    restart: unless-stopped
+
+  plextraktsync-watch:
+    image: ghcr.io/taxel/plextraktsync:latest
+    container_name: plextraktsync-watch
+    command: watch
+    restart: unless-stopped
+    environment:
+      - PUID=1026
+      - PGID=1026
+      - TZ=America/Toronto
+      - PLEX_USERNAME=drynish
+      - TRAKT_USERNAME=drynish
+      - PLEX_SERVER=ZonePLEX
+      - PLEX_ACCOUNT_TOKEN=kCThsmRVLgWeFssMZTJX
+    volumes:
+      - /home/drynish/docker/plextraktsync/config:/app/config
+    depends_on:
+      - plex
+
+  plextraktsync-sync:
+    image: ghcr.io/taxel/plextraktsync:latest
+    container_name: plextraktsync-sync
+    command: sync
+    restart: "no"
+    environment:
+      - PUID=1026
+      - PGID=1026
+      - TZ=America/Toronto
+      - PLEX_USERNAME=drynish
+      - TRAKT_USERNAME=drynish
+      - PLEX_SERVER=ZonePLEX
+      - PLEX_ACCOUNT_TOKEN=kCThsmRVLgWeFssMZTJX
+    volumes:
+      - /home/drynish/docker/plextraktsync/config:/app/config
+    depends_on:
+      - plex
+
+  scheduler:
+    image: mcuadros/ofelia:latest
+    container_name: ofelia
+    depends_on:
+      - plextraktsync-sync
+    command: daemon --docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      ofelia.job-run.plextraktsync-sync.schedule: "@every 6h"
+      ofelia.job-run.plextraktsync-sync.container: "plextraktsync-sync"
+    restart: unless-stopped

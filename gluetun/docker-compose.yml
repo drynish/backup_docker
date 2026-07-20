@@ -15,9 +15,9 @@ services:
       - 6881:6881/udp
     restart: unless-stopped
     volumes:
-      - /home/drynish/docker/gluetun:/gluetun    
+      - /home/drynish/docker/gluetun:/gluetun
     dns: 9.9.9.9
-    networks: 
+    networks:
       - caddy
     environment:
       - VPN_SERVICE_PROVIDER=surfshark
@@ -50,11 +50,19 @@ services:
     depends_on:
       gluetun:
         condition: service_healthy
-
     network_mode: "service:gluetun" # <-- ici
+
+  autoheal:
+    image: willfarrell/autoheal:latest
+    container_name: autoheal
+    restart: unless-stopped
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=autoheal
+      - AUTOHEAL_INTERVAL=30
+      - AUTOHEAL_START_PERIOD=60
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   caddy:
     external: true
-
-

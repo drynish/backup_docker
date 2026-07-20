@@ -67,30 +67,31 @@ ecole.dicroci.website {
 }
 
 plex.dicroci.website {
-	import crowdsec_protect
-	@rootPath {
-		path /
-	}
+    import crowdsec_protect
 
-	redir @rootPath /web/index.html
+    redir / /web/index.html
 
-	reverse_proxy http://192.168.90.4:32400 {
-		header_up Host {host}
-		header_up X-Forwarded-Proto {scheme}
-		header_up X-Forwarded-Host {host}
-		header_up X-Real-IP {remote}
-		header_up X-Forwarded-For {remote}
-		header_up X-Plex-Client-Identifier {remote_host}
+    reverse_proxy http://10.88.88.2:32400 {
+        header_up Host {host}
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Plex-Client-Identifier {remote_host}
+        transport http {
+            versions 1.1
+            read_timeout 0
+            write_timeout 0
+        }
+        health_uri /identity
+        health_interval 5s
+        health_timeout 2s
+        fail_duration 10s
+    }
 
-		transport http {
-			versions 1.1
-			read_timeout 0
-			write_timeout 0
-		}
-	}
-	tls {
-		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
-	}
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+    }
 }
 
 wiki.dicroci.website {
@@ -149,9 +150,9 @@ flaresolverr.drynish.synology.me {
 	reverse_proxy flaresolverr:8191
 }
 
-overseerr.drynish.synology.me {
+seerr.drynish.synology.me {
 	import crowdsec_protect
-	reverse_proxy overseerr:5055
+	reverse_proxy seerr:5055
 }
 
 homeassistant.drynish.synology.me {
