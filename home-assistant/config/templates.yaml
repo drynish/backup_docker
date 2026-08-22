@@ -3,19 +3,19 @@ sensor:
     unit_of_measurement: "°C"
     unique_id: "temperature_extérieure"
     state: >
-      {{ state_attr("weather.maison", "temperature") | float(0) }}
+      {{ state_attr("weather.repentigny", "temperature") | float(0) }}
 
   - name: "Température extérieure + 1 "
     unit_of_measurement: "°C"
     unique_id: "temperature_exterieure_plus_1"
     state: >
-      {{ (state_attr("weather.maison", "temperature") | float(0)) + 1 }}
+      {{ (state_attr("weather.repentigny", "temperature") | float(0)) + 1 }}
 
   - name: "Humidité extérieure"
     unit_of_measurement: "%"
     unique_id: "humidity_extérieure"
     state: >
-      {{ state_attr("weather.maison", "humidity") | float(0) }}
+      {{ state_attr("weather.repentigny", "humidity") | float(0) }}
 
   - name: "10 days consumption - Laveuse"
     unit_of_measurement: "kWh"

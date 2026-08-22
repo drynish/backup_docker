@@ -37,6 +37,11 @@ input_text:
 timer:
 utility_meter:
 
+recorder:
+  purge_keep_days: 14
+  auto_purge: true
+  auto_repack: true
+
 group: !include groups.yaml
 automation: !include automations.yaml
 template: !include templates.yaml
@@ -136,22 +141,6 @@ sonoff:
         current: [5, 3600, 0.1]
         voltage: [60, 3600, 5]
         energy: [3600, 10]
-
-adaptive_lighting:
-  - name: "Principal"
-    lights:
-      - light.cuisine
-      - light.salle_a_manger
-      - light.lumiere_salle_de_bain
-      - light.lumiere_chambre
-    min_brightness: 5
-    max_brightness: 70
-    sleep_brightness: 5
-    brightness_mode: "tanh"
-    brightness_mode_time_dark: "00:45:00"
-    brightness_mode_time_light: "01:30:00"
-    take_over_control: true
-    transition: 60
 
 zone:
   - name: Cegep
