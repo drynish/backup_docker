@@ -7,6 +7,11 @@
         - 80:80
         - 443:443
         - 443:443/udp
+      logging:
+        driver: json-file
+        options:
+          max-size: "20m"
+          max-file: "5"
       environment:
         - CADDY_INGRESS_NETWORKS=caddy
         - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}

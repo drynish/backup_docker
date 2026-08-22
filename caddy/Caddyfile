@@ -66,6 +66,14 @@ ecole.dicroci.website {
 	}
 }
 
+scrobblex.dicroci.website {
+        import crowdsec_protect
+        reverse_proxy scrobblex:3090
+        tls {
+                dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        }
+}
+
 plex.dicroci.website {
     import crowdsec_protect
 
@@ -207,25 +215,6 @@ nas.drynish.synology.me {
 	respond 403
 }
 
-ollama.drynish.synology.me {
-	import crowdsec_protect
-	@local client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
-
-	handle @local {
-		reverse_proxy 192.168.90.4:11434
-	}
-
-	handle {
-		forward_auth http://authelia:9091 {
-			uri /api/verify?rd=https://auth.drynish.synology.me
-			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-		}
-		reverse_proxy 192.168.90.4:11434
-	}
-
-	respond 403
-}
-
 omada.drynish.synology.me {
 	import crowdsec_protect
 	@local client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
@@ -290,24 +279,24 @@ sonarr.drynish.synology.me {
 }
 
 wol.drynish.synology.me {
-	import crowdsec_protect
-	@local client_ip 192.168.90.0/24 192.168.200.0/24 192.168.130.0/24 10.88.88.0/24
+        import crowdsec_protect
+        @local client_ip 192.168.90.0/24 192.168.200.0/24 192.168.130.0/24 10.88.88.0/24
 
-	handle @local {
-		@rootPath path /
-		redir @rootPath /api/wakeup/computer/Windows
-		reverse_proxy 192.168.90.3:4000
-	}
+        handle @local {
+                @rootPath path /
+                redir @rootPath /api/wakeup/computer/Windows
+                reverse_proxy 192.168.90.3:4000
+        }
 
-	handle {
-		forward_auth authelia:9091 {
-			uri /api/verify?rd=https://auth.drynish.synology.me
-			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-		}
-		@rootPath path /
-		redir @rootPath /api/wakeup/computer/Windows
-		reverse_proxy 192.168.90.3:4000
-	}
+        handle {
+                forward_auth authelia:9091 {
+                        uri /api/verify?rd=https://auth.drynish.synology.me
+                        copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
+                }
+                @rootPath path /
+                redir @rootPath /api/wakeup/computer/Windows
+                reverse_proxy 192.168.90.3:4000
+        }
 }
 
 wstunnel.drynish.synology.me {

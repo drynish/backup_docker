@@ -14,6 +14,14 @@ services:
       - 6881:6881 # <-- port torrent (TCP/UDP)
       - 6881:6881/udp
     restart: unless-stopped
+    labels:
+      - autoheal=true
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --timeout=10 --spider https://ipinfo.io || exit 1"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 60s
     volumes:
       - /home/drynish/docker/gluetun:/gluetun
     dns: 9.9.9.9
@@ -30,16 +38,13 @@ services:
       - HTTPPROXY=off #change to on if you wish to enble
       - SHADOWSOCKS=off #change to on if you wish to enable
       - FIREWALL_OUTBOUND_SUBNETS=172.26.0.0/16,192.168.88.0/24
-    labels:
-      caddy: download.drynish.synology.me
-      caddy.reverse_proxy: "{{upstreams 8999}}"
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     environment:
       - PUID=1026
       - PGID=100
-      - TZ=Etc/Montreal
+      - TZ=ETC/Montreal
       - WEBUI_PORT=8999
       - TORRENTING_PORT=6881
     volumes:
@@ -47,9 +52,6 @@ services:
       - /home/drynish/mnt/Download:/downloads
     restart: unless-stopped
     cpu_shares: 256
-    depends_on:
-      gluetun:
-        condition: service_healthy
     network_mode: "service:gluetun" # <-- ici
 
   autoheal:

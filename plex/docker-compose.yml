@@ -1,6 +1,6 @@
 services:
   plex:
-    image: lscr.io/linuxserver/plex:latest
+    image: plexinc/pms-docker:latest
     container_name: plex
     network_mode: host   # recommandé par linuxserver pour la découverte GDM/DLNA et éviter les soucis de streaming/transcodage
     environment:
@@ -8,7 +8,9 @@ services:
       - PGID=1026
       - TZ=America/Toronto
       - VERSION=docker
-      - PLEX_CLAIM=claim-eKq3YyjuzCGfu1bX87Qg   # remplace par un token frais de https://plex.tv/claim (valide 4 min seulement)
+      - PLEX_CLAIM=claim-3jemxYXF6WdtnhiBroqs  # remplace par un token frais de https://plex.tv/claim (valide 4 min seulement)
+    devices:
+      - /dev/dri:/dev/dri
     volumes:
       - /home/drynish/plex:/config
       - /home/drynish/mnt/Movies:/movies

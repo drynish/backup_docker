@@ -5,8 +5,9 @@ servers:
     - null
     - null
   ZonePLEX:
-    token: 2y6us9cRxRrsxiNsxfPC
+    token: kLB7EdLr7Qz2pNnSyKbf
     urls:
-    - https://10-88-88-2.d430a461539242daaf3d0a3725271abe.plex.direct:32400
+    - https://10-88-88-2.2e722df744974db9806f243d4361c649.plex.direct:32400
     - http://10.88.88.2:32400
-    id: f5d21bc9beb48fa779d8c6287bda7888e5124e66
+    - https://plex.dicroci.website:32400
+    id: 922f09f092806307b0c85cc0cea67f042d00d904

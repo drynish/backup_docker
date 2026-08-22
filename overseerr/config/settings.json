@@ -29,7 +29,8 @@
   "partialRequestsEnabled": true,
   "enableSpecialEpisodes": false,
   "locale": "en",
-  "youtubeUrl": ""
+  "youtubeUrl": "",
+  "versionCheck": true
  },
  "plex": {
   "name": "Studio Max",

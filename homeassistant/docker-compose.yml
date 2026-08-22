@@ -34,30 +34,6 @@ services:
     networks:
       - caddy
 
-  hydroqc2mqtt:
-    container_name: hydro2mqtt
-    image: hydroqc2mqtt-patched:latest
-    restart: unless-stopped
-    environment:
-      MQTT_USERNAME: ${MQTT_USERNAME}
-      MQTT_PASSWORD: ${MQTT_PASSWORD}
-      MQTT_HOST: 'mosquitto'
-      MQTT_PORT: '1883'
-      HQ2M_CONTRACTS_0_NAME: 'maison'
-      HQ2M_CONTRACTS_0_USERNAME: ${HQ2M_USERNAME}
-      HQ2M_CONTRACTS_0_PASSWORD: ${HQ2M_PASSWORD}
-      HQ2M_CONTRACTS_0_CUSTOMER: ${HQ2M_CUSTOMER}
-      HQ2M_CONTRACTS_0_ACCOUNT: ${HQ2M_ACCOUNT}
-      HQ2M_CONTRACTS_0_CONTRACT: ${HQ2M_CONTRACT}
-      HQ2M_CONTRACTS_0_RATE: 'DPC'
-      HQ2M_CONTRACTS_0_RATE_OPTION: ''
-      HQ2M_CONTRACTS_0_PREHEAT_DURATION_MINUTES: '120'
-      HQ2M_CONTRACTS_0_SYNC_HOURLY_CONSUMPTION_ENABLED: "true"
-      HQ2M_CONTRACTS_0_HOME_ASSISTANT_WEBSOCKET_URL: 'wss://homeassistant.drynish.synology.me/api/websocket'
-      HQ2M_CONTRACTS_0_HOME_ASSISTANT_TOKEN: ${HQ2M_TOKEN}
-    networks:
-      - caddy
-
   zigbee2mqtt:
     container_name: zigbee2mqtt
     image: koenkk/zigbee2mqtt
