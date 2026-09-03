@@ -968,7 +968,9 @@
   mode: single
 - id: alerte_melnor_zones_inaccessibles
   alias: Arrosage cèdres - alerte zone inaccessible
-  description: Notification critique quand une zone Melnor devient inaccessible.
+  description: Notification critique quand une zone Melnor devient inaccessible
+    (max 1 notification aux 12h pour éviter le spam si la batterie faible cause
+    des déconnexions répétées).
   triggers:
   - trigger: state
     entity_id:
@@ -977,7 +979,13 @@
     to: unavailable
     for:
       minutes: 2
-  conditions: []
+  conditions:
+  - condition: template
+    value_template: '{% set dernier = state_attr(this.entity_id, ''last_triggered'')
+      %} {{ dernier is none or (as_timestamp(now()) - as_timestamp(dernier)) > 43200
+      }}
+
+      '
   actions:
   - action: notify.notify
     data:
