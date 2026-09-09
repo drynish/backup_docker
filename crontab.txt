@@ -3,8 +3,10 @@
 # Chaque nuit à minuit
 0 0 * * * /home/drynish/bin/update-ha-integrations.sh >> /home/drynish/bin/update-ha-integrations.log 2>&1
 
+# Chaque nuit à 3h (après le dump auto de la base Immich à 2h)
+0 3 * * * /home/drynish/bin/backup-immich-protondrive.sh >> /home/drynish/bin/backup-immich-protondrive.log 2>&1
+
 # Chaque dimanche
 0 2 * * 0 /home/drynish/bin/sync-portainer-stacks.sh >> /home/drynish/bin/sync-portainer-stacks.log 2>&1
-0 3 * * 0 /home/drynish/docker/omada/cleanup-logs.sh
 0 4 * * 0 /home/drynish/bin/update-caddy.sh >> /home/drynish/bin/update-caddy.log 2>&1
 0 6 * * 0 /home/drynish/docker/hydroqc2mqtt/build.sh >> /home/drynish/docker/hydroqc2mqtt/build.log 2>&1

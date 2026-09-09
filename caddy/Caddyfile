@@ -163,6 +163,11 @@ seerr.drynish.synology.me {
 	reverse_proxy seerr:5055
 }
 
+immich.drynish.synology.me {
+	import crowdsec_protect
+	reverse_proxy immich_server:2283
+}
+
 homeassistant.drynish.synology.me {
 	import crowdsec_protect
 	@local client_ip 192.168.13.0/24 192.168.90.0/24
@@ -212,35 +217,6 @@ nas.drynish.synology.me {
 			header_up X-Forwarded-Proto {scheme}
 		}
 	}
-	respond 403
-}
-
-omada.drynish.synology.me {
-	import crowdsec_protect
-	@local client_ip 192.168.90.0/24 192.168.13.0/24 10.88.88.2/32
-
-	handle @local {
-		reverse_proxy https://omada-controller:8043 {
-			transport http {
-				tls
-				tls_insecure_skip_verify
-			}
-		}
-	}
-
-	handle {
-		forward_auth http://authelia:9091 {
-			uri /api/verify?rd=https://auth.drynish.synology.me
-			copy_headers Remote-User Remote-Groups Remote-Name Remote-Email
-		}
-		reverse_proxy https://10.88.88.2:8043 {
-			transport http {
-				tls
-				tls_insecure_skip_verify
-			}
-		}
-	}
-
 	respond 403
 }
 
