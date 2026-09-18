@@ -8,7 +8,7 @@ services:
       - PGID=1026
       - TZ=America/Toronto
       - VERSION=docker
-      - PLEX_CLAIM=claim-3jemxYXF6WdtnhiBroqs  # remplace par un token frais de https://plex.tv/claim (valide 4 min seulement)
+      - PLEX_CLAIM=${PLEX_CLAIM}  # token frais requis à chaque (re)claim depuis https://plex.tv/claim (valide 4 min seulement)
     devices:
       - /dev/dri:/dev/dri
     volumes:
@@ -18,51 +18,18 @@ services:
       - /home/drynish/mnt/Music:/music
     restart: unless-stopped
 
-  plextraktsync-watch:
-    image: ghcr.io/taxel/plextraktsync:latest
-    container_name: plextraktsync-watch
-    command: watch
+  scrobblex:
+    image: rickgc/scrobblex:latest
+    container_name: scrobblex
     restart: unless-stopped
     environment:
-      - PUID=1026
-      - PGID=1026
-      - TZ=America/Toronto
-      - PLEX_USERNAME=drynish
-      - TRAKT_USERNAME=drynish
-      - PLEX_SERVER=ZonePLEX
-      - PLEX_ACCOUNT_TOKEN=kCThsmRVLgWeFssMZTJX
+      - TRAKT_ID=${TRAKT_ID}
+      - TRAKT_SECRET=${TRAKT_SECRET}
     volumes:
-      - /home/drynish/docker/plextraktsync/config:/app/config
-    depends_on:
-      - plex
+      - /home/drynish/docker/scrobblex:/app/data
+    networks:
+      - caddy   # réseau partagé avec Caddy, pas de port publié sur l'host
 
-  plextraktsync-sync:
-    image: ghcr.io/taxel/plextraktsync:latest
-    container_name: plextraktsync-sync
-    command: sync
-    restart: "no"
-    environment:
-      - PUID=1026
-      - PGID=1026
-      - TZ=America/Toronto
-      - PLEX_USERNAME=drynish
-      - TRAKT_USERNAME=drynish
-      - PLEX_SERVER=ZonePLEX
-      - PLEX_ACCOUNT_TOKEN=kCThsmRVLgWeFssMZTJX
-    volumes:
-      - /home/drynish/docker/plextraktsync/config:/app/config
-    depends_on:
-      - plex
-
-  scheduler:
-    image: mcuadros/ofelia:latest
-    container_name: ofelia
-    depends_on:
-      - plextraktsync-sync
-    command: daemon --docker
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    labels:
-      ofelia.job-run.plextraktsync-sync.schedule: "@every 6h"
-      ofelia.job-run.plextraktsync-sync.container: "plextraktsync-sync"
-    restart: unless-stopped
+networks:
+  caddy:
+    external: true   # doit déjà exister — le même réseau que Caddy utilise pour proxier tes autres services

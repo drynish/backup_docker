@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  immich-server:
+    container_name: immich_server
+    image: ghcr.io/immich-app/immich-server:release
+    volumes:
+      - /home/drynish/mnt/Photos:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
+    devices:
+      - /dev/dri:/dev/dri
+    group_add:
+      - "989"    # remplace par TON GID de render
+    environment:
+      - DB_HOSTNAME=immich_postgres
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_DATABASE_NAME=immich
+      - REDIS_HOSTNAME=immich_redis
+    ports:
+      - '2283:2283'
+    networks:
+      - immich_net
+      - caddy
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+    depends_on:
+      - immich_redis
+      - immich_postgres
+    restart: always
+
+  immich-machine-learning:
+    container_name: immich_machine_learning
+    image: ghcr.io/immich-app/immich-machine-learning:release-openvino
+    devices:
+      - /dev/dri:/dev/dri
+    group_add:
+      - "989"
+    volumes:
+      - /home/drynish/docker/immich/model-cache:/cache
+    networks:
+      - immich_net
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+    restart: always
+
+  immich_redis:
+    container_name: immich_redis
+    image: docker.io/valkey/valkey:latest
+    healthcheck:
+      test: ['CMD', 'valkey-cli', 'ping']
+    networks:
+      - immich_net
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+    restart: always
+
+  immich_postgres:
+    container_name: immich_postgres
+    image: ghcr.io/immich-app/postgres:16-vectorchord0.3.0-pgvectors0.2.0
+    environment:
+      POSTGRES_DB: immich
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - /home/drynish/docker/immich/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d immich']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - immich_net
+    restart: always
+
+networks:
+  immich_net:
+    driver: bridge
+  caddy:
+    external: true

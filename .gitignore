@@ -65,6 +65,7 @@ prowlarr/Sentry/
 # Données runtime des services
 omada/data/
 mosquitto/data/
+mosquitto/config/mqtt_password
 prowlarr/Definitions/
 radarr/
 sonarr/
@@ -74,6 +75,10 @@ adguard/work/
 caddy/data/
 redis/
 wikijs/
+immich/model-cache/
+immich/postgres/
+protonmail-bridge/data/
+uptime-kuma/data/
 
 
 # Dossiers inaccessibles (root)
@@ -92,6 +97,7 @@ crowdsec/config/hub/scenarios/crowdsecurity/http-technology-probing.yaml
 crowdsec/data/google_special_crawlers_ipv4.txt
 crowdsec/data/google_special_crawlers_ipv6.txt
 crowdsec/data/technology_probing.json
+crowdsec/data/trendy_cves_uris.json
 
 # Synology metadata
 @eaDir/

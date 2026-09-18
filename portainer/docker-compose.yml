@@ -3,9 +3,6 @@ services:
     image: portainer/portainer-ce:sts
     container_name: portainer
     restart: always
-    ports:
-      - "8000:8000"
-      - "9000:9000"
     networks:
       - caddy
     volumes:

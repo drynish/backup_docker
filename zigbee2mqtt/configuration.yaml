@@ -6,6 +6,8 @@ frontend:
 mqtt:
   base_topic: zigbee2mqtt
   server: mqtt://mosquitto:1883
+  user: drynish
+  password: rPRnR8k5HnPg8uy
 serial:
   port: /dev/ttyUSB0
   adapter: zstack

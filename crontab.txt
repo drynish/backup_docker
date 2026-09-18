@@ -1,12 +1,16 @@
 # Crontab de drynish — à restaurer avec : crontab crontab.txt
 
 # Chaque nuit à minuit
-0 0 * * * /home/drynish/bin/update-ha-integrations.sh >> /home/drynish/bin/update-ha-integrations.log 2>&1
+0 0 * * * /home/drynish/bin/notify-run.sh /home/drynish/bin/update-ha-integrations.sh >> /home/drynish/bin/update-ha-integrations.log 2>&1
 
 # Chaque nuit à 3h (après le dump auto de la base Immich à 2h)
-0 3 * * * /home/drynish/bin/backup-immich-protondrive.sh >> /home/drynish/bin/backup-immich-protondrive.log 2>&1
+0 3 * * * /home/drynish/bin/notify-run.sh /home/drynish/bin/backup-immich-protondrive.sh >> /home/drynish/bin/backup-immich-protondrive.log 2>&1
+
+# Chaque nuit à 5h (après le backup Immich, pour éviter un accès concurrent à Proton Drive)
+0 5 * * * /home/drynish/bin/notify-run.sh /home/drynish/bin/backup-docker-protondrive.sh >> /home/drynish/bin/backup-docker-protondrive.log 2>&1
 
 # Chaque dimanche
-0 2 * * 0 /home/drynish/bin/sync-portainer-stacks.sh >> /home/drynish/bin/sync-portainer-stacks.log 2>&1
-0 4 * * 0 /home/drynish/bin/update-caddy.sh >> /home/drynish/bin/update-caddy.log 2>&1
-0 6 * * 0 /home/drynish/docker/hydroqc2mqtt/build.sh >> /home/drynish/docker/hydroqc2mqtt/build.log 2>&1
+0 1 * * 0 /home/drynish/bin/notify-run.sh /home/drynish/bin/docker-prune.sh >> /home/drynish/bin/docker-prune.log 2>&1
+0 2 * * 0 /home/drynish/bin/notify-run.sh /home/drynish/bin/sync-portainer-stacks.sh >> /home/drynish/bin/sync-portainer-stacks.log 2>&1
+0 4 * * 0 /home/drynish/bin/notify-run.sh /home/drynish/bin/update-caddy.sh >> /home/drynish/bin/update-caddy.log 2>&1
+0 6 * * 0 /home/drynish/bin/claude-security-audit.sh >> /home/drynish/bin/claude-security-audit.log 2>&1

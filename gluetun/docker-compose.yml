@@ -24,20 +24,31 @@ services:
       start_period: 60s
     volumes:
       - /home/drynish/docker/gluetun:/gluetun
-    dns: 9.9.9.9
+    dns: 10.2.0.1
     networks:
       - caddy
     environment:
-      - VPN_SERVICE_PROVIDER=surfshark
+      - VPN_SERVICE_PROVIDER=protonvpn
       - VPN_TYPE=wireguard
-      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
-      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
-      - SERVER_COUNTRIES=switzerland
-      - TZ=AMERICA/Montreal
-      - UPDATER_PERIOD=24h
-      - HTTPPROXY=off #change to on if you wish to enble
-      - SHADOWSOCKS=off #change to on if you wish to enable
-      - FIREWALL_OUTBOUND_SUBNETS=172.26.0.0/16,192.168.88.0/24
+      - WIREGUARD_PRIVATE_KEY=${PROTON_WG_KEY}
+      - WIREGUARD_ADDRESSES=10.2.0.2/32
+      - SERVER_COUNTRIES=Sweden
+      - PORT_FORWARD_ONLY=on
+      - VPN_PORT_FORWARDING=on
+      - VPN_PORT_FORWARDING_PROVIDER=protonvpn
+      - TZ=America/Toronto
+      - FIREWALL_OUTBOUND_SUBNETS=172.20.0.0/16,10.88.88.0/24
+      - FIREWALL_INPUT_PORTS=8999
+#     - VPN_SERVICE_PROVIDER=surshark #     - VPN_TYPE=wireguard
+#      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+#      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+#      - DNS=10.2.0.1
+#      - SERVER_COUNTRIES=switzerland
+#      - TZ=AMERICA/Montreal
+#      - UPDATER_PERIOD=24h
+#      - HTTPPROXY=off #change to on if you wish to enble
+#      - SHADOWSOCKS=off #change to on if you wish to enable
+
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
@@ -53,7 +64,6 @@ services:
     restart: unless-stopped
     cpu_shares: 256
     network_mode: "service:gluetun" # <-- ici
-
   autoheal:
     image: willfarrell/autoheal:latest
     container_name: autoheal

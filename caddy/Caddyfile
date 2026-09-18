@@ -81,14 +81,6 @@ doc.dicroci.website {
 	}
 }
 
-ecole.dicroci.website {
-	import crowdsec_protect
-	reverse_proxy ecole:8000
-	tls {
-		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
-	}
-}
-
 plex.dicroci.website {
     import crowdsec_protect
 
@@ -115,14 +107,6 @@ plex.dicroci.website {
     tls {
         dns cloudflare {env.CLOUDFLARE_API_TOKEN}
     }
-}
-
-wiki.dicroci.website {
-	import crowdsec_protect
-	reverse_proxy ghost:2368
-	tls {
-		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
-	}
 }
 
 # ─── drynish.synology.me ─────────────────────────────────────────────────────
@@ -160,7 +144,7 @@ cours.drynish.synology.me {
 
 download.drynish.synology.me {
 	import crowdsec_protect
-	reverse_proxy gluetun:8999
+	import local_or_authelia gluetun:8999
 }
 
 famille.drynish.synology.me {
@@ -205,6 +189,11 @@ homeassistant.drynish.synology.me {
 	}
 
 	respond 403
+}
+
+kuma.drynish.synology.me {
+	import crowdsec_protect
+	import local_or_authelia uptime-kuma:3001
 }
 
 nas.drynish.synology.me {
